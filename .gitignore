@@ -31,5 +31,10 @@
 *.out
 *.app
 
-# visual studio
+# Visual Studio
 .vs/
+x64/
+x86/
+*.sln
+*.vcxproj
+*.vcxproj*

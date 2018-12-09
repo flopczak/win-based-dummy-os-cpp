@@ -1,1 +1,2 @@
 Maciej Owsianny: Zarz¹dzanie uprawnieniami do plików i katalogów
+Jakub Florczak: Zarz¹dzanie procesorem metod¹ priorytetow¹

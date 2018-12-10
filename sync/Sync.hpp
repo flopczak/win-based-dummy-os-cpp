@@ -23,5 +23,6 @@ public:
 	int  getCondID();
 	bool getCond();
 	std::list<PCB*>getCPQ();
+
 };
 

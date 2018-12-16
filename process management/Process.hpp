@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+enum status {NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
+
 class Process	//PCB
 {
 public:
@@ -9,7 +11,7 @@ public:
 
 private:
 	static int PID;						//indywidualny identyifkator
-	string process_status;				//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
+	string process_status;						//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
 	int program_instructions;			//instrukcje asemblerowskie
 	int AX;								//rejestry
 	int BX;

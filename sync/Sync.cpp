@@ -1,19 +1,20 @@
 #include "Sync.hpp"
-#include "Procesor.hpp"
+#include "Process.hpp"
 
-
+//=====================================================================================================// Konstruktor / Destruktor
 Sync::Sync()
 {
 	this->lock=false;
 	this->cond=false;
 }
 
-
 Sync::~Sync()
 {
-}
 
-void acquire(Procesor::Process*tempProcess)
+}
+//=====================================================================================================// Metody dla Lock
+
+void Sync::acquire(Process::Process*tempProcess)
 {
 	if (this->lock == true) 
 	{
@@ -29,7 +30,7 @@ void acquire(Procesor::Process*tempProcess)
 
 }
 
-void release(Procesor::Process*tempProcess)
+void Sync::release(Process::Process*tempProcess)
 {
 	if (this->getLockID() == tempProcess->pID)	
 	{
@@ -51,12 +52,34 @@ void release(Procesor::Process*tempProcess)
 
 }
 
-int getLockID()
+int Sync::getLockID()
 {
 	return this->currentLockProcess->getPID(); // getPID() potrzebne!! @Blazej
 }
 
-bool getLock()
+bool Sync::getLock()
 {
 	return this->lock;
+}
+
+std::list<Process::Process*> Sync::getLPQ()
+{
+	return this->LockProcessQueue;
+}
+
+//=====================================================================================================// Metody dla Cond
+
+int Sync::getCondID()
+{
+	return this->currentCondProcess->getPID(); // getPID() potrzebne!! @Blazej
+}
+
+bool Sync::getCond()
+{
+	return this->cond;
+}
+
+std::list<Process::Process*> Sync::getCPQ()
+{
+	return this->CondProcessQueue;
 }

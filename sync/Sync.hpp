@@ -1,32 +1,32 @@
 #pragma once
-#include "Procesor.hpp"
+#include "Process.hpp"
 
 class Sync
 {
 private:
-	Procesor::Process*currentLockProcess;
-	Procesor::Process*currentCondProcess;
+	Process::Process*currentLockProcess;
+	Process::Process*currentCondProcess;
 	bool lock;
 	bool cond;
-	std::list<Procesor::Process*>LockProcessQueue;//Kolejka procesow oczekujacych na zamku
-	std::list<Procesor::Process*>CondProcessQueue;//Kolejka procesow oczekujacych na zmiennej warunkowej
+	std::list<Process::Process*>LockProcessQueue;//Kolejka procesow oczekujacych na zamku
+	std::list<Process::Process*>CondProcessQueue;//Kolejka procesow oczekujacych na zmiennej warunkowej
 public:
 	Sync();
 	~Sync();
 	//Metody do obslugi zamkow :
-	void acquire(Procesor::Process*);
-	void release(Procesor::Process*);
+	void acquire(Process::Process*);
+	void release(Process::Process*);
 	int  getLockID();
 	bool getLock();
-	std::list<Procesor::Process*>getLPQ();
+	std::list<Process::Process*>getLPQ();
 
 	//Metody do obslugi zmiennych warunkowych :
-	void wait(Procesor::Process*);
+	void wait(Process::Process*);
 	void signal();
 	void broadcast();
 	int  getCondID();
 	bool getCond();
-	std::list<Procesor::Process*>getCPQ();
+	std::list<Process::Process*>getCPQ();
 
 };
 

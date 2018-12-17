@@ -24,7 +24,6 @@ void Sync::acquire(Process::Process*tempProcess)
 	else if (this->lock == false) 
 	{
 		this->lock = true;
-		this->currentLockProcess->setPID(tempProcess->pID);
 		this->currentLockProcess = tempProcess;
 	}
 
@@ -32,7 +31,7 @@ void Sync::acquire(Process::Process*tempProcess)
 
 void Sync::release(Process::Process*tempProcess)
 {
-	if (this->getLockID() == tempProcess->pID)	
+	if (this->getLockID() == tempProcess->getPID())	
 	{
 		if (LockProcessQueue.empty() == true)
 		{ 
@@ -43,11 +42,10 @@ void Sync::release(Process::Process*tempProcess)
 		{
 			this->currentLockProcess = LockProcessQueue.front();
 			LockProcessQueue.pop_front();
-			this->currentLockProcess->setProcessStatus("GOTOWY") //Process do stanu ready.
-			this->currentLockProcess->setPID(tempProcess->getPID()); // setPID() potrzebne!! @Blazej
+			this->currentLockProcess->setProcessStatus("GOTOWY"); //Process do stanu ready.
 		}
 	}
-	else this->synchProces.setProcessStatus("ZAKONCZONY"); //Process do stanu terminated.
+	else this->currentLockProcess.setProcessStatus("ZAKONCZONY"); //Process do stanu terminated.
 	
 
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Process_List.hpp"
 #include <string>
 using namespace std;
 
@@ -11,7 +12,7 @@ public:
 
 private:
 	static int PID;						//indywidualny identyifkator
-	string process_status;						//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
+	string process_status;				//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
 	int program_instructions;			//instrukcje asemblerowskie
 	int AX;								//rejestry
 	int BX;
@@ -24,5 +25,6 @@ private:
 	~Process();							//dekonstruktor
 	void setInstructions(int in);		//przekazywanie instrukcji asemblera do procesu
 	void setProcessStatus(string st);	//ustawianie statusu procesu
-	
+	void displayProcess();
+	void addProcess(Process a);
 };

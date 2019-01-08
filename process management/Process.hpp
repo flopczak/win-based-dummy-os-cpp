@@ -5,26 +5,43 @@ using namespace std;
 
 enum status {NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
 
-class Process	//PCB
+struct STRON
+{
+	int RamZajety;
+	bool wPam;
+};
+
+class Process							//PCB
 {
 public:
 	string process_name;				//nazwa procesu
 
 private:
-	static int PID;						//indywidualny identyifkator
-	string process_status;				//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
-	int program_instructions;			//instrukcje asemblerowskie
-	int AX;								//rejestry
+	STRON* pageTable;	//Przemkowe RAM'y
+	int pageTableSize;
+
+	static int PID;	//indywidualny identyifkator
+	string process_status;	//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
+	int program_instructions;	//instrukcje asemblerowskie
+	int AX;	//rejestry
 	int BX;
 	int CX;
-	int process_priority;				//priorytet
+	int process_priority;	//priorytet
 	
 	
-	Process();							//konstruktor domyœlny
+	Process();	//konstruktor domyœlny
 	Process(string n, int p, int i);	//konstruktor
-	~Process();							//dekonstruktor
-	void setInstructions(int in);		//przekazywanie instrukcji asemblera do procesu
+	~Process();	//dekonstruktor
+	int errorCode();
+	void setInstructions(int in);	//przekazywanie instrukcji asemblera do procesu
 	void setProcessStatus(string st);	//ustawianie statusu procesu
-	void displayProcess();
-	void addProcess(Process a);
+	void setPriority(int n);	//ustawianie priorytetu
+	void display();	//wyœwietlanie procesu		
+	void findAndDisplayProcess(string s);	//szukanie procesu po nazwie w kolejce i wyœwietlanie
+	void addProcess(Process a);	//dodawanie procesu do kolejki
+	
+	void UstTabStronic(STRON* newpageTable);	//Przemkowe RAM'y
+	STRON* PobTabStronic();
+	void UstWielTabStronic(int num);
+	int PobWielTabStronic();
 };

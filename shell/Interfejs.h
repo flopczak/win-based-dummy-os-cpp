@@ -53,7 +53,7 @@ public:
 	void DisplayHistory(int y) {
 		int x = historia.size();
 		if (y > x) {
-			cout << "Historia nie posiada tylu elementów" << endl;
+			cout << "Historia nie posiada tylu elementÃ³w" << endl;
 			return;
 		}
 		for (int i = x - 1; i<-1; i--) {
@@ -65,6 +65,7 @@ public:
 	string Wczytaj() {
 		string msg;
 		getline(cin, msg);
+		return msg;
 	}
 
 	vector<string> Interpret(string msg) {

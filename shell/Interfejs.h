@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <ctime>
+#include <cstdio>
 
 using namespace std;
 
@@ -18,10 +20,6 @@ private:
 	const bool dislog = true;
 	vector<met> metody;
 public:
-	
-	
-	
-
 	vector<his> historia;
 
 	void DisplayLog(string msg) {
@@ -120,6 +118,29 @@ public:
 		}
 		return tabmsg;		
 	}
+	
+	void Time() {
+		time_t czas;
+		time(&czas);
+		printf("Czas lokalny: %s\n", ctime(&czas));
+	}
+
+	string ToUp(string s) {
+		setlocale(LC_CTYPE, "pl_PL.UTF-8");
+		for (int i = 0; i < s.length(); i++)
+		{
+			s[i] = toupper(s[i]);
+		}
+		return s;
+	}
+
+	string ToDown(string s) {
+		for (int i = 0; i < s.length(); i++)
+		{
+			s[i] = toupper(s[i]);
+		}
+		return s;
+	}
 
 
 	void Wywolaj(vector<string> tab){
@@ -129,6 +150,7 @@ public:
 			return;
 		}
 		string pocelenie = tab[0];
+		polecenie = ToDown(polecenie);
 		vector<string> parametry;
 		if (x > 1) {
 			for (int i = 1; i < x; i++) {
@@ -139,6 +161,18 @@ public:
 		// takze   /|\ siemano kolano  
 		//         | |
 		//         U U
+		switch (polecenie) {
+		case time:
+			Time();
+			break;
+		case xyz:
+			break;
+		case exit:
+			break;
+		case default:
+			cout << "Nie ma takiego polecenia" << endl;
+			break;
+		}
 
 		
 	}

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -53,13 +54,37 @@ public:
 	void DisplayHistory(int y) {
 		int x = historia.size();
 		if (y > x) {
-			cout << "Historia nie posiada tylu elementÃ³w" << endl;
+			cout << "Historia nie posiada tylu elementów" << endl;
 			return;
 		}
 		for (int i = x - 1; i<-1; i--) {
 			cout << i + 1 << ". " << metody[historia[i].numer_metody].opis << " " << historia[i].parametr << endl;
 		}
 
+	}
+
+	void ZgrajZTxt() {
+		ifstream plik;
+		plik.open("metody.txt");
+		if (!plik.good()) {
+			cout << "blad odczytu pliku" << endl;
+			return;
+		}
+		int i = 0;
+		string napis;
+		int x;
+		while (!plik.eof()) {
+			getline(plik, napis);
+			cout << napis << endl;
+			x = napis.length;
+			string temp = "";
+			bool koniec = false;
+			string delimiter = " ";
+			string token = napis.substr(0, napis.find(delimiter));
+			metody[i].skrot = token;
+			metody[i].opis = napis;
+			i++;
+		}
 	}
 
 	string Wczytaj() {
@@ -110,6 +135,10 @@ public:
 				parametry.push_back(tab[i]);
 			}
 		}
+		// tu bedzie w kurwe switch casow z nazwami metod i ich wywolaniami
+		// takze   /|\ siemano kolano  
+		//         | |
+		//         U U
 
 		
 	}

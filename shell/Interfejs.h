@@ -4,6 +4,8 @@
 #include <fstream>
 #include <ctime>
 #include <cstdio>
+#include <windows.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -84,11 +86,36 @@ public:
 			i++;
 		}
 	}
+	void SetColor(vector<string> tab) {
+		if (tab.size() > 1) {
+			cout << "za duzo parametrow" << endl;
+			return;
+		}
+		string kolor = tab[0];
+		switch (kolor) {
+		case red:
+			SetConsoleTextAttribute(hOut, FOREGROUND_RED);
+			break;
+		case blue:
+			SetConsoleTextAttribute(hOut, FOREGROUND_BLUE);
+			break;
+		case green:
+			SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
+			break;
+		case default:
+			cout << "nie ma takiego koloru" << endl;
+			break;
+		}
+	}
 
 	string Wczytaj() {
 		string msg;
 		getline(cin, msg);
 		return msg;
+	}
+
+	void cls() {
+		System("cls");
 	}
 
 	vector<string> Interpret(string msg) {
@@ -175,13 +202,19 @@ public:
 		case cp:
 			break;
 		case cls:
+			cls();
 			break;
 		case help:
 			DisplayMethods();
 			break;
+		case of:
+			break;
+		case clf:
+			break;
+		case ren:
+			break;
 		case exit:
 			break;
-
 		case default:
 			cout << "Nie ma takiego polecenia" << endl;
 			break;

@@ -4,6 +4,8 @@
 #include <fstream>
 #include <ctime>
 #include <cstdio>
+#include <windows.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -84,6 +86,27 @@ public:
 			i++;
 		}
 	}
+	void SetColor(vector<string> tab) {
+		if (tab.size() > 1) {
+			cout << "za duzo parametrow" << endl;
+			return;
+		}
+		string kolor = tab[0];
+		switch (kolor) {
+		case red:
+			SetConsoleTextAttribute(hOut, FOREGROUND_RED);
+			break;
+		case blue:
+			SetConsoleTextAttribute(hOut, FOREGROUND_BLUE);
+			break;
+		case green:
+			SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
+			break;
+		case default:
+			cout << "nie ma takiego koloru" << endl;
+			break;
+		}
+	}
 
 	string Wczytaj() {
 		string msg;
@@ -91,9 +114,13 @@ public:
 		return msg;
 	}
 
+	void cls() {
+		System("cls");
+	}
+
 	vector<string> Interpret(string msg) {
 		if (msg == "") {
-			cout << "Blad" << endl;
+			cout << "Blad, pusta wiadomosc" << endl;
 			return;
 		}
 		vector<string> tabmsg;
@@ -157,15 +184,34 @@ public:
 				parametry.push_back(tab[i]);
 			}
 		}
-		// tu bedzie w kurwe switch casow z nazwami metod i ich wywolaniami
-		// takze   /|\ siemano kolano  
-		//         | |
-		//         U U
+		
 		switch (polecenie) {
 		case time:
 			Time();
 			break;
 		case xyz:
+			break;
+		case exit:
+			break;
+		case mkdir:
+			break;
+		case rmdir:
+			break;
+		case sp:
+			break;
+		case cp:
+			break;
+		case cls:
+			cls();
+			break;
+		case help:
+			DisplayMethods();
+			break;
+		case of:
+			break;
+		case clf:
+			break;
+		case ren:
 			break;
 		case exit:
 			break;

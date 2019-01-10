@@ -20,7 +20,8 @@ Procesor::~Procesor()
 void Procesor::add(Process&ready) // przemysl czy ageing musi byæ oddzielny i czy chcesz dodaæ cos do PCB
 {
 	int it = ready.process_priority;
-
+	main_queue[it].push_back(ready);
+	mask[it] = false;
 }
 
 

@@ -16,8 +16,13 @@ class Process											//PCB
 public:
 	string process_name;								//nazwa procesu
 
+<<<<<<< Updated upstream
 private:
 	STRON* pageTable;									//Przemkowe RAM'y
+=======
+//JACOB zmieniam parametry na publiczne
+	STRON* pageTable;	//Przemkowe RAM'y
+>>>>>>> Stashed changes
 	int pageTableSize;
 
 	static int PID;										//indywidualny identyifkator
@@ -28,10 +33,17 @@ private:
 	int CX;
 	int process_priority;								//priorytet
 	
+<<<<<<< Updated upstream
 	
 	Process();											//konstruktor domyœlny
 	Process(string n, int p);							//konstruktor
 	~Process();											//dekonstruktor
+=======
+private:
+	Process();	//konstruktor domyœlny
+	Process(string n, int p, int i);	//konstruktor
+	~Process();	//dekonstruktor
+>>>>>>> Stashed changes
 	int errorCode();
 	void setInstructions(int in);						//przekazywanie instrukcji asemblera do procesu
 	void setProcessStatus(status);						//ustawianie statusu procesu

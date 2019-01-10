@@ -93,7 +93,7 @@ public:
 
 	vector<string> Interpret(string msg) {
 		if (msg == "") {
-			cout << "Blad" << endl;
+			cout << "Blad, pusta wiadomosc" << endl;
 			return;
 		}
 		vector<string> tabmsg;
@@ -157,10 +157,7 @@ public:
 				parametry.push_back(tab[i]);
 			}
 		}
-		// tu bedzie w kurwe switch casow z nazwami metod i ich wywolaniami
-		// takze   /|\ siemano kolano  
-		//         | |
-		//         U U
+		
 		switch (polecenie) {
 		case time:
 			Time();
@@ -169,6 +166,22 @@ public:
 			break;
 		case exit:
 			break;
+		case mkdir:
+			break;
+		case rmdir:
+			break;
+		case sp:
+			break;
+		case cp:
+			break;
+		case cls:
+			break;
+		case help:
+			DisplayMethods();
+			break;
+		case exit:
+			break;
+
 		case default:
 			cout << "Nie ma takiego polecenia" << endl;
 			break;

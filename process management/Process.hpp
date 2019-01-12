@@ -45,11 +45,9 @@ public:
 	void removeProcess();								//usuwanie zakonczonego procesu
 	void terminateProcess(string s);					//koñczenie procesu przez u¿ytkownika
 
-	void JebacWis³eIPolicje();
-
 	
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y
-	int errorCode();
+	int errorCode;
 	STRON* PobTabStronic();
 	void UstWielTabStronic(int num);
 	int PobWielTabStronic();

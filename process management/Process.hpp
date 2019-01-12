@@ -16,34 +16,37 @@ class Process											//PCB
 public:
 	
 	STRON* pageTable;									//Przemkowe RAM'y
+//JACOB zmieniam parametry na publiczne
+	STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
 	string process_name;								//nazwa procesu
 	static int PID;										//indywidualny identyifkator
-	status process_status;								//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
+	status process_status;								//status procesu: nowy, aktywny, gotowy, oczekujï¿½cy, zakoï¿½czony
 	int program_instructions;							//instrukcje asemblerowskie
-	int command_counter;								//licznik rozkazów asemblera
+	int command_counter;								//licznik rozkazï¿½w asemblera
 	int AX;												//rejestry
 	int BX;
 	int CX;
 	int process_priority;								//priorytet
-	bool PP;											//flaga obecnoœci procesora
+	bool PP;											//flaga obecnoï¿½ci procesora
 	
+
 	
-	Process();											//konstruktor domyœlny
-	Process(string n);									//konstruktor z nazw¹ procesu
-	Process(string n, int p);							//konstruktor z nazw¹ i priorytetem procesu
+	Process();											//konstruktor domyï¿½lny
+	Process(string n);									//konstruktor z nazwï¿½ procesu
+	Process(string n, int p);							//konstruktor z nazwï¿½ i priorytetem procesu
 	~Process();											//dekonstruktor
 	void setInstructions(int in);						//przekazywanie instrukcji asemblera do procesu
 	void setProcessStatus(status);						//ustawianie statusu procesu
 	void setPriority(int n);							//ustawianie priorytetu
-	void display();										//wyœwietlanie szczegó³owe jednego procesu
-	void displayAll();									//wyœwietlanie wszystkich procesow
+	void display();										//wyï¿½wietlanie szczegï¿½owe jednego procesu
+	void displayAll();									//wyï¿½wietlanie wszystkich procesow
 	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
-	void findAndDisplayProcess(string s);				//szukanie procesu po nazwie w kolejce i wyœwietlanie
+	void findAndDisplayProcess(string s);				//szukanie procesu po nazwie w kolejce i wyï¿½wietlanie
 	void addProcess(Process a);							//dodawanie procesu do kolejki
 	void removeProcess();								//usuwanie zakonczonego procesu
-	void terminateProcess(string s);					//koñczenie procesu przez u¿ytkownika
+	void terminateProcess(string s);					//koï¿½czenie procesu przez uï¿½ytkownika
 
 	
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y

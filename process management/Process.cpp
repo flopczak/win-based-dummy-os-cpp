@@ -12,25 +12,9 @@ Process::Process()
 	this->process_status = NOWY;
 	this->process_priority = 0;
 	this->program_instructions = 0;
-	this->command_counter = 0;
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
-	this->PP = false;
-}
-
-Process::Process(string na)
-{
-	this->PID = rand() % 9999 + 1000;
-	this->process_name = na;
-	this->process_status = NOWY;
-	this->process_priority = 5;
-	this->program_instructions = 0;
-	this->command_counter = 0;
-	this->AX = 0;
-	this->BX = 0;
-	this->CX = 0;
-	this->PP = false;
 }
 
 Process::Process(string na, int pr)
@@ -40,11 +24,9 @@ Process::Process(string na, int pr)
 	this->process_status = NOWY;
 	this->process_priority = pr;
 	this->program_instructions = 0;
-	this->command_counter = 0;
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
-	this->PP = false;
 }
 
 Process::Process()
@@ -57,7 +39,7 @@ Process::~Process()
 {
 }
 
-void Process::setPriority(int n)		//to chyba jest niepotrzebne XD
+void Process::setPriority(int n)
 {
 	this->process_priority = n;
 }

@@ -17,6 +17,7 @@ private:
 	
 
 	void createAdmin();
+	//static void deleteFromList(); //Funkcja pomocnicza do usuwania z list statycznych
 
 public:
 	User();
@@ -39,14 +40,11 @@ public:
 	static string getCurrentLoggedUser();
 				//other functions
 	void createUser();
-	static void printUser(User* user);
-	static void logOut();
-	static void logIn();
-	static void deleteUser(string user);
+	void changeUser(); // "logout"
+	void deleteUser(User* user);
 	void changePassword();
 	void generateSID();
 	static bool currentLoggedGotAdminPermissions(); // Sprawdza czy obecnie zalogowana osoba jest adminem
-	static User* getUserbyName(string name); // Zwraca wsk. do obiektu (przeszukiwanie po nazwie uzytkownika)
 				//Operacje na listach
 	static void viewUserList();
 	static void viewStandardUserGroup();

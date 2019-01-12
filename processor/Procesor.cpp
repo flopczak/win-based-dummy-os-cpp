@@ -21,19 +21,44 @@ void Procesor::add(Process&ready) // przemysl czy ageing musi byæ oddzielny i cz
 {
 	int it = ready.process_priority;
 	main_queue[it].push_back(ready);
-	mask[it] = false;
+	mask[it] = true;
 }
 
 
 
-void Procesor::find_and_run()
+void Procesor::find_and_run(Procesor& p) //przemysl jak sprawdzac czy pojawil sie nowy proces
 {
+	int it = 8;
+	while (it < 0)
+	{
+		if (p.mask[it] == true)
+		{
+				Process temp = main_queue[it].front;
+				temp.process_status = AKTYWNY;
+				main_queue[it].pop_front;
+				if (main_queue[it].empty())
+				{
+					p.mask[it] = false;
+				}
+				else
+				{
+					p.mask[it] = true;
+				}
+		}
+		else if (it == 0)
+		{
+			Process temp = main_queue[it].front;
+			temp.process_status = AKTYWNY;
+		}
+		else continue;
+
+		it--;
+	}
 }
 
-void Procesor::remove()
-{
-}
 
-void Procesor::age()
+
+void Procesor::age(Procesor& p)
 {
+
 }

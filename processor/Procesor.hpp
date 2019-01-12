@@ -3,7 +3,8 @@
 #include<map>
 #include<array>
 #include<queue>
-
+#include<list>
+#include<vector>
 bool debug = true;
 
 class Procesor
@@ -15,13 +16,12 @@ public:
 
 
 
-	std::map<int, std::queue<Process*>> main_queue; //kolejka procesów w stanie gotowoœci
+	std::map<int, std::list<Process>> main_queue; //kolejka procesów w stanie gotowoœci da³em vec bez wskaznika czy to zle?
 	std::array<bool, 8> mask; //maska bitowa na kolejkê
 	
 private:
-	void find_and_run();
-	void remove();
-	void age();
+	void find_and_run(Procesor&p);
+	void age(Procesor& p);
 
 };
 

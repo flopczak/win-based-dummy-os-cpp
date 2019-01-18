@@ -1,2 +1,3 @@
-Maciej Owsianny: Zarzπdzanie uprawnieniami do plikÛw i katalogÛw
-Jakub Florczak: Zarzπdzanie procesorem metodπ priorytetowπ
+Maciej Owsianny: Zarz≈°dzanie uprawnieniami do plik√≥w i katalog√≥w
+Jakub Florczak: Zarz≈°dzanie procesorem metod≈° priorytetow≈°
+Andrzej Skrobak: Zarzadzanie systemem plikow i katalogami metoda indeksowa

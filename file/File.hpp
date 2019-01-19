@@ -13,7 +13,7 @@ private:
 	int accessLevel;
 public:
 	File(std::string);
-
+	File() {};
 	~File();
 
 	std::string getName();
@@ -27,6 +27,7 @@ public:
 	int getAccessLevel();
 	bool setAccessLevel(int);
 
+	std::string getSpecName(std::string);
 
 };
 

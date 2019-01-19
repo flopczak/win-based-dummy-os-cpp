@@ -21,7 +21,7 @@ public:
 	int pageTableSize;
 
 	string process_name;								//nazwa procesu
-	static int PID;										//indywidualny identyifkator
+	int PID;											//indywidualny identyifkator
 	status process_status;								//status procesu: nowy, aktywny, gotowy, oczekuj�cy, zako�czony
 	int program_instructions;							//instrukcje asemblerowskie
 	int command_counter;								//licznik rozkaz�w asemblera

@@ -126,6 +126,17 @@ void Process::terminateProcess(string s)
 	}
 }
 
+Process Process::giveReady()
+{
+	for (auto it : Process_List::PrcList)
+	{
+		if (it.process_status == GOTOWY)
+		{
+			return it;
+		}
+	}
+}
+
 //---------------------------------------------------------------------//
 
 void Process::UstTabStronic(STRON* newpageTable)

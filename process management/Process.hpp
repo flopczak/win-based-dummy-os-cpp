@@ -16,7 +16,7 @@ class Process											//PCB
 public:
 	
 	STRON* pageTable;									//Przemkowe RAM'y
-//JACOB zmieniam parametry na publiczne
+	//JACOB zmieniam parametry na publiczne
 	STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
@@ -47,6 +47,7 @@ public:
 	void addProcess(Process a);							//dodawanie procesu do kolejki
 	void removeProcess();								//usuwanie zakonczonego procesu
 	void terminateProcess(string s);					//ko�czenie procesu przez u�ytkownika
+	Process giveReady();								//zwraca aktywny proces
 
 	
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y

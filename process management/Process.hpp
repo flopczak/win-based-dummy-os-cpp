@@ -1,5 +1,5 @@
 #pragma once
-#include "Process_List.hpp"
+
 #include <string>
 using namespace std;
 
@@ -17,7 +17,7 @@ public:
 	
 	STRON* pageTable;									//Przemkowe RAM'y
 	//JACOB zmieniam parametry na publiczne
-	STRON* pageTable;	//Przemkowe RAM'y
+	//STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
 	string process_name;								//nazwa procesu

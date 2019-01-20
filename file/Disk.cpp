@@ -1,7 +1,6 @@
 #include "Disk.hpp"
 
 
-
 Disk::Disk()
 {
 	for (int i; i < 1024; i++)
@@ -61,8 +60,14 @@ int Disk::znajdzWolny(int index)
 	return -1;
 }
 
-int Disk::dodajDane(char[] dane, int index)
+int Disk::dodajDane(std::string dane, int index)
 {
-	return 0;
+	std::string temp = dane;
+	int blok = znajdzWolny(index);
+	for(int i = blok; i < blok + 32; i++)
+	{
+		HDD[i] = -1;
+	}
+
 }
 

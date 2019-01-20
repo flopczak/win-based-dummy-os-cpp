@@ -1,5 +1,5 @@
 #include "Disk.hpp"
-
+#include  <math.h>
 
 Disk::Disk()
 {
@@ -33,11 +33,14 @@ std::string Disk::wypiszPlik(int index)
 		{
 			for (int j = i * 32; j < (i * 32) + 32; j++)
 			{
-				zawartosc += HDD[j];
+				if (HDD[j] != -1)
+				{
+					zawartosc += HDD[j];
+				}
 			}
 		}
 	}
-	return std::string();
+	return zawartosc;
 }
 
 bool Disk::czyZaj(int index)
@@ -63,11 +66,50 @@ int Disk::znajdzWolny(int index)
 int Disk::dodajDane(std::string dane, int index)
 {
 	std::string temp = dane;
-	int blok = znajdzWolny(index);
-	for(int i = blok; i < blok + 32; i++)
+	if (temp.length() > 32 * 32)
 	{
-		HDD[i] = -1;
+		//Interfejs DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
+		return -1;
 	}
-
+	int blokI = znajdzWolny(index);
+	if (blokI == -1)
+	{
+		//Interfejs DisplayLog("Brak wolnych blokow!");
+		return  -1;
+	}
+	int pos = 0;
+	int rozm = ceil(temp.length() / 32.0);
+	zajBloki[blokI] = true;
+	for (int i = blokI * 32; i < blokI * 32 + rozm * 32; i++)
+	{
+		if (pos < temp.length())
+		{
+			int blokD = znajdzWolny(blokI);
+			if (blokD == -1)
+			{
+				//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
+				return -1;
+			}
+			HDD[i] = blokD;
+			zajBloki[blokD] = true;
+			for (int e = blokD * 32; e < blokD * 32 + 32; e++)
+			{
+				if (pos <= temp.length())
+				{
+					HDD[e] = temp.at(pos);
+					pos++;
+				}
+				else
+				{
+					HDD[e] = -1;
+				}
+			}
+		}
+		else
+		{
+			break;
+		}
+	}
+		return blokI;
 }
 

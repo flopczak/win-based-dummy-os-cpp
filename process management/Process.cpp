@@ -68,11 +68,11 @@ void Process::display()
 void Process::findAndDisplayProcess(string s)
 {
 	bool czy = false;
-	for (auto it : Process_List::PrcList)
+	for (auto const& it : Process_List::PrcList)
 	{
 		if (it.process_name == s)
 		{
-			it.display();
+			//it.display();
 			czy = true;
 		}
 	}
@@ -92,10 +92,9 @@ void Process::displayHelper()
 
 void Process::displayAll()
 {
-	for (auto it : Process_List::PrcList)
+	for (auto const& it : Process_List::PrcList)
 	{
-		it.displayHelper();
-		cout << endl;
+		//it.displayHelper();
 	}
 }
 
@@ -106,7 +105,7 @@ void Process::addProcess(Process a)
 
 void Process::removeProcess() 
 {
-	for (auto it : Process_List::PrcList)
+	for (auto const& it : Process_List::PrcList)
 	{
 		if (it.process_status == ZAKONCZONY)
 		{
@@ -117,7 +116,7 @@ void Process::removeProcess()
 
 void Process::terminateProcess(string s)
 {
-	for (auto it : Process_List::PrcList)
+	for (auto const& it : Process_List::PrcList)
 	{
 		if (it.process_name == s)
 		{
@@ -128,7 +127,7 @@ void Process::terminateProcess(string s)
 
 Process Process::giveReady()
 {
-	for (auto it : Process_List::PrcList)
+	for (auto const& it : Process_List::PrcList)
 	{
 		if (it.process_status == GOTOWY)
 		{

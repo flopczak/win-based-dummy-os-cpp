@@ -17,6 +17,10 @@ Process::Process()
 	this->CX = 0;
 }
 
+Process::Process(string n)
+{
+}
+
 Process::Process(string na, int pr)
 {
 	this->PID = rand() % 9999 + 1000;
@@ -28,13 +32,13 @@ Process::Process(string na, int pr)
 	this->BX = 0;
 	this->CX = 0;
 }
-
+/*
 Process::Process()
 {
 	this->errorCode = 0;
 	this->PobWielTabStronic();
 }
-
+*/
 Process::~Process()
 {
 }

@@ -72,7 +72,7 @@ void Process::findAndDisplayProcess(string s)
 	{
 		if (it.process_name == s)
 		{
-			//it.display();
+			it.display();
 			czy = true;
 		}
 	}

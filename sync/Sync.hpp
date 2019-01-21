@@ -1,7 +1,7 @@
 #pragma once
-#include "Process.hpp"
+#include"../process management/Process.hpp"
 
-// getPID() potrzebne!! @Blazej
+enum status { NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY };
 
 class Sync
 {

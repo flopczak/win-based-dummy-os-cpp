@@ -129,15 +129,22 @@ void Process::terminateProcess(string s)
 	}
 }
 
-Process Process::giveReady()
+list<Process> Process::giveReady()
 {
+	list<Process>mylist;
 	for (auto const& it : Process_List::PrcList)
 	{
 		if (it.process_status == GOTOWY)
 		{
-			return it;
+			mylist.push_front(it);
 		}
 	}
+	return mylist;
+}
+
+int Process::getPID()
+{
+	return this->PID;
 }
 
 //---------------------------------------------------------------------//

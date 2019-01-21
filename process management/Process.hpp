@@ -1,5 +1,5 @@
 #pragma once
-
+#include <list>
 #include <string>
 using namespace std;
 
@@ -47,7 +47,8 @@ public:
 	void addProcess(Process a);							//dodawanie procesu do kolejki
 	void removeProcess();								//usuwanie zakonczonego procesu
 	void terminateProcess(string s);					//ko�czenie procesu przez u�ytkownika
-	Process giveReady();								//zwraca aktywny proces
+	list<Process> giveReady();							//zwraca aktywny proces
+	int getPID();
 
 	
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y

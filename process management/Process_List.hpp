@@ -9,7 +9,6 @@ class Process_List
 {
 public:
 	static list<Process>PrcList;
-	Procesor procesor = new Procesor(this);
 	list<Process> getReady();
 	void terminateProcess(string s);
 	void removeProcess();
@@ -17,4 +16,9 @@ public:
 	void createProcess(string na, int pr);
 	void findAndDisplayProcess(string s);
 	void displayAll();
+	Process_List();
+	Process_List(const Process_List &plist);
+
+private: 
+	Procesor proc = Procesor(this);
 };

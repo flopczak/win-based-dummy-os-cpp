@@ -9,7 +9,7 @@ Process::Process()
 {
 	this->PID = 0;
 	this->process_name = "";
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = 0;
 	this->AX = 0;
 	this->BX = 0;
@@ -22,7 +22,7 @@ Process::Process(string na)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = 0;
 	this->AX = 0;
 	this->BX = 0;
@@ -35,7 +35,7 @@ Process::Process(string na, int pr)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = pr;
 	this->AX = 0;
 	this->BX = 0;
@@ -55,7 +55,7 @@ void Process::setPriority(int n)
 
 void Process::setProcessStatus(status)
 {
-	this->process_status = NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
+	this->process_status = AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
 }
 
 void Process::display() 

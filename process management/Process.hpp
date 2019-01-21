@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-enum status {NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
+enum status {AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
 
 struct STRON
 {

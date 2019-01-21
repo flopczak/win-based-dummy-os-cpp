@@ -16,7 +16,7 @@ public:
 	bool new_process = false;
 	int w_counter;
 	Process running;
-	Process_List* temporary;
+	Process_List temporary;
 	Procesor(Process_List* p);
 	~Procesor();
 	void add(Process& ready); // metoda do dodawania proces�w

@@ -1,18 +1,19 @@
 #include <iostream>
 #include "Process_List.hpp"
-#include "Process.hpp"
 using namespace std;
 
 void Process_List::createProcess(string na)
 {
 	Process a(na);
 	Process_List::PrcList.push_front(a);
+	procesor.add(a);
 }
 
 void Process_List::createProcess(string na, int pr)
 {
 	Process a(na, pr);
 	Process_List::PrcList.push_front(a);
+	procesor.add(a);
 }
 
 list<Process> Process_List::getReady()
@@ -73,5 +74,16 @@ void Process_List::displayAll()
 	{
 		//it.displayHelper();
 	}
+}
+
+Process_List::Process_List()
+{
+	//this->proc = Procesor(this);
+}
+
+Process_List::Process_List(const Process_List & plist)
+{
+	this->PrcList = plist.PrcList;
+	this->proc = plist.proc;
 }
 

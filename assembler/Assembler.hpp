@@ -1,4 +1,7 @@
 #pragma once
+#include "../process management/Process.hpp"
+#include "../process management/Process_List.hpp"
+#include "../processor/Procesor.hpp"
 
 
 class Assembler{

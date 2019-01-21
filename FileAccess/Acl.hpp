@@ -33,15 +33,14 @@ public:
 	Mask getMask();
 	string getOwner();
 				//Others
-	static void viewAclList();											// Wyswietlenie wszystkich ACL powiazanych z plikami
-	static void viewFileAcl(string file_name);							// Wyswietlenie ACL konkretnego pliku
-	void deleteAceInAcl();												// Usuwanie wpisu ACE
+	static void viewAclList();													// Wyswietlenie wszystkich ACL powiazanych z plikami
+	static void viewFileAcl(string file_name);									// Wyswietlenie ACL konkretnego pliku
 				//
-	void viewCurrentFileAcl();											// Wyswietlanie ACL bierzacego pliku
-	void setDefaultPermissions();										// Ustanowienie podstawowych wpisow ACE
-	void setAdditionalPermissions();									// Dodanie dodatkowych wpisów ACE 
-	void defineMask();													// Inicjalizacja maski
-	void permissionsToCharArray(Permissions permissions, int* out);		// Translacja "Flagi" na odpowiednie wartosci w char array
-	int readPermissions(string filename);								// zwraca uprawnienia w postaci inta
-	int getUserPermissions();											//Zwraca maks. poczatkowe uprawnienia obecnego uzytkownika
+	void viewCurrentFileAcl();													// Wyswietlanie ACL bierzacego pliku
+	void setDefaultPermissions();												// Ustanowienie podstawowych wpisow ACE
+	static void setAdditionalPermissions(string file_name);						// Dodanie dodatkowych wpisów ACE 
+	void defineMask();															// Inicjalizacja maski
+	static void permissionsToCharArray(Permissions permissions, int* out);		// Translacja "Flagi" na odpowiednie wartosci w char array
+	int readPermissions(string filename);										// zwraca uprawnienia w postaci inta
+	static int getUserPermissions();											//Zwraca maks. poczatkowe uprawnienia obecnego uzytkownika
 };

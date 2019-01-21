@@ -1,6 +1,7 @@
 #include "Acl.hpp"
 #include "User.hpp"
 #include <string>
+#include "Interfejs.h"
 using namespace std;
 
 Acl::Acl() {
@@ -48,10 +49,40 @@ string Acl::getOwner() {
 		}
 		else std::cout << "Nie znaleziono pliku\n";
 	}
-	void Acl::setAdditionalPermissions() {
+	void Acl::setAdditionalPermissions(string file_name) {
 		string currentLoggedUser = User::getUserBySID(User::getCurrentLoggedUser());
+		if (AclList.find(file_name) != AclList.end()) {
+			string fileOwner = AclList[file_name]->getOwner();
+			if (fileOwner == currentLoggedUser) {
+				if (fileOwner == "Guest") {
+					cout << "Gosc nie moze zmieniac wpisow!";
+					return;
+				}
+				string temp;
+				int poziom;
+				User::viewStandardUserGroup();
+				cout << "Podaj SID uzytkownika, ktory ma zostac dodany: ";
+				cin >> temp;
+				User* temporary_user = new User();
+				string userName = temporary_user->getUserBySID(temp);
+
+				if (User::findInStandardUserGroup(userName)) {
+					cout << "Podaj poziom dostepu(1-5) (Maks: " << Acl::getUserPermissions() << ")\n";
+					cin >> poziom;
+					Mask out;
+					Acl::permissionsToCharArray((Permissions)poziom, out.values);
+					if (AclList[file_name]->Ace_container.find(userName) != AclList[file_name]->Ace_container.end()) {
+						AclList[file_name]->Ace_container.erase(userName);
+					}
+					AclList[file_name]->Ace_container.insert(pair<string, Mask>(userName, out));
+					delete temporary_user;
+				}
+				else cout << "Brak podanego Uzytkownika Standardowego";
+			}
+			else cout << "Tylko wlasciciel pliku moze dodac wpis!\n";
+		}
+		else cout << "Nie znaleziono pliku\n";
 	}
-	void Acl::deleteAceInAcl() {}
 
 	void Acl::viewCurrentFileAcl() {
 		cout << "File owner: " << getOwner() << "\n";
@@ -68,14 +99,14 @@ string Acl::getOwner() {
 		Mask temp;
 		string currentLoggedUser = User::getUserBySID(User::getCurrentLoggedUser());
 		if (currentLoggedUser != "Guest") {
-			permissionsToCharArray(ZERO, temp.values);
+			Acl::permissionsToCharArray(ZERO, temp.values);
 			Ace_container.insert(pair<string, Mask>("Guest", temp));
 		}
-		permissionsToCharArray(ADMIN_WRITE, temp.values);
+		Acl::permissionsToCharArray(ADMIN_WRITE, temp.values);
 		Ace_container.insert(pair<string, Mask>(currentLoggedUser, temp));
-		permissionsToCharArray(ADMIN_WRITE, temp.values);
+		Acl::permissionsToCharArray(ADMIN_WRITE, temp.values);
 		Ace_container.insert(pair<string, Mask>("Administratorzy", temp));
-		permissionsToCharArray(STANDARD_WRITE, temp.values);
+		Acl::permissionsToCharArray(STANDARD_WRITE, temp.values);
 		Ace_container.insert(pair<string, Mask>("Uzytkownicy", temp));
 	}
 	void Acl::defineMask() {

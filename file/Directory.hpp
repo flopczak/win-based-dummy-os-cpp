@@ -1,7 +1,7 @@
 #pragma once
 #include "Files.hpp"
 
-class Directory
+class Directory :public Files
 {
 private:
 	std::string name;

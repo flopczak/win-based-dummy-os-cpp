@@ -66,7 +66,7 @@ int Disk::znajdzWolny(int index)
 int Disk::dodajDane(std::string dane, int index)
 {
 	std::string temp = dane;
-	if (temp.length() > 32 * 32)
+	if (temp.length() > 32 * 31)
 	{
 		//Interfejs DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
 		return -1;

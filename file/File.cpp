@@ -10,6 +10,7 @@ File::File(std::string name)
 	this->name = temp;
 	std::getline(f, temp);
 	this->ext = temp;
+	//this->accessLevel = getUserPermissions();
 }
 
 

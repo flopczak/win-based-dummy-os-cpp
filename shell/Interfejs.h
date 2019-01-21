@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <windows.h>
 #include <cstdlib>
+#include <time.h>
 
 using namespace std;
 
@@ -15,13 +16,15 @@ private:
 		int numer_metody;
 		string parametr;
 	};
+
+	const bool dislog = true;
+
+public:
 	struct met {
 		string skrot;
 		string opis;
 	};
-	const bool dislog = true;
 	vector<met> metody;
-public:
 	vector<his> historia;
 
 	void DisplayLog(string msg) {
@@ -38,29 +41,8 @@ public:
 			return;
 		}
 		for (int i = 0; i < x; i++) {
-			cout << i + 1 << ". " << metody[i].opis << endl;
+			cout << metody[i].skrot << " " << metody[i].opis << endl;
 		}
-	}
-	void DisplayHistory() {
-		int x = historia.size();
-		if (x == 0) {
-			cout << "Historia jest pusta" << endl;
-			return;
-		}
-		for (int i = x - 1; i<-1; i--) {
-			cout << i + 1 << ". " << metody[historia[i].numer_metody].opis << " " << historia[i].parametr << endl;
-		}
-	}
-	void DisplayHistory(int y) {
-		int x = historia.size();
-		if (y > x) {
-			cout << "Historia nie posiada tylu elementów" << endl;
-			return;
-		}
-		for (int i = x - 1; i<-1; i--) {
-			cout << i + 1 << ". " << metody[historia[i].numer_metody].opis << " " << historia[i].parametr << endl;
-		}
-
 	}
 
 	void ZgrajZTxt() {
@@ -75,36 +57,34 @@ public:
 		int x;
 		while (!plik.eof()) {
 			getline(plik, napis);
-			cout << napis << endl;
-			x = napis.length;
-			string temp = "";
-			bool koniec = false;
+			x = napis.size();
 			string delimiter = " ";
 			string token = napis.substr(0, napis.find(delimiter));
-			metody[i].skrot = token;
-			metody[i].opis = napis;
+			met temp;
+			temp.skrot = token;
+			int a = token.size();
+			napis.erase(0, a + 1);
+			temp.opis = napis;
+			metody.push_back(temp);
 			i++;
 		}
 	}
 	void SetColor(vector<string> tab) {
-		if (tab.size() > 1) {
+		if (tab.size() > 2) {
 			cout << "za duzo parametrow" << endl;
 			return;
 		}
+		string color = tab[1];
+
+
+		HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 		string kolor = tab[0];
-		switch (kolor) {
-		case red:
-			SetConsoleTextAttribute(hOut, FOREGROUND_RED);
-			break;
-		case blue:
-			SetConsoleTextAttribute(hOut, FOREGROUND_BLUE);
-			break;
-		case green:
-			SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
-			break;
-		case default:
-			cout << "nie ma takiego koloru" << endl;
-			break;
+		int colour = stoi(color);
+		if (colour >= 0 && colour < 16) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
+		}
+		else {
+			cout << "Nie ma takiego koloru.\n Dostepne kolory to green blue red white oraz liczby 0-15 " << endl;
 		}
 	}
 
@@ -115,18 +95,19 @@ public:
 	}
 
 	void cls() {
-		System("cls");
+		system("cls");
 	}
 
 	vector<string> Interpret(string msg) {
 		if (msg == "") {
 			cout << "Blad, pusta wiadomosc" << endl;
-			return;
+			vector<string> pusty;
+			return pusty;
 		}
 		vector<string> tabmsg;
 		//spacja ma kod ASCII 32
 		string temp = "";
-		int x = msg.length;
+		int x = msg.size();
 		for (int i = 0; i < x; i++) {
 			if (msg[i] != 32) {
 				temp = temp + msg[i];
@@ -136,6 +117,9 @@ public:
 				temp = "";
 			}
 		}
+		if (temp != "") {
+			tabmsg.push_back(temp);
+		}
 		string polecenie = tabmsg[0];
 		x = tabmsg.size();
 		if (x > 1) {
@@ -143,18 +127,25 @@ public:
 				tabmsg.push_back(tabmsg[i]);
 			}
 		}
-		return tabmsg;		
+		return tabmsg;
 	}
-	
+
 	void Time() {
 		time_t czas;
 		time(&czas);
-		printf("Czas lokalny: %s\n", ctime(&czas));
+		czas = czas % 86400;
+		int h, m, s;
+		h = czas / 3600;
+		czas = czas - h * 3600;
+		m = czas / 60;
+		czas = czas - m * 60;
+		s = czas;
+		cout << h + 1 << ":" << m << ":" << s << endl;
 	}
 
 	string ToUp(string s) {
 		setlocale(LC_CTYPE, "pl_PL.UTF-8");
-		for (int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.size(); i++)
 		{
 			s[i] = toupper(s[i]);
 		}
@@ -162,21 +153,21 @@ public:
 	}
 
 	string ToDown(string s) {
-		for (int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.size(); i++)
 		{
-			s[i] = toupper(s[i]);
+			s[i] = tolower(s[i]);
 		}
 		return s;
 	}
 
 
-	void Wywolaj(vector<string> tab){
+	void Wywolaj(vector<string> tab) {
 		int x = tab.size();
 		if (x == 0) {
 			cout << "Brak elementow do wywolania" << endl;
 			return;
 		}
-		string pocelenie = tab[0];
+		string polecenie = tab[0];
 		polecenie = ToDown(polecenie);
 		vector<string> parametry;
 		if (x > 1) {
@@ -184,45 +175,44 @@ public:
 				parametry.push_back(tab[i]);
 			}
 		}
-		
-		switch (polecenie) {
-		case time:
-			Time();
-			break;
-		case xyz:
-			break;
-		case exit:
-			break;
-		case mkdir:
-			break;
-		case rmdir:
-			break;
-		case sp:
-			break;
-		case cp:
-			break;
-		case cls:
-			cls();
-			break;
-		case help:
+		if (polecenie == "help") {
 			DisplayMethods();
-			break;
-		case of:
-			break;
-		case clf:
-			break;
-		case ren:
-			break;
-		case exit:
-			break;
-		case default:
-			cout << "Nie ma takiego polecenia" << endl;
-			break;
+		}
+		else if (polecenie == "color") {
+			SetColor(parametry);
+		}
+		else if (polecenie == "exit") {
+			cin.get();
+			exit(0);
+		}
+		else if (polecenie == "cls") {
+			cls();
+			return;
+		}
+		else if (polecenie == "mkdir") {
+			cout << "stworzy³em folder" << endl;
+			return;
+		}
+		else if (polecenie == "rmdir") {
+			cout << "usunalem folder" << endl;
+			return;
+		}
+		else if (polecenie == "cp") {
+			cout << "stworzylem proces" << endl;
+			return;
+		}
+		else if (polecenie == "sp") {
+			cout << "ustawilem priorytet" << endl;
+			return;
+		}
+		else if (polecenie == "time") {
+			Time();
+		}
+		else {
+			DisplayMethods();
 		}
 
-		
+
 	}
 
 };
-
-

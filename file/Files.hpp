@@ -1,17 +1,20 @@
 #pragma once
 #include "File.hpp"
+#include <vector>
+#include <map>
 
 class Files : public File
 {
-public:
+private:
 	std::vector <File> files;
 	std::map <Files, bool> openFiles;
+public:
 	Files();
 	~Files();
-	bool fileExists(std::string name);
-	void mkfile(std::string name, int blokI);
-	std::string getFile(std::string name);
+	bool fileExists(std::string);
+	void mkfile(std::string, char data[]);
+	std::string getFile(std::string);
 	void showFiles();
-	bool rmfile(std::string name);
+	bool rmfile(std::string);
 };
 

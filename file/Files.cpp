@@ -1,17 +1,15 @@
 #include "Files.hpp"
 
 
-
-
-
 Files::Files()
 {
-	
+	this->files = std::vector<File>();
 }
 
 
 Files::~Files()
-= default;
+{
+}
 
 bool Files::fileExists(std::string name)
 {
@@ -23,7 +21,7 @@ bool Files::fileExists(std::string name)
 	return false;
 }
 
-void Files::mkfile(std::string name, int bloki)
+void Files::mkfile(std::string name, char data[])
 {
 	if (name.length() == 0)
 	{
@@ -34,19 +32,20 @@ void Files::mkfile(std::string name, int bloki)
 		//DisplayLog("Plik o podanej nazwie juz istnieje!");
 	}
 	File newf = File(name);
-	newf.setIndexBlock(bloki);
+	//newF.setIndexBlock();
+	newf.setSize(sizeof(data));
 	files.push_back(newf);
 	//DisplayLog("Stworzono nowy plik o nazwie: " + name);
 
 }
 
-
+/*
 std::string Files::getFile(std::string name)
 {
 	std::string comp = getSpecName(name);
 	for (File e : files)
 	{
-		if (e.getName() == comp)
+		if (e.getName == comp)
 		{
 			// return zawartosc pliku e.getIndexBlock();
 		}
@@ -54,13 +53,13 @@ std::string Files::getFile(std::string name)
 		//DisplayLog("Plik o podanej nazwie nie istnieje!");
 		return "";
 }
-
+*/
 
 void Files::showFiles()
 {
 	for (File e : files)
 	{
-		std::cout << "Plik " << e.getName() << "." << e.getExt() << " indeks " << e.getIndexBlock() << std::endl;
+		//DisplayLog("Plik " + e.getName() + "." + e.getExt() + " rozmiar " + (char) e.getSize());
 	}
 }
 

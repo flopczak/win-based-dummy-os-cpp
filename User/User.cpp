@@ -1,4 +1,4 @@
-#include "Acl.hpp"
+#include "FileAccess.hpp"
 #include "User.hpp"
 #include <random>
 
@@ -8,6 +8,8 @@ User::User(string username, string password)
 	this->username = username;
 	this->password = password;
 	this->generateSID();
+	string temp = this->getSID();
+	this->setSID("u-" + temp);
 	User::addToUserList(this);
 }
 User::~User() {}
@@ -20,14 +22,10 @@ vector<User*> User::adminGroup = {};
 
 void User::createAdmin()
 {
-	setUsername("Adm");
+	setUsername("Admin");
 	setPassword("");
 	setSID("a-1");
-}
-void User::createGuest() {
-	setUsername("Guest");
-	setPassword("");
-	setSID("g-1");
+	addUserToAdminGroup(this);
 }
 
 //setters
@@ -65,12 +63,11 @@ string User::getSID()
 // Statyczna funkcja do pozyskania obecnie "zalogowanego" uzytkownika
 string User::getCurrentLoggedUser() 
 {
-	return User::currentLoggedUser;
+	return currentLoggedUser;
 }
 //other functions
 void User::createUser() 
 {
-	if (getCurrentLoggedUser()[0] == 'g') return;
 	string temp;
 	std::cout << "Podaj nazwe uzytkownika: ";
 	std::cin >> temp;
@@ -82,50 +79,12 @@ void User::createUser()
 	addUserToStandardUserGroup(this);
 	User::addToUserList(this);
 }
-void User::deleteUser(string username) 
+void User::deleteUser(User* user) 
 {
-	if (getCurrentLoggedUser()[0] == 'g') return;
-	User* user = User::getUserbyName(username);
-	if (currentLoggedGotAdminPermissions() == true) {
-		if (user->getSID() == User::getCurrentLoggedUser()) {
-			std::cout << "Uzytkownik jest obecnie zalogowany.\n";
-			return;
-		}
-		if (user->getSID()[0] == 'a') {
-			vector<User*>::iterator it;
-			for (it = User::adminGroup.begin(); it != User::adminGroup.end(); it++) {
-				if ((*it)->getSID() == user->getSID()) {
-					User::adminGroup.erase(it);
-				}
-			}
-		}
-		if (user->getSID()[0] == 's') {
-			vector<User*>::iterator it;
-			for (it = User::standardUserGroup.begin(); it != User::standardUserGroup.end(); it++) {
-				if ((*it)->getSID() == user->getSID()) {
-					User::standardUserGroup.erase(it);
-					break;
-				}
-			}
-		}
-		vector<User*>::iterator it;
-		for (it = User::userList.begin(); it != User::userList.end(); it++) {
-			if ((*it)->getSID() == user->getSID()) {
-				User::userList.erase(it);
-				break;
-			}
-		}
-	}
-	else {
-		std::cout << "Wystapil blad. Brak uprawnien.\n";
-		return;
-	}
-	std::cout << "Pomyslnie usunieto uzytkownika.\n";
-	delete user;
+
 }
 void User::changePassword() 
 {
-	if (getCurrentLoggedUser()[0] == 'g') return;
 	string check, temp;
 	std::cout << "Podaj stare haslo: ";
 	std::cin >> check;
@@ -146,38 +105,9 @@ void User::changePassword()
 	this->setPassword(temp);
 	std::cout << "\nPoprawnie zmieniono haslo!\n";
 }
-void User::logOut() {
-	User::setCurrentLoggedUser("-1");
-	std::cout << "Wylogowano.\n";
-}
-void User::logIn() {
-	User::logOut();
-	string temp;
-	std::cout << "Podaj nazwe uzytkownika: ";
-	std::cin >> temp;
-	vector<User*>::iterator it;
-	for (it = User::userList.begin(); it != User::userList.end(); it++) {
-		if ((*it)->getUsername() == temp) {
-			if ((*it)->getPassword() == "") break;
-			else if ((*it)->getPassword() != "") {
-				std::cout << "Podaj haslo: ";
-				std::cin >> temp;
-				while (temp != (*it)->getPassword()) {
-					std::cout << "\nBledne haslo! Sprobuj ponownie lub zakoncz wpisujac '0'.";
-					std::cin >> temp;
-					if (temp == "0") return;
-				}
-				break;
-			}
-		}
-	}
-	if (it == User::userList.end()) {
-		std::cout << "Bledna nazwa uzytkownika\n";
-		return;
-	}
-	User::setCurrentLoggedUser((*it)->getSID());
-	std::cout << "Pomyslnie zalogowano. Biezacy uzytkownik: "; User::printUser(*it);
-	return;
+void User::changeUser() 
+{
+	
 }
 void User::generateSID() 
 {
@@ -210,9 +140,7 @@ void User::generateSID()
 	}
 	this->setSID(strRandom);
 }
-void User::printUser(User* user) {
-	std::cout << "Nazwa uzytkownika: " << user->getUsername() << " haslo: " << user->getPassword() << " SID: " << user->getSID() << "\n";
-}
+
 bool User::currentLoggedGotAdminPermissions()
 {
 	string temp = User::getCurrentLoggedUser();
@@ -223,25 +151,6 @@ bool User::currentLoggedGotAdminPermissions()
 	return false;
 }
 //Operations on Lists
-User* User::getUserbyName(string name) {
-	vector<User*>::iterator it;
-	for (it = User::userList.begin(); it != User::userList.end(); it++) {
-		if ((*it)->getUsername() == name) {
-			return *it;
-		}
-	}
-	return nullptr;
-}
-string User::getUserBySID(string sid) {
-	vector<User*>::iterator it;
-	for (it = User::userList.begin(); it != User::userList.end(); it++) {
-		if ((*it)->getSID() == sid) {
-			return (*it)->getUsername();
-		}
-	}
-	return "";
-}
-
 void User::viewUserList() 
 {
 	std::cout << "Lista wszystkichh uzytkownikow: " << std::endl;
@@ -266,24 +175,6 @@ void User::viewAdminUserGroup()
 		std::cout << "Nazwa uzytkownika: " << (*it)->getUsername() << " SID: " << (*it)->getSID() << "\n";
 	}
 }
-bool User::findInAdminUserGroup(string username) {
-	vector<User*>::iterator it;
-	for (it = User::adminGroup.begin(); it != User::adminGroup.end(); it++) {
-		if ((*it)->getUsername() == username) {
-			return true;
-		}
-	}
-	return false;
-}
-bool User::findInStandardUserGroup(string username) {
-	vector<User*>::iterator it;
-	for (it = User::standardUserGroup.begin(); it != User::standardUserGroup.end(); it++) {
-		if ((*it)->getUsername() == username) {
-			return true;
-		}
-	}
-	return false;
-}
 
 void User::addToUserList(User* user)
 {
@@ -291,7 +182,6 @@ void User::addToUserList(User* user)
 }
 void User::addUserToStandardUserGroup(User* user) 
 {
-	if (getCurrentLoggedUser()[0] == 'g') return;
 	vector<User*>::iterator itS, itG;
 		for (itS = User::standardUserGroup.begin(); itS != User::standardUserGroup.end(); itS++) {
 			if (user->getSID() == (*itS)->getSID()) {
@@ -311,9 +201,9 @@ void User::addUserToStandardUserGroup(User* user)
 			ending.push_back(temp[2]);
 			ending.push_back(temp[3]);
 			ending.push_back(temp[4]);
-			user->setSID("s-" + ending);
+			user->setSID("u-" + ending);
 		}
-		else user->setSID("s-" + user->getSID());
+		else user->setSID("u-" + user->getSID());
 		User::standardUserGroup.push_back(user);
 }
 void User::addUserToAdminGroup(User* user) 
@@ -334,7 +224,7 @@ void User::addUserToAdminGroup(User* user)
 		}
 		string temp = user->getSID();
 		string ending;
-		if (temp[0] == 's') {
+		if (temp[0] == 'u') {
 			ending.push_back(temp[2]);
 			ending.push_back(temp[3]);
 			ending.push_back(temp[4]);

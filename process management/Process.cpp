@@ -15,10 +15,22 @@ Process::Process()
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
+	this->errorCode = 0;
+	this->PobWielTabStronic();
 }
 
-Process::Process(string n)
+Process::Process(string na)
 {
+	this->PID = rand() % 9999 + 1000;
+	this->process_name = na;
+	this->process_status = NOWY;
+	this->process_priority = 0;
+	this->program_instructions = 0;
+	this->AX = 0;
+	this->BX = 0;
+	this->CX = 0;
+	this->errorCode = 0;
+	this->PobWielTabStronic();
 }
 
 Process::Process(string na, int pr)
@@ -31,14 +43,10 @@ Process::Process(string na, int pr)
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
-}
-/*
-Process::Process()
-{
 	this->errorCode = 0;
 	this->PobWielTabStronic();
 }
-*/
+
 Process::~Process()
 {
 }

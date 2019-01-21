@@ -5,12 +5,11 @@
 
 bool work = true;
 
-Procesor::Procesor()
+Procesor::Procesor(Process_List* p)
 {
-	w_counter = 1;
+	this->temporary = p;
 	new_process = false;
-	mask[0] = true;
-	for (int i = 1; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		mask[i] = false;
 	}
@@ -33,41 +32,43 @@ void Procesor::check(Process&ready, Procesor&p)
 			p.running = ready;
 			p.running.process_status = AKTYWNY;
 			p.mask[it] = true;
-			p.new_process = false;
+		}
+		if (p.running.process_priority == 0)
+		{
+			p.running.process_status = GOTOWY;
+			int it = p.running.process_priority;
+			p.running = ready;
+			p.running.process_status = AKTYWNY;
+			p.mask[it] = true;
 		}
 	}
 	else
 	{
-		p.new_process = false;
-
-		std::cout << "nowy proces ma taki sam priorytet lub mniejszy kontynuje prace " << endl;
+		std::cout << "po dodaniu procesu nie wystąpiło wywłaszczenie " << endl;
 	}
 
 }
 
-void Procesor::add(Process&ready, Procesor&p)
-{
+void Procesor::add(Process& ready)
+{;
 	int it = ready.process_priority;
 	main_queue[it].push_back(ready);
 	mask[it] = true;
 	new_process = true;
-	check(ready, p);
-
+	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
+	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
+	//ch
 }
 
-
-
-
-
-
-void Procesor::find_and_run(Procesor& p) //sprawdzanie co każdą iterację pentli w main
+int Procesor::find(Procesor&p)
 {
 	int it = 7;
 	while (it > 0)
 	{
 		if (p.mask[it] == true)
 		{
-
+			running = main_queue[it].front();
+			main_queue[it].pop_front();
 			if (main_queue[it].empty())
 			{
 				p.mask[it] = false;
@@ -85,10 +86,19 @@ void Procesor::find_and_run(Procesor& p) //sprawdzanie co każdą iterację pent
 		}
 		else
 		{
-
 			it--;
 		}
 	}
+
+
+}
+
+
+//run konrada to excute bala
+
+void Procesor::find_and_run(Procesor& p) //sprawdzanie co każdą iterację pentli w main
+{
+
 
 	running = main_queue[it].front();
 	running.process_status = AKTYWNY;

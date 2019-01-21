@@ -1,5 +1,5 @@
 #pragma once
-#include "Process_List.hpp"
+
 #include <string>
 using namespace std;
 
@@ -11,36 +11,47 @@ struct STRON
 	bool wPam;
 };
 
-class Process							//PCB
+class Process											//PCB
 {
 public:
-	string process_name;				//nazwa procesu
-
-private:
-	STRON* pageTable;	//Przemkowe RAM'y
+	
+	STRON* pageTable;									//Przemkowe RAM'y
+	//JACOB zmieniam parametry na publiczne
+	//STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
-	static int PID;	//indywidualny identyifkator
-	string process_status;	//status procesu: nowy, aktywny, gotowy, oczekuj¹cy, zakoñczony
-	int program_instructions;	//instrukcje asemblerowskie
-	int AX;	//rejestry
+	string process_name;								//nazwa procesu
+	int PID;											//indywidualny identyifkator
+	status process_status;								//status procesu: nowy, aktywny, gotowy, oczekujï¿½cy, zakoï¿½czony
+	int program_instructions;							//instrukcje asemblerowskie
+	int command_counter;								//licznik rozkazï¿½w asemblera
+	int AX;												//rejestry
 	int BX;
 	int CX;
-	int process_priority;	//priorytet
+	int process_priority;								//priorytet
+	bool PP;											//flaga obecnoï¿½ci procesora
 	
+
 	
-	Process();	//konstruktor domyœlny
-	Process(string n, int p, int i);	//konstruktor
-	~Process();	//dekonstruktor
-	int errorCode();
-	void setInstructions(int in);	//przekazywanie instrukcji asemblera do procesu
-	void setProcessStatus(string st);	//ustawianie statusu procesu
-	void setPriority(int n);	//ustawianie priorytetu
-	void display();	//wyœwietlanie procesu		
-	void findAndDisplayProcess(string s);	//szukanie procesu po nazwie w kolejce i wyœwietlanie
-	void addProcess(Process a);	//dodawanie procesu do kolejki
+	Process();											//konstruktor domyï¿½lny
+	Process(string n);									//konstruktor z nazwï¿½ procesu
+	Process(string n, int p);							//konstruktor z nazwï¿½ i priorytetem procesu
+	~Process();											//dekonstruktor
+	void setInstructions(int in);						//przekazywanie instrukcji asemblera do procesu
+	void setProcessStatus(status);						//ustawianie statusu procesu
+	void setPriority(int n);							//ustawianie priorytetu
+	void display();										//wyï¿½wietlanie szczegï¿½owe jednego procesu
+	void displayAll();									//wyï¿½wietlanie wszystkich procesow
+	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
+	void findAndDisplayProcess(string s);				//szukanie procesu po nazwie w kolejce i wyï¿½wietlanie
+	void addProcess(Process a);							//dodawanie procesu do kolejki
+	void removeProcess();								//usuwanie zakonczonego procesu
+	void terminateProcess(string s);					//koï¿½czenie procesu przez uï¿½ytkownika
+	Process giveReady();								//zwraca aktywny proces
+
 	
-	void UstTabStronic(STRON* newpageTable);	//Przemkowe RAM'y
+	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y
+	int errorCode;
 	STRON* PobTabStronic();
 	void UstWielTabStronic(int num);
 	int PobWielTabStronic();

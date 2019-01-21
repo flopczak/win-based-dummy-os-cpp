@@ -1,4 +1,5 @@
 #pragma once
+#include "Process.hpp"
 #include <list>
 using namespace std;
 

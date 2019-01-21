@@ -17,24 +17,28 @@ Process::Process()
 	this->CX = 0;
 }
 
-Process::Process(string na, int pr, int in)
+Process::Process(string n)
+{
+}
+
+Process::Process(string na, int pr)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
 	this->process_status = NOWY;
 	this->process_priority = pr;
-	this->program_instructions = in;
+	this->program_instructions = 0;
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
 }
-
+/*
 Process::Process()
 {
 	this->errorCode = 0;
 	this->PobWielTabStronic();
 }
-
+*/
 Process::~Process()
 {
 }
@@ -49,9 +53,9 @@ void Process::setInstructions(int in)
 	this->program_instructions = in;
 }
 
-void Process::setProcessStatus(string st)
+void Process::setProcessStatus(status)
 {
-	this->process_status = st;
+	this->process_status = NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
 }
 
 void Process::display() 
@@ -60,16 +64,19 @@ void Process::display()
 	cout << "Nazwa procesu: " << this->process_name << endl;
 	cout << "Status procesu: " << this->process_status << endl;
 	cout << "Priorytet: " << this->process_priority << endl;
+	cout << "AX: " << this->AX << endl;
+	cout << "BX: " << this->BX << endl;
+	cout << "CX: " << this->CX << endl;
 }
 
-void Process::findAndDisplayProcess(string s) 
+void Process::findAndDisplayProcess(string s)
 {
 	bool czy = false;
-	for (int i = 0; i < Process_List::PrcList.size(); i++)
+	for (auto const& it : Process_List::PrcList)
 	{
-		//if (s == Process_List::PrcList[i].process_name)
+		if (it.process_name == s)
 		{
-			//Process_List::PrcList[i].display();
+			it.display();
 			czy = true;
 		}
 	}
@@ -79,10 +86,61 @@ void Process::findAndDisplayProcess(string s)
 	}
 }
 
-void Process::addProcess(Process a) 
+void Process::displayHelper()
+{
+	cout << "PID: " << this->PID << endl;
+	cout << "Nazwa procesu: " << this->process_name << endl;
+	cout << "Status procesu: " << this->process_status << endl;
+	cout << "Priorytet: " << this->process_priority << endl;
+}
+
+void Process::displayAll()
+{
+	for (auto const& it : Process_List::PrcList)
+	{
+		//it.displayHelper();
+	}
+}
+
+void Process::addProcess(Process a)
 {
 	Process_List::PrcList.push_front(a);
 }
+
+void Process::removeProcess() 
+{
+	for (auto const& it : Process_List::PrcList)
+	{
+		if (it.process_status == ZAKONCZONY)
+		{
+			Process_List::PrcList.remove(it);
+		}
+	}
+}
+
+void Process::terminateProcess(string s)
+{
+	for (auto const& it : Process_List::PrcList)
+	{
+		if (it.process_name == s)
+		{
+			Process_List::PrcList.remove(it);
+		}
+	}
+}
+
+Process Process::giveReady()
+{
+	for (auto const& it : Process_List::PrcList)
+	{
+		if (it.process_status == GOTOWY)
+		{
+			return it;
+		}
+	}
+}
+
+//---------------------------------------------------------------------//
 
 void Process::UstTabStronic(STRON* newpageTable)
 {

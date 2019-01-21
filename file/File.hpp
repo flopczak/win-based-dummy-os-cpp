@@ -1,8 +1,5 @@
 #pragma once
-#include<string>
-#include <sstream>
-#include <iostream>
-
+#include "Inc.hpp"
 class File
 {
 private:
@@ -13,19 +10,18 @@ private:
 	int accessLevel;
 public:
 	File(std::string);
-	File() {};
+	File() = default;
 	~File();
-
 	std::string getName();
-	bool setName(std::string);
+	bool setName(std::string newname);
 	std::string getExt();
-	bool setExt(std::string);
+	bool setExt(std::string newext);
 	int getSize();
-	bool setSize(int);
+	bool setSize(int newsize);
 	int getIndexBlock();
-	bool setIndexBlock(int);
+	bool setIndexBlock(int newiblock);
 	int getAccessLevel();
-	bool setAccessLevel(int);
+	bool setAccessLevel(int newAL);
 
 	std::string getSpecName(std::string);
 

@@ -1,4 +1,5 @@
 #include "Directory.hpp"
+#include <string>
 
 class Disk
 {
@@ -8,10 +9,13 @@ private:
 public:
 	Disk();
 	~Disk();
-	std::string pobierzBlok(int);
-	std::string wypiszPlik(int);
-	bool czyZaj(int);
-	int znajdzWolny(int);
-	int dodajDane(std::string, int);
+	Directory root;
+	std::string pobierzBlok(int index);
+	std::string wypiszPlik(int index);
+	bool czyZaj(int index);
+	int znajdzWolny(int index);
+	int dodajDane(std::string name, std::string dane, int index);
+	std::string wypiszBlok(int index);
+	void wypiszDysk();
 
 };

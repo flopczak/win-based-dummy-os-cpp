@@ -3,13 +3,12 @@
 
 class Directory :public Files
 {
-private:
-	std::string name;
-	Files files;
 public:
-	Directory(std::string);
+	std::string name;
+	Files f;
+	Directory();
 	~Directory();
-	bool setName(std::string);
+	bool setName(std::string newname);
 	std::string getName();
 	Files getFiles();
 };

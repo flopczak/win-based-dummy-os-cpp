@@ -3,10 +3,12 @@
 
 Disk::Disk()
 {
-	for (int i; i < 1024; i++)
+	for (int i = 0; i < 1024; i++)
 	{
 		HDD[i] = -1;
 	}
+	this->root = Directory();
+	this->root.setName("root");
 }
 
 
@@ -16,7 +18,7 @@ Disk::~Disk()
 
 std::string Disk::pobierzBlok(int index)
 {
-	std::string zawartosc = "";
+	std::string zawartosc;
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
 		zawartosc += this->HDD[i];
@@ -26,12 +28,12 @@ std::string Disk::pobierzBlok(int index)
 
 std::string Disk::wypiszPlik(int index)
 {
-	std::string zawartosc = "";
+	std::string zawartosc;
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
-		if (HDD[i] != '-1')
+		if (HDD[i] != -1)
 		{
-			for (int j = i * 32; j < (i * 32) + 32; j++)
+			for (int j = HDD[i] *32; j < (HDD[i] * 32) + 32; j++)
 			{
 				if (HDD[j] != -1)
 				{
@@ -63,7 +65,7 @@ int Disk::znajdzWolny(int index)
 	return -1;
 }
 
-int Disk::dodajDane(std::string dane, int index)
+int Disk::dodajDane(std::string name, std::string dane, int index)
 {
 	std::string temp = dane;
 	if (temp.length() > 32 * 31)
@@ -72,12 +74,13 @@ int Disk::dodajDane(std::string dane, int index)
 		return -1;
 	}
 	int blokI = znajdzWolny(index);
+	std::cout << blokI << std::endl;
 	if (blokI == -1)
 	{
 		//Interfejs DisplayLog("Brak wolnych blokow!");
 		return  -1;
 	}
-	int pos = 0;
+	unsigned int pos = 0;
 	int rozm = ceil(temp.length() / 32.0);
 	zajBloki[blokI] = true;
 	for (int i = blokI * 32; i < blokI * 32 + rozm * 32; i++)
@@ -85,6 +88,7 @@ int Disk::dodajDane(std::string dane, int index)
 		if (pos < temp.length())
 		{
 			int blokD = znajdzWolny(blokI);
+			std::cout << blokI << std::endl;
 			if (blokD == -1)
 			{
 				//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
@@ -94,7 +98,7 @@ int Disk::dodajDane(std::string dane, int index)
 			zajBloki[blokD] = true;
 			for (int e = blokD * 32; e < blokD * 32 + 32; e++)
 			{
-				if (pos <= temp.length())
+				if (pos < temp.length())
 				{
 					HDD[e] = temp.at(pos);
 					pos++;
@@ -110,6 +114,30 @@ int Disk::dodajDane(std::string dane, int index)
 			break;
 		}
 	}
+	root.f.mkfile(name, blokI);
 		return blokI;
 }
 
+std::string Disk::wypiszBlok(int index)
+{
+	std::string temp;
+	for(int i = index * 32; i < (index * 32) + 32; i++)
+	{
+		if (HDD[i] == -1) temp += '-';
+		else
+		{
+			temp += HDD[i];
+		}
+		
+	}
+	return  temp;
+}
+
+void Disk::wypiszDysk()
+{
+	for (int i = 0; i < 32; i++)
+	{
+		std::cout << "Blok nr " << i+1 << std::endl;
+		std::cout << wypiszBlok(i) << std::endl;
+	}
+}

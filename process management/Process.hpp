@@ -31,23 +31,14 @@ public:
 	int process_priority;								//priorytet
 	bool PP;											//flaga obecno�ci procesora
 	
-
-	
 	Process();											//konstruktor domy�lny
 	Process(string n);									//konstruktor z nazw� procesu
 	Process(string n, int p);							//konstruktor z nazw� i priorytetem procesu
 	~Process();											//dekonstruktor
-	void setInstructions(int in);						//przekazywanie instrukcji asemblera do procesu
 	void setProcessStatus(status);						//ustawianie statusu procesu
 	void setPriority(int n);							//ustawianie priorytetu
 	void display();										//wy�wietlanie szczeg�owe jednego procesu
-	void displayAll();									//wy�wietlanie wszystkich procesow
 	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
-	void findAndDisplayProcess(string s);				//szukanie procesu po nazwie w kolejce i wy�wietlanie
-	void addProcess(Process a);							//dodawanie procesu do kolejki
-	void removeProcess();								//usuwanie zakonczonego procesu
-	void terminateProcess(string s);					//ko�czenie procesu przez u�ytkownika
-	list<Process> giveReady();							//zwraca aktywny proces
 	int getPID();
 
 	

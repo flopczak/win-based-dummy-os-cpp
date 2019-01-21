@@ -20,10 +20,10 @@ public:
 	Procesor(Process_List* p);
 	~Procesor();
 	void add(Process& ready); // metoda do dodawania proces�w
-	void check(Process &ready, Procesor&p);
+	void check(Process &ready);
 	int Procesor::find(Procesor&p);
 
-	void find_and_run(Procesor&p);
+	void run(Procesor&p);
 	std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
 	std::array<bool, 8> mask; //maska bitowa na kolejk�
 

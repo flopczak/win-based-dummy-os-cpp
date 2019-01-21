@@ -1,7 +1,7 @@
 #include "Procesor.hpp"
 #include <iostream>
 
-
+//w konstruktorze procesu automatyczne dodawanie 
 
 bool work = true;
 
@@ -20,26 +20,26 @@ Procesor::~Procesor()
 {
 }
 
-void Procesor::check(Process&ready, Procesor&p)
+void Procesor::check(Process&ready)
 {
-	if (ready.process_priority > p.running.process_priority)
+	if (ready.process_priority > running.process_priority)
 	{
-		if (p.running.process_priority != 0)
+		if (running.process_priority != 0)
 		{
-			p.running.process_status = GOTOWY;
-			int it = p.running.process_priority;
-			p.main_queue[it].push_back(p.running);
-			p.running = ready;
-			p.running.process_status = AKTYWNY;
-			p.mask[it] = true;
+			running.process_status = GOTOWY;
+			int it = running.process_priority;
+			main_queue[it].push_back(running);
+			running = ready;
+			running.process_status = AKTYWNY;
+			mask[it] = true;
 		}
-		if (p.running.process_priority == 0)
+		if (running.process_priority == 0)
 		{
-			p.running.process_status = GOTOWY;
-			int it = p.running.process_priority;
-			p.running = ready;
-			p.running.process_status = AKTYWNY;
-			p.mask[it] = true;
+			running.process_status = GOTOWY;
+			int it = running.process_priority;
+			running = ready;
+			running.process_status = AKTYWNY;
+			mask[it] = true;
 		}
 	}
 	else
@@ -57,7 +57,7 @@ void Procesor::add(Process& ready)
 	new_process = true;
 	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
 	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
-	//ch
+	check(ready);
 }
 
 int Procesor::find(Procesor&p)
@@ -96,18 +96,20 @@ int Procesor::find(Procesor&p)
 
 //run konrada to excute bala
 
-void Procesor::find_and_run(Procesor& p) //sprawdzanie co każdą iterację pentli w main
+void Procesor::run(Procesor& p) //sprawdzanie co każdą iterację pentli w main
 {
-
-
-	running = main_queue[it].front();
 	running.process_status = AKTYWNY;
+	//wykonanie rozkazu asemblerowego
 	cout << "running: " << &running.process_name << endl;
+	/*
+	to chyba powinno być w funkcji wyszukującej
 	main_queue[it].pop_front();
+
 	if (main_queue[it].empty())
 	{
 		mask[it] = false;
 	}
+	*/
 	cin.get();
 
 }

@@ -1,11 +1,13 @@
 #pragma once
 #include"../process management/Process.hpp"
+#include <list>
 
-enum status { NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY };
 
 class Sync
 {
 private:
+	std::string syncName;
+	std::string fileName;
 	Process*currentLockProcess;
 	Process*currentCondProcess;
 	bool lock;
@@ -13,7 +15,7 @@ private:
 	std::list<Process*>LockProcessQueue;//Kolejka procesow oczekujacych na zamku
 	std::list<Process*>CondProcessQueue;//Kolejka procesow oczekujacych na zmiennej warunkowej
 public:
-	Sync();
+	Sync(std::string syncN, std::string fileN);
 	~Sync();
 	//Metody do obslugi zamkow :
 	void acquire(Process*);

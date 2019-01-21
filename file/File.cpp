@@ -15,8 +15,7 @@ File::File(std::string name)
 
 
 File::~File()
-{
-}
+= default;
 
 std::string File::getName()
 {
@@ -31,8 +30,7 @@ bool File::setName(std::string newname)
 	this->name = temp;
 	std::getline(f, temp);
 	this->ext = temp;
-	if (this->name + "." + this->ext == newname) return true;
-		return false;
+	return this->name + "." + this->ext == newname;
 }
 
 std::string File::getExt()
@@ -43,8 +41,7 @@ std::string File::getExt()
 bool File::setExt(std::string newext)
 {
 	this->ext = newext;
-	if (this->ext == newext) return true;
-		return false;
+	return this->ext == newext;
 }
 
 int File::getSize()
@@ -67,8 +64,7 @@ int File::getIndexBlock()
 bool File::setIndexBlock(int newiblock)
 {
 	this->indexBlock = newiblock;
-	if (this->indexBlock == newiblock) return true;
-		return false;
+	return this->indexBlock == newiblock;
 }
 
 int File::getAccessLevel()
@@ -79,8 +75,7 @@ int File::getAccessLevel()
 bool File::setAccessLevel(int newAL)
 {
 	this->accessLevel = newAL;
-	if (this->accessLevel == newAL) return true;
-	return false;
+	return this->accessLevel == newAL;
 }
 
 std::string File::getSpecName(std::string name)

@@ -17,7 +17,7 @@ void Sync::acquire(Process*tempProcess)
 {
 	if (this->lock == true) 
 	{
-		tempProcess->setProcessStatus("OCZEKUJACY"); // Process do stanu waiting. 
+		tempProcess->setProcessStatus(OCZEKUJACY); // Process do stanu waiting. 
 		LockProcessQueue.push_back(tempProcess);
 	}
 
@@ -29,7 +29,7 @@ void Sync::acquire(Process*tempProcess)
 		tempProcess->setProcessStatus("AKTYWNY"); //Process do stanu wykonywania.
 		lub
 		*/
-		this->currentLockProcess->setProcessStatus("GOTOWY"); //Process do stanu ready.  // raczej to
+		this->currentLockProcess->setProcessStatus(GOTOWY); //Process do stanu ready.  // raczej to
 		//i po tym planista?
 	}
 }
@@ -41,26 +41,26 @@ void Sync::release(Process*tempProcess)
 		if (LockProcessQueue.empty() == true)
 		{ 
 			this->lock = false; 
-			this->currentLockProcess->setProcessStatus("GOTOWY"); //Process do stanu ready.
+			this->currentLockProcess->setProcessStatus(GOTOWY); //Process do stanu ready.
 		}
 
 		else 
 		{
-			this->currentLockProcess->setProcessStatus("GOTOWY"); //Process do stanu ready.
+			this->currentLockProcess->setProcessStatus(GOTOWY); //Process do stanu ready.
 			this->currentLockProcess = LockProcessQueue.front();
 			LockProcessQueue.pop_front();
 			/*
 			tempProcess->setProcessStatus("AKTYWNY"); //Process do stanu wykonywania.
 			lub
 			*/
-			this->currentLockProcess->setProcessStatus("GOTOWY"); //Process do stanu ready.  // raczej to 
+			this->currentLockProcess->setProcessStatus(GOTOWY); //Process do stanu ready.  // raczej to 
 			//i po tym planista?
 			
 		}
 	}
 	else
 	{
-		this->currentLockProcess.setProcessStatus("ZAKONCZONY"); //Process do stanu terminated.
+		this->currentLockProcess.setProcessStatus(ZAKONCZONY); //Process do stanu terminated.
 	}
 
 }
@@ -103,14 +103,14 @@ void Sync::wait(Process*tempProcess)
 {
 	if (this->cond == false)
 	{
-		tempProcess->setProcessStatus("OCZEKUJACY"); // Process do stanu waiting. (+ Planista?)
+		tempProcess->setProcessStatus(OCZEKUJACY); // Process do stanu waiting. (+ Planista?)
 		this->cond = true;
 		this->currentCondProcess = tempProcess;
 	}
 
 	else if (this->cond == true)
 	{
-		tempProcess->setProcessStatus("OCZEKUJACY"); // Process do stanu waiting. ( + Planista?)
+		tempProcess->setProcessStatus(OCZEKUJACY); // Process do stanu waiting. ( + Planista?)
 		CondProcessQueue.push_back(tempProcess);
 	}
 }
@@ -119,14 +119,14 @@ void Sync::signal()
 {
 	if (this->cond == true && CondProcessQueue.empty() == false)
 	{
-		this->CondProcessQueue.front()->setProcessStatus("GOTOWY");// 1 z kolejki GOTOWY
+		this->CondProcessQueue.front()->setProcessStatus(GOTOWY);// 1 z kolejki GOTOWY
 
 		this->CondProcessQueue.pop_front();// Wywalamy 1 z kolejki
 
 		if (CondProcessQueue.empty() == true)
 		{
 			this->cond = false;
-			this->currentCondProcess->setProcessStatus("GOTOWY");// Proces ktory dal wait dajemy do stanu ready
+			this->currentCondProcess->setProcessStatus(GOTOWY);// Proces ktory dal wait dajemy do stanu ready
 		}
 		else
 		{
@@ -137,7 +137,7 @@ void Sync::signal()
 	else
 	{
 		this->cond = false;
-		this->currentCondProcess->setProcessStatus("GOTOWY");// Proces ktory dal wait dajemy do stanu ready
+		this->currentCondProcess->setProcessStatus(GOTOWY);// Proces ktory dal wait dajemy do stanu ready
 	}
 
 }

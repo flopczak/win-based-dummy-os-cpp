@@ -13,10 +13,12 @@ Disk::Disk()
 
 Disk::~Disk()
 {
+	DisplayLog("Usunieto dysk :C");
 }
 
 std::string Disk::pobierzBlok(int index)
 {
+	DisplayLog("Odczytuje zawartosc bloku o indeksie: " + to_string(index));
 	std::string zawartosc;
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
@@ -28,10 +30,12 @@ std::string Disk::pobierzBlok(int index)
 std::string Disk::wypiszPlik(int index)
 {
 	std::string zawartosc;
+	DisplayLog("Wypisuje plik o podanym numerze bloku indeksowego: " + to_string(index));
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
 		if (HDD[i] != -1)
 		{
+			DisplayLog("Przechodze do bloku danych numer: " + HDD[i]);
 			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
 			{
 				if (HDD[j] != -1)
@@ -46,15 +50,18 @@ std::string Disk::wypiszPlik(int index)
 
 bool Disk::czyZaj(int index)
 {
+	DisplayLog("Sprawdzam czy blok o indeksie " + to_string(index) + " jest wolny.");
 	return zajBloki[index];
 }
 
 int Disk::znajdzWolny(int index)
 {
+	DisplayLog("Szukam pierwszego wolnego bloku od podanego indeksu " + to_string(index));
 	for (int i = index; i < 32; i++)
 	{
 		if (!czyZaj(i))
 		{
+			DisplayLog("Znaleziono wolny blok o numerze " + to_string(i));
 			return i;
 		}
 	}
@@ -62,9 +69,11 @@ int Disk::znajdzWolny(int index)
 	{
 		if (!czyZaj(i))
 		{
+			DisplayLog("Znaleziono wolny blok o numerze " + to_string(i));
 			return i;
 		}
 	}
+	DisplayLog("Nie znaleziono wolnego bloku.");
 	return -1;
 }
 
@@ -72,7 +81,7 @@ int Disk::dodajDane(std::string name, std::string dane, int index)
 {
 	if (name.length() == 0)
 	{
-		//DisplayLog("Podano nieprawidlowa nazwe pliku!")
+		DisplayLog("Nie podano nazwy pliku! ");
 		return -1;
 	}
 	if (root.f.fileExists(name) == -1)
@@ -80,14 +89,14 @@ int Disk::dodajDane(std::string name, std::string dane, int index)
 		std::string temp = dane;
 		if (temp.length() > 32 * 31)
 		{
-			//Interfejs DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
+			DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
 			return -1;
 		}
 		int blokI = znajdzWolny(index);
 		//std::cout << blokI << std::endl;
 		if (blokI == -1)
 		{
-			//Interfejs DisplayLog("Brak wolnych blokow!");
+			DisplayLog("Brak wolnych blokow!");
 			return -1;
 		}
 		unsigned int pos = 0;
@@ -100,7 +109,7 @@ int Disk::dodajDane(std::string name, std::string dane, int index)
 				int blokD = znajdzWolny(blokI);
 				if (blokD == -1)
 				{
-					//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
+					DisplayLog("Brak wolnego miejsca na dysku.");
 					return -1;
 				}
 				HDD[i] = blokD;
@@ -124,9 +133,10 @@ int Disk::dodajDane(std::string name, std::string dane, int index)
 			}
 		}
 		root.f.mkfile(name, blokI);
+		DisplayLog("Utworzono plik o podanej nazwie z podanymi danymi o bloku indeksowym " + to_string(blokI) );
 		return blokI;
 	}
-	//Plik istnieje
+	DisplayLog("Plik o podanej nazwie ju¿ istnieje! " + name);
 	return -1;
 }
 
@@ -137,19 +147,21 @@ int Disk::dodajpPlik(std::string name)
 		int blokI = znajdzWolny(0);
 		if (blokI == -1)
 		{
-			//Brak wolnych blokow
+			DisplayLog("Brak wolnych blokow!");
 			return -1;
 		}
 		zajBloki[blokI] = true;
 		root.mkfile(name, blokI);
+		DisplayLog("Stworzono plik o podanej nazwie " + name + " z blokiem indeksowym o numerze " + to_string(blokI));
 		return blokI;
 	}
-	//Plik juz istnieje
+	DisplayLog("Plik o podanej nazwie juz istnieje" + name);
 	return -1;
 }
 
 std::string Disk::wypiszBlok(int index)
 {
+	DisplayLog("Wypisuje blok o podanym indeksie " + to_string(index));
 	std::string temp;
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
@@ -164,15 +176,16 @@ std::string Disk::wypiszBlok(int index)
 
 void Disk::wypiszDysk()
 {
+	DisplayLog("Wypisuje zawartosc calego dysku.");
 	for (int i = 0; i < 32; i++)
 	{
-		std::cout << "Blok nr " << i << std::endl;
 		std::cout << wypiszBlok(i) << std::endl;
 	}
 }
 
 void Disk::wypiszPlik(std::string name)
 {
+	DisplayLog("Wypisuje plik " + name);
 	int i = root.f.fileExists(name);
 	if (i != -1)
 	{
@@ -183,11 +196,16 @@ void Disk::wypiszPlik(std::string name)
 
 void Disk::dopiszDoPliku(std::string name, std::string dane)
 {
-	if (dane.length() == 0) return;
+	DisplayLog("Dopisuje do pliku " + name);
+	if (dane.length() == 0) 
+	{
+		DisplayLog("Nie mam co dopisac, brak danch.");
+		return;
+	}
 	int blokI = root.f.fileExists(name);
 	if (blokI == -1)
 	{
-		//Podany plik nie istnieje
+		DisplayLog("Podany plik "+name+" nie istnieje");
 		return;
 	}
 	std::vector<int> wolne;
@@ -200,16 +218,16 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 	}
 	if (sizeof(wolne) == 0)
 	{
-		//Plik osiagnal maksymalny rozmiar
+		DisplayLog("Plik "+ name +" osiagnal maksymalny rozmiar.");
 		return;
 	}
 	if (sizeof(wolne) * 32 < dane.length())
 	{
-		//Dane zbyt duze
+		DisplayLog("Dane zbyt duze.");
 		return;
 	}
 	int pos = 0;
-	//Sprawdzamy czy mozemy dopisac do zajetego bloku danych ktory moze nie byc pelny
+	DisplayLog("Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny");
 	if (sizeof(wolne) != 32)
 	{
 		int temp = wolne[0];
@@ -223,13 +241,13 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 			}
 		}
 	}
-
+	DisplayLog("Dopisujemy do pliku " + name);
 	for (auto e : wolne)
 	{
 		int blokD = znajdzWolny(0);
 		if (blokD == -1)
 		{
-			//Brak wolnych blokow
+			DisplayLog("Brak wolnych blokow.");
 			return;
 		}
 		zajBloki[blokD] = true;
@@ -253,6 +271,7 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 
 void Disk::usunPlik(std::string name)
 {
+	DisplayLog("Usuwam plik " + name);
 	if (root.f.fileExists(name) != -1)
 	{
 		int blokI = root.f.fileExists(name);
@@ -274,38 +293,41 @@ void Disk::usunPlik(std::string name)
 			{
 				if (e == name)
 				{
-					
 					root.f.openFiles.erase(root.f.openFiles.begin() + pos);
-					//Usunieto plik z tablicy otwartosci
+					DisplayLog("Usunieto plik "+ name +" z tablicy otwartosci.");
 					break;
 				}
 				pos++;
 			}
 		}
 	}
+	DisplayLog("Plik o podanej nazwie nie istnieje " + name);
 }
 
 bool Disk::open(std::string name)
 {
+	DisplayLog("Otwieram plik o podanej nazwie " + name);
 	if (root.f.fileExists(name) != -1)
 	{
 		for (auto e : root.f.openFiles)
 		{
 			if (e == name)
 			{
-				//Plik o podanej nazwie juz jest otwarty
+				DisplayLog("Plik "+ name +" juz jest otwarty");
 				return false;
 			}
 		}
 		root.f.openFiles.push_back(name);
+		DisplayLog("Pomyslnie otworzono plik " + name)
 		return true;
 	}
-	//Brak pliku o podanej nazwie
+	DisplayLog("Brak pliku o podanej nazwie " + name);
 	return false;
 }
 
 bool Disk::close(std::string name)
 {
+	DisplayLog("Zamykam plik " + name);
 	if (root.f.fileExists(name) != -1)
 	{
 		int pos = 0;
@@ -313,21 +335,20 @@ bool Disk::close(std::string name)
 		{
 			if (e == name)
 			{
-				//Plik o podanej nazwie jest otwarty
 				root.f.openFiles.erase(root.f.openFiles.begin() + pos);
 				return true;
-				//Zamknieto plik
+				DisplayLog("Zamknieto plik " + name);
 			}
 			pos++;
 		}
 		return false;
-		//Plik nawet nie byl otwarty
+		DisplayLog("Plik "+ name +" nawet nie byl otwarty.");
 	}
-	//Brak pliku o podanej nazwie
+	DisplayLog("Brak pliku o podanej nazwie " + name);
 	return false;
 }
 
-bool Disk::status (std::string name)
+bool Disk::status(std::string name)
 {
 	if (root.f.fileExists(name) != -1)
 	{
@@ -335,12 +356,14 @@ bool Disk::status (std::string name)
 		{
 			if (e == name)
 			{
-				//Plik o podanej nazwie juz jest otwarty
+				DisplayLog("Plik "+ name +" jest juz otwarty.")
 				return true;
 			}
 		}
+		DisplayLog("Plik "+name+" nie jest otwarty.")
 		return false;
 	}
+	DisplayLog("Plik o podanej nazwie nie istnieje.");
 	return false;
 }
 
@@ -349,7 +372,7 @@ void Disk::nadpiszPlik(std::string name, std::string dane)
 	int blokI = root.f.fileExists(name);
 	if (blokI == -1)
 	{
-		//Plik o podanej nazwue nie istnieje
+		DisplayLog("Plik o podanej nazwie nie istnieje " + name);
 		return;
 	}
 	int pos = 0;
@@ -395,17 +418,19 @@ bool Disk::czyMozna(std::string fname)
 			if (comp == fname)
 			{
 				Acl acl = Acl();
-				int facl  = acl.readPermissions(fname);
-				if(facl > acl.getUserPermissions())
+				int facl = acl.readPermissions(fname);
+				if (facl > acl.getUserPermissions())
 				{
-					
+					DisplayLog("Obecny uzytkownik nie ma wystarczajacych uprawnien do pliku " + fname);
+					return false;
 				}
-				//Plik o podanej nazwie juz jest otwarty
+				DisplayLog("Obecny uzytkownik posiada wystarczajace uprawnienia do pliku " + fname);
 				return true;
 			}
 			comp = "";
 		}
 		return false;
 	}
+	DisplayLog("Plik o podanej nazwie nie istnieje " + fname);
 	return false;
 }

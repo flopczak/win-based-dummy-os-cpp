@@ -7,7 +7,9 @@ using namespace std;
 class Process_List
 {
 public:
-	static list<Process>PrcList;
+	Process_List();
+	~Process_List();
+	list<Process>PrcList;
 	list<Process> getReady();
 	void terminateProcess(string s);
 	void removeProcess();
@@ -15,4 +17,5 @@ public:
 	void createProcess(string na, int pr);
 	void findAndDisplayProcess(string s);
 	void displayAll();
+
 };

@@ -1,4 +1,4 @@
-#include "Memory.hpp"
+#include "../memory/Memory.hpp"
 #include <fstream>
 using namespace std;
 

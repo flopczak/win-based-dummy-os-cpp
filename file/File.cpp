@@ -1,7 +1,6 @@
 #include "File.hpp"
 
 
-
 File::File(std::string name)
 {
 	std::istringstream f(name);
@@ -44,17 +43,7 @@ bool File::setExt(std::string newext)
 	return this->ext == newext;
 }
 
-int File::getSize()
-{
-	return this->size;
-}
 
-bool File::setSize(int newsize)
-{
-	this->size = newsize;
-	if (this->size = newsize) return true;
-	return false;
-}
 
 int File::getIndexBlock()
 {
@@ -69,13 +58,13 @@ bool File::setIndexBlock(int newiblock)
 
 int File::getAccessLevel()
 {
-	return this->accessLevel;
+	return this->acl;
 }
 
 bool File::setAccessLevel(int newAL)
 {
-	this->accessLevel = newAL;
-	return this->accessLevel == newAL;
+	this->acl = newAL;
+	return this->acl == newAL;
 }
 
 std::string File::getSpecName(std::string name)

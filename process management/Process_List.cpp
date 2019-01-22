@@ -1,30 +1,26 @@
-#include <iostream>
 #include "Process_List.hpp"
 #include "Process.hpp"
+#include <iostream>
 using namespace std;
-
-void Process_List::createProcess(string na)
-{
-	Process a(na);
-	Process_List::PrcList.push_front(a);
-}
-
-void Process_List::createProcess(string na, int pr)
-{
-	Process a(na, pr);
-	Process_List::PrcList.push_front(a);
-}
 
 Process_List::Process_List()
 {
 
 }
 
-Process_List::~Process_List()
+void Process_List::createProcess(string na)
 {
+	Process a(na);
+	Process_List::PrcList.push_front(a);
+
 }
 
-//kurwaaaa 2 godziny ogarnia³em co nie dzia³a !!!!!!!!!!!!
+void Process_List::createProcess(string na, int pr)
+{
+	Process a(na, pr);
+	Process_List::PrcList.push_back(a);
+
+}
 
 list<Process> Process_List::getReady()
 {
@@ -32,52 +28,89 @@ list<Process> Process_List::getReady()
 	mylist = PrcList;
 	return mylist;
 }
-/*
+
+void Process_List::setStatus(string na, status b)
+{
+	Process a(na);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			it->setProcessStatus(b);
+		}
+	}
+}
+
+void Process_List::setPriority(string na, int n)
+{
+	Process a(na);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			it->setPriority(n);
+		}
+	}
+}
+
 void Process_List::terminateProcess(string s)
 {
-for (auto const& it : Process_List::PrcList)
-{
-if (it.process_name == s)
-{
-Process_List::PrcList.remove(it);
+	Process a(s);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			PrcList.remove(*it);
+			break;
+		}
+	}
 }
-}
-}
+
 
 void Process_List::removeProcess()
 {
-for (auto const& it : Process_List::PrcList)
-{
-if (it.process_status == ZAKONCZONY)
-{
-Process_List::PrcList.remove(it);
+	Process a;
+	a.setProcessStatus(ZAKONCZONY);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			PrcList.remove(*it);
+			break;
+		}
+	}
 }
-}
-}
+
 
 void Process_List::findAndDisplayProcess(string s)
 {
-bool czy = false;
-for (auto const& it : Process_List::PrcList)
-{
-if (it.process_name == s)
-{
-//it.display();
-czy = true;
+	Process a(s);
+	bool dlaczemu = false;
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			it->display();
+			dlaczemu = true;
+		}
+	}
+	if (dlaczemu != true)
+	{
+		cout << "Proces o podanej nazwie nie istnieje.";
+	}
 }
-}
-if (czy == false)
-{
-cout << "Proces o podanej nazwie nie istnieje.";
-}
-}
-*/
+
 void Process_List::displayAll()
 {
-	for (auto const& it : Process_List::PrcList)
+	if (PrcList.size() != 0) {
+		for (it = PrcList.begin(); it != PrcList.end(); ++it)
+		{
+			it->displayHelper();
+		}
+	}
+	else
 	{
-		//it.displayHelper();
-		cout << it.process_name << endl;
+		cout << "Brak procesow do wyswietlenia." << endl;
 	}
 }
 

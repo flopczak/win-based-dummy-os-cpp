@@ -1,5 +1,4 @@
 #include "Assembler.hpp"
-#include "Process.hpp"
 #include <iostream>
 #include <regex>
 
@@ -14,21 +13,19 @@ MV - przenoszenie wartoci
 IC - zwiêkszenie wartosci rejestru o 1
 DC - zmniejszenie wartosci rejestru o 1
 
-MR - odczyt z pamieci ??
-MS - zapis do pamieci ??
 JP - skok bezwarunkowy
 JZ - skok przy zerowej wartoœci
 HL - koniec programu
 
 //Operacje na plikach//
 CR file_name - utworzenie pliku o podanej nazwie
-OF file_name - otwiera plik o podanej nazwie
-CF file_name - zamyka plik o podanej nazwie
 WF file_name content - zapisuje zawartoœæ do pliku
 AF file_name content - dopisuje zawartoœæ do pliku
 RF file_name - odczyt z pliku
-RN file_name file_name_new - zmienia nazwê pliku
 DF file_name - usuwa plik
+
+LC file_name - tworzy i zamyka zamek powi¹zany z nazw¹ pliku
+UL file_name - otwiera zamek
 
 //Operacje na procesach//
 CP name file_name priority - tworzy proces
@@ -106,23 +103,34 @@ int Assembler::get_register(std::string reg) {
 	}
 }
 
+std::string Assembler::getOrder(Memory &m, Process &pcb) {
+	std::string order;
+	order = m.odczytajString(&pcb,PC);
+	PC += order.size() + 1;
+	return order;
+}
 
-void Assembler::run(Process &pcb) {
+std::map<std::string, Sync>Sync::zamkiNaPlikach;
+
+void Assembler::run(Process &pcb, Memory &m, Disk &disk) {
+	
+
 	getRegistersState(pcb);
 
 	std::string order;
 	order.clear();
-	//	order = getOrder(mm, pcb);
+	order = getOrder(m, pcb);
 	std::string arg1, arg2, arg3;
 	int value = 0;
 
 	if (order == "AD") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
+		
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
+		std::regex wzorzec("[0-9]*");
 
-
-		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && isdigit(arg2[0])) {
+		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && std::regex_match(arg2, wzorzec)) {
 			value = stoi(arg2);
 			set_register(arg1, get_register(arg1) + value);
 		}
@@ -136,11 +144,13 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "SB") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 
-		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && isdigit(arg2[0])) {
+		std::regex wzorzec("[0-9]*");
+
+		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && std::regex_match(arg2, wzorzec)) {
 			value = stoi(arg2);
 			set_register(arg1, get_register(arg1) - value);
 		}
@@ -154,11 +164,13 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "MP") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 
-		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && isdigit(arg2[0])) {
+		std::regex wzorzec("[0-9]*");
+
+		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && std::regex_match(arg2, wzorzec)) {
 			value = stoi(arg2);
 			set_register(arg1, get_register(arg1) * value);
 		}
@@ -172,11 +184,13 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "DV") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 
-		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && isdigit(arg2[0])) {
+		std::regex wzorzec("[0-9]*");
+
+		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && std::regex_match(arg2, wzorzec)) {
 			value = stoi(arg2);
 			if (value != 0) {
 				set_register(arg1, get_register(arg1) / value);
@@ -202,11 +216,13 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "MV") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 
-		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && isdigit(arg2[0])) {
+		std::regex wzorzec("[0-9]*");
+
+		if ((arg1 == "AX" || arg1 == "BX" || arg1 == "CX") && std::regex_match(arg2, wzorzec)) {
 			value = stoi(arg2);
 			set_register(arg1, value);
 		}
@@ -220,7 +236,7 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "IC") {
-		//		arg1 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
 		if (arg1 == "AX" || arg1 == "BX" || arg1 == "CX") {
@@ -232,7 +248,7 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "DC") {
-		//		arg1 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
 		if (arg1 == "AX" || arg1 == "BX" || arg1 == "CX") {
@@ -243,92 +259,131 @@ void Assembler::run(Process &pcb) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "MR") {
-		//////
+	if (order == "LC") {
+		arg1 = getOrder(m, pcb);
+		std::cout << "Order: " << order << " " << arg1 << std::endl;
+
+		Sync::lockFile(arg1, &pcb);
 	}
 
-	if (order == "MS") {
-		/////
+	if (order == "UL") {
+		arg1 = getOrder(m, pcb);
+		std::cout << "Order: " << order << " " << arg1 << std::endl;
+		Sync::unlockFile(arg1, &pcb);
 	}
 
 	if (order == "CR") {
-		//		arg1 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		////////
+		disk.dodajpPlik(arg1);
 		saveRegisters(pcb);
-	}
-
-	if (order == "OF") {
-		//		arg1 = getOrder(mm, pcb);
-		std::cout << "Order: " << order << " " << arg1 << std::endl;
-		/////
-		saveRegisters(pcb);
-	}
-
-	if (order == "CF") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
-		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
-		/////////
-		saveRegisters(pcb);
+		
 	}
 
 	if (order == "WF") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::regex wzorzec("\".*\"");
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 		if (std::regex_match(arg2, wzorzec)) {
 			arg2.erase(arg2.begin());
 			arg2.erase(arg2.end() - 1);
 		}
-		/////////
-	}
-
-	if (order == "RF") {
-		//		arg1 = getOrder(mm, pcb);
-		std::cout << "Order: " << order << " " << arg1 << std::endl;
-		//////////
+		if (disk.czyMozna(arg1)) {
+			if (disk.open(arg1)) {
+				disk.nadpiszPlik(arg1, arg2);
+				disk.close(arg1);
+			}
+			else {
+				std::cout << "Nie mozna otworzyc pliku" << std::endl;
+			}
+		}
+		else {
+			std::cout << "Brak uprawnien do pliku" << std::endl;
+		}
 		saveRegisters(pcb);
 	}
 
-	if (order == "RN") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+	if (order == "AF") {
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
+		std::regex wzorzec("\".*\"");
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
-		///////////
+		if (std::regex_match(arg2, wzorzec)) {
+			arg2.erase(arg2.begin());
+			arg2.erase(arg2.end() - 1);
+		}
+		if (disk.czyMozna(arg1)) {
+			if (disk.open(arg1)) {
+				disk.dopiszDoPliku(arg1, arg2);
+				disk.close(arg1);
+			}
+			else {
+				std::cout << "Nie mozna otworzyc pliku" << std::endl;
+			}
+		}
+		else {
+			std::cout << "Brak uprawnien do pliku" << std::endl;
+		}
+		saveRegisters(pcb);
 	}
 
-	if (order == "DF") {
-		//		arg1 = getOrder(mm, pcb);
+	if (order == "RF") {
+		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
-		////////////
+		if (disk.czyMozna(arg1)) {
+			if (disk.open(arg1)) {
+				disk.wypiszPlik(arg1); //Andrzej do poprawy
+				disk.close(arg1);
+			}
+			else {
+				std::cout << "Nie mozna otworzyc pliku" << std::endl;
+			}
+		}
+		else {
+			std::cout << "Brak uprawnien do pliku" << std::endl;
+		}
+		saveRegisters(pcb);
+		
+	}
+
+
+	if (order == "DF") {
+		arg1 = getOrder(m, pcb);
+		std::cout << "Order: " << order << " " << arg1 << std::endl;
+		if (disk.czyMozna(arg1)) {
+			disk.usunPlik(arg1);
+		}
+		saveRegisters(pcb);
 	}
 
 	if (order == "CP") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
-		//		arg3 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
+		arg3 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << "" << arg3 << std::endl;
-		/////////////
+		
+
 		saveRegisters(pcb);
 	}
 
 	if (order == "DP") {
-		//		arg1 = getOrder(mm, pcb);
-		std::cout << "Order: " << order << " " << arg1 << std::endl;
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
+		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
 		/////////////////
 		saveRegisters(pcb);
 	}
 
 	if (order == "JP") {
-		//		arg1 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
-		if (arg1 != "" && isdigit(arg1[0])) {
-			if (arg1 != "" && isdigit(arg1[0])) {
+		std::regex wzorzec("[0-9]*");
+
+		if (arg1 != "" && std::regex_match(arg1, wzorzec)) {
 				set_register("PC", stoi(arg1));
-			}
 		}
 
 		printRegisters();
@@ -336,12 +391,14 @@ void Assembler::run(Process &pcb) {
 	}
 
 	if (order == "JZ") {
-		//		arg1 = getOrder(mm, pcb);
-		//		arg2 = getOrder(mm, pcb);
+		arg1 = getOrder(m, pcb);
+		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
+		std::regex wzorzec("[0-9]*");
+
 		if (arg1 == "AX" || arg1 == "BX" || arg1 == "CX") {
-			if (arg2 != "" && isdigit(arg2[0])) {
+			if (arg2 != "" && std::regex_match(arg2, wzorzec)) {
 				if (get_register(arg1) == 0) {
 					set_register("PC", stoi(arg2));
 				}
@@ -356,5 +413,6 @@ void Assembler::run(Process &pcb) {
 		std::cout << "Order: " << order << std::endl;
 		saveRegisters(pcb);
 		//////
+	
 	}
 }

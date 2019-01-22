@@ -1,7 +1,6 @@
 #include "Directory.hpp"
 
 
-
 Directory::Directory()
 {
 	this->f = Files();

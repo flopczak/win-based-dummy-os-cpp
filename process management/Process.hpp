@@ -14,33 +14,33 @@ struct STRON
 class Process											//PCB
 {
 public:
-
 	STRON* pageTable;									//Przemkowe RAM'y
-														//JACOB zmieniam parametry na publiczne
-														//STRON* pageTable;	//Przemkowe RAM'y
+	//JACOB zmieniam parametry na publiczne
+	//STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
 	string process_name;								//nazwa procesu
 	int PID;											//indywidualny identyifkator
 	status process_status;								//status procesu: nowy, aktywny, gotowy, oczekuj�cy, zako�czony
 	int program_instructions;							//instrukcje asemblerowskie
-	int command_counter;								//licznik rozkaz�w asemblera
+	int command_counter;								//licznik rozkazow asemblera
 	int AX;												//rejestry
 	int BX;
 	int CX;
 	int process_priority;								//priorytet
 	bool PP;											//flaga obecno�ci procesora
 
-	Process();											//konstruktor domy�lny
-	Process(string n);									//konstruktor z nazw� procesu
-	Process(string n, int p);							//konstruktor z nazw� i priorytetem procesu
+	Process();											//konstruktor domyslny
+	Process(string n);									//konstruktor z nazwa procesu
+	Process(string n, int p);							//konstruktor z nazwa i priorytetem procesu
 	~Process();											//dekonstruktor
-	void setProcessStatus(status);						//ustawianie statusu procesu
+	void setProcessStatus(status a);					//ustawianie statusu procesu
 	void setPriority(int n);							//ustawianie priorytetu
-	void display();										//wy�wietlanie szczeg�owe jednego procesu
+	void display();										//wyswietlanie szczegoowe jednego procesu
 	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
 	int getPID();
-
+	string getName();
+	friend bool operator==(const Process &b, const Process &a);
 
 
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y

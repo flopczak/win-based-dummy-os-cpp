@@ -171,14 +171,14 @@ void Disk::wypiszDysk()
 	}
 }
 
-std::string Disk::wypiszPlik(std::string name)
+void Disk::wypiszPlik(std::string name)
 {
 	int i = root.f.fileExists(name);
 	if (i != -1)
 	{
-		return "";
+		std::cout << "";
 	}
-	return wypiszPlik(i);
+	std::cout << wypiszPlik(i);
 }
 
 void Disk::dopiszDoPliku(std::string name, std::string dane)
@@ -269,6 +269,18 @@ void Disk::usunPlik(std::string name)
 			}
 			zajBloki[blokI] = false;
 			root.f.rmfile(name);
+			int pos = 0;
+			for (auto e : root.f.openFiles)
+			{
+				if (e == name)
+				{
+					
+					root.f.openFiles.erase(root.f.openFiles.begin() + pos);
+					//Usunieto plik z tablicy otwartosci
+					break;
+				}
+				pos++;
+			}
 		}
 	}
 }

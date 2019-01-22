@@ -5,8 +5,8 @@
 class Disk
 {
 private:
-	static char HDD[1024];
-	static bool zajBloki[32];
+	char HDD[1024];
+	bool zajBloki[32];
 public:
 	Disk();
 	~Disk();
@@ -19,9 +19,9 @@ public:
 	int dodajpPlik(std::string name);
 	std::string wypiszBlok(int index);
 	void wypiszDysk();
-	std::string wypiszPlik(std::string name);
+	void wypiszPlik(std::string name);
 	void dopiszDoPliku(std::string name, std::string dane);
-	void usunPlik(std::string name);
+	void usunPlik(std::string name); // usunac z tablicy otwartosci
 	bool open(std::string name);
 	bool close(std::string name);
 	bool status(std::string name);

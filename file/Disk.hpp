@@ -19,4 +19,9 @@ public:
 	std::string wypiszBlok(int index);
 	void wypiszDysk();
 	std::string wypiszPlik(std::string name);
+	void dopiszDoPliku(std::string name, std::string dane);
+	void usunPlik(std::string name);
+	bool open(std::string name);
+	bool close(std::string name);
+	void nadpiszPlik(std::string name, std::string dane);
 };

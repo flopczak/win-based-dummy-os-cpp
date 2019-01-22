@@ -90,7 +90,6 @@ int Disk::dodajDane(std::string name, std::string dane, int index)
 			if (pos < temp.length())
 			{
 				int blokD = znajdzWolny(blokI);
-				std::cout << blokI << std::endl;
 				if (blokD == -1)
 				{
 					//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
@@ -166,7 +165,7 @@ void Disk::wypiszDysk()
 {
 	for (int i = 0; i < 32; i++)
 	{
-		std::cout << "Blok nr " << i+1 << std::endl;
+		std::cout << "Blok nr " << i << std::endl;
 		std::cout << wypiszBlok(i) << std::endl;
 	}
 }
@@ -182,4 +181,189 @@ std::string Disk::wypiszPlik(std::string name)
 	{
 		return wypiszPlik(i);
 	}
+}
+
+void Disk::dopiszDoPliku(std::string name, std::string dane)
+{
+	if(dane.length() == 0) return; 
+	int blokI = root.f.fileExists(name);
+	if(blokI == -1)
+	{
+		//Podany plik nie istnieje
+		return;
+	}
+	std::vector<int> wolne;
+	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
+	{
+		if (HDD[i] == -1)
+		{
+			wolne.push_back(i);
+		}
+	}
+		if(sizeof(wolne) == 0)
+		{
+			//Plik osiagnal maksymalny rozmiar
+			return;
+		}
+		if(sizeof(wolne)*32 < dane.length())
+		{
+			//Dane zbyt duze
+			return;
+		}
+		int pos = 0;
+		//Sprawdzamy czy mozemy dopisac do zajetego bloku danych ktory moze nie byc pelny
+		if (sizeof(wolne) != 32)
+		{
+			int temp = wolne[0];
+			for(int i = temp * 32; i < (temp * 32)+32; i++)
+			{
+				if (HDD[i] == -1)
+				{
+					if (pos >= dane.length()) return;
+					HDD[i] = dane.at(pos);
+					pos++;
+				}
+			}
+		}
+
+		for(auto e : wolne)
+		{
+			int blokD = znajdzWolny(0);
+			if(blokD == -1)
+			{
+				//Brak wolnych blokow
+				return;
+			}
+			zajBloki[blokD] = true;
+			HDD[e] = blokD;
+	
+			for (int e = blokD * 32; e < blokD * 32 + 32; e++)
+			{
+				if (pos < dane.length())
+				{
+					HDD[e] = dane[pos];
+					pos++;
+				}
+				else
+				{
+					HDD[e] = -1;
+					return;
+				}
+			}
+
+		}
+	}
+
+void Disk::usunPlik(std::string name)
+{
+	if(root.f.fileExists(name) != -1)
+	{
+		int blokI = root.f.fileExists(name);
+		if (blokI != -1)
+		{
+			for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
+			{
+				zajBloki[i] = false;
+				for (int j = HDD[i] * 32; j < (HDD[i]*32) +32;j++)
+				{
+					HDD[j] = -1;
+				}
+				HDD[i] = -1;
+			}
+			zajBloki[blokI] = false;
+			root.f.rmfile(name);
+		}
+	}
+}
+
+bool Disk::open(std::string name)
+{
+	
+	if(root.f.fileExists(name) != -1)
+	{
+		for(auto e : root.f.openFiles)
+		{
+			if(e == name)
+			{
+				//Plik o podanej nazwie juz jest otwarty
+				return false;
+			}
+		}
+		root.f.openFiles.push_back(name);
+		return true;
+	}
+	else
+	{
+		//Brak pliku o podanej nazwie
+		return false;
+	}
+}
+
+bool Disk::close(std::string name)
+{
+	if (root.f.fileExists(name) != -1)
+	{
+		int pos = 0;
+		for (auto e : root.f.openFiles)
+		{
+			if (e == name)
+			{
+				//Plik o podanej nazwie jest otwarty
+				root.f.openFiles.erase(root.f.openFiles.begin()+pos);
+				return true;
+				//Zamknieto plik
+			}
+			pos++;
+		}
+		return false;
+		//Plik nawet nie byl otwarty
+	}
+	else
+	{
+		//Brak pliku o podanej nazwie
+		return false;
+	}
+}
+
+void Disk::nadpiszPlik(std::string name, std::string dane)
+{
+	int blokI = root.f.fileExists(name);
+	if(blokI == -1)
+	{
+		//Plik o podanej nazwue nie istnieje
+		return;
+	}
+	int pos = 0;
+	bool koniec = false;
+	for (int i = blokI * 32; i < (blokI*32) + 32; i++)
+	{
+		if (koniec == false)
+		{
+			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			{
+
+				if (pos < dane.length())
+				{
+					HDD[j] = dane.at(pos);
+					pos++;
+				}
+				else
+				{
+					HDD[j] = -1;
+					koniec = true;
+				}
+
+			}
+		}
+		else
+		{
+			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			{
+				HDD[j] = -1;
+			}
+			zajBloki[i] = false;
+			HDD[i] = -1;
+		}
+	}
+	
 }

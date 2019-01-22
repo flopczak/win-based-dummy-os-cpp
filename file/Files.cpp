@@ -13,15 +13,21 @@ Files::Files()
 Files::~Files()
 = default;
 
-bool Files::fileExists(std::string name)
+int Files::fileExists(std::string name)
 {
-		std::string comp = getSpecName(name);
+	std::string comp;
 		for (File e : files)
 		{
-			if (e.getName() == comp) return true;
+			comp += e.getName() + "." + e.getExt();
+			if (comp == name) return e.getIndexBlock();
+			else
+			{
+				comp = "";
+			}
 		}
-	return false;
+	return -1;
 }
+
 
 void Files::mkfile(std::string name, int bloki)
 {
@@ -66,15 +72,16 @@ void Files::showFiles()
 
 bool Files::rmfile(std::string name)
 {
-	std::string comp = getSpecName(name);
+	std::string comp;
 	int pos = 0;
 	for (File e : files) {
-		if (e.getName() == comp) {
+		if ((comp += e.getName() + "." + e.getExt()) == name) {
 			//Disk.remove(e.getIndexBlock());
 			files.erase(files.begin()+pos);
 			//DisplayLog("Usunieto plik: " + name);
 			return true;
 		}
+		comp = "";
 		pos++;
 	}
 	//DisplayLog("Brak pliku o podanej nazwie: " + name);

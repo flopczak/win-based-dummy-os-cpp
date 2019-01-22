@@ -5,7 +5,7 @@ class Files : public File
 {
 public:
 	std::vector <File> files;
-	std::map <Files, bool> openFiles;
+	std::vector <std::string> openFiles;
 	Files();
 	~Files();
 	int fileExists(std::string name);

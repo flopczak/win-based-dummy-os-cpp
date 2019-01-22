@@ -252,7 +252,7 @@ void Memory::WydrukujProcesy(Process * pcb, bool wRamie) {
 	STRON * StronProc = pcb->PobTabStronic();
 	int WieStronProc = pcb->PobWielTabStronic();
 
-	cout << " --- Pamiec zarezerwowana przez proces: " << pcb->GetName() << " ---\n";
+	cout << " --- Pamiec zarezerwowana przez proces: " << pcb->getName() << " ---\n";
 	for (int i = 0; i < WieStronProc; i++)
 	{
 		if (StronProc[i].wPam)
@@ -271,7 +271,7 @@ void Memory::WydrukujFIFO() {
 		<< "Format: [{PID_procesu},{numer strony}]" << endl;
 	for (auto entry : FIFO)
 	{
-		cout << "[" << entry.pcb->GetName() << "," << entry.pageNumber << "] ";
+		cout << "[" << entry.pcb->getName() << "," << entry.pageNumber << "] ";
 	}
 	cout << endl;
 }
@@ -514,7 +514,7 @@ void Memory::WydrukujTabliceStronic(Process * pcb) {
 	STRON * TablicaStron = pcb->PobTabStronic();
 	int WTablicyStron = pcb->PobWielTabStronic();
 
-	cout << " --- Tablica stron procesu: " << pcb->GetName() << " ---\n";
+	cout << " --- Tablica stron procesu: " << pcb->getName() << " ---\n";
 	//cout << " Nr strony " << (char)CharTable::VL << " Nr  ramki " << (char)CharTable::VL << " Czy w pamieci?\n";
 
 	for (int page = 0; page < WTablicyStron; page++)

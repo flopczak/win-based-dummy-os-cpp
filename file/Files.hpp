@@ -8,7 +8,8 @@ public:
 	std::map <Files, bool> openFiles;
 	Files();
 	~Files();
-	bool fileExists(std::string name);
+	int fileExists(std::string name);
+	int getFileIndex(std::string name);
 	void mkfile(std::string name, int blokI);
 	std::string getFile(std::string name);
 	void showFiles();

@@ -15,7 +15,8 @@ public:
 	bool czyZaj(int index);
 	int znajdzWolny(int index);
 	int dodajDane(std::string name, std::string dane, int index);
+	int dodajpPlik(std::string name);
 	std::string wypiszBlok(int index);
 	void wypiszDysk();
-
+	std::string wypiszPlik(std::string name);
 };

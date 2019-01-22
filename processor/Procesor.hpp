@@ -1,6 +1,6 @@
 #pragma once
-#include"Process.hpp"
-#include"Process_List.hpp"
+#include"../process management/Process.hpp"
+#include"../process management/Process_List.hpp"
 
 #include<map>
 #include<array>

@@ -149,7 +149,7 @@ Process_List::PrcList.remove(it);
 }
 
 //---------------------------------------------------------------------//
-
+*/
 void Process::UstTabStronic(STRON* newpageTable)
 {
 this->pageTable = newpageTable;
@@ -170,4 +170,3 @@ int Process::PobWielTabStronic()
 return this->pageTableSize;
 }
 
-*/

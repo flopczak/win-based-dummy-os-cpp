@@ -1,4 +1,4 @@
-#include "Procesor.hpp"
+#include "../processor/Procesor.hpp"
 #include <iostream>
 
 //TODO gdzies jest problem bo mapa cały czas pusta

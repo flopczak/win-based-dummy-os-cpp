@@ -318,7 +318,7 @@ bool Disk::open(std::string name)
 			}
 		}
 		root.f.openFiles.push_back(name);
-		DisplayLog("Pomyslnie otworzono plik " + name)
+		DisplayLog("Pomyslnie otworzono plik " + name);
 		return true;
 	}
 	DisplayLog("Brak pliku o podanej nazwie " + name);
@@ -356,11 +356,11 @@ bool Disk::status(std::string name)
 		{
 			if (e == name)
 			{
-				DisplayLog("Plik "+ name +" jest juz otwarty.")
+				DisplayLog("Plik " + name + " jest juz otwarty.");
 				return true;
 			}
 		}
-		DisplayLog("Plik "+name+" nie jest otwarty.")
+		DisplayLog("Plik " + name + " nie jest otwarty.");
 		return false;
 	}
 	DisplayLog("Plik o podanej nazwie nie istnieje.");

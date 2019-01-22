@@ -1,4 +1,4 @@
-#include "Files.hpp"
+#include "../file/Files.hpp"
 
 
 Files::Files()
@@ -15,15 +15,20 @@ int Files::fileExists(std::string name)
 	for (File e : files)
 	{
 		comp += e.getName() + "." + e.getExt();
-		if (comp == name) return e.getIndexBlock();
+		if (comp == name)
+		{
+			DisplayLog("Znaleziono wpis katalogowy pliku o podanej nazwie: " + name);
+			return e.getIndexBlock();
+		}
 		comp = "";
 	}
+	DisplayLog("Nie znaleziono wpisu katalogowego pliku o podanej nazwie: " + name);
 	return -1;
 }
 
 
 void Files::mkfile(std::string name, int bloki)
-{ 
+{
 	Acl* usr = new Acl();
 	File newf = File(name);
 	newf.setIndexBlock(bloki);
@@ -34,27 +39,13 @@ void Files::mkfile(std::string name, int bloki)
 	delete usr;
 }
 
-
-std::string Files::getFile(std::string name)
-{
-	std::string comp = getSpecName(name);
-	for (File e : files)
-	{
-		if (e.getName() == comp)
-		{
-			// return zawartosc pliku e.getIndexBlock();
-		}
-	}
-	//DisplayLog("Plik o podanej nazwie nie istnieje!");
-	return "";
-}
-
-
 void Files::showFiles()
 {
 	for (File e : files)
 	{
-		std::cout << "Plik " << e.getName() << "." << e.getExt() << " indeks " << e.getIndexBlock() << " ACL " << e.getAccessLevel() << std::endl;
+		DisplayLog(
+			"Plik " + e.getName() + "." + e.getExt() + " IB[" + to_string(e.getIndexBlock()) + "] ACL[" + to_string(
+				e.getAccessLevel()) + "]");
 	}
 }
 
@@ -66,14 +57,13 @@ bool Files::rmfile(std::string name)
 	{
 		if ((comp += e.getName() + "." + e.getExt()) == name)
 		{
-			//Disk.remove(e.getIndexBlock());
 			files.erase(files.begin() + pos);
-			//DisplayLog("Usunieto plik: " + name);
+			DisplayLog("Usunieto wpis katalogowy pliku: " + name);
 			return true;
 		}
 		comp = "";
 		pos++;
 	}
-	//DisplayLog("Brak pliku o podanej nazwie: " + name);
+	DisplayLog("Brak wpisu katalogowego pliku: " + name);
 	return false;
 }

@@ -1,4 +1,4 @@
-#include "File.hpp"
+#include "../file/File.hpp"
 
 
 File::File(std::string name)
@@ -10,6 +10,9 @@ File::File(std::string name)
 	std::getline(f, temp);
 	this->ext = temp;
 	//this->accessLevel = getUserPermissions();
+	DisplayLog(
+		"Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
+		" i poziomie dostepu " + to_string(this->acl));
 }
 
 
@@ -42,7 +45,6 @@ bool File::setExt(std::string newext)
 	this->ext = newext;
 	return this->ext == newext;
 }
-
 
 
 int File::getIndexBlock()

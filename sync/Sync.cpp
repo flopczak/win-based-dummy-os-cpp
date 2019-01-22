@@ -1,10 +1,8 @@
 #include "Sync.hpp"
 
 //=====================================================================================================// Konstruktor / Destruktor
-Sync::Sync(std::string syncN)
+Sync::Sync()
 {
-	this->syncName = syncN;
-	this->fileName = syncN;
 	this->lock=false;
 	this->cond=false;
 }
@@ -13,6 +11,18 @@ Sync::~Sync()
 {
 
 }
+
+static void Sync::lockFile(string nazwa, Process* tempP)
+{
+	Sync::zamkiNaPlikach.insert(nazwa,Sync lock());//dodanie nowego zamka do mapy
+	Sync::zamkiNaPlikach[nazwa].acquire(tempP);// zajecie zamka 
+}
+
+static void Sync::unlockFile(string nazwa, Process* tempP)
+{
+	Sync::zamkiNaPlikach[nazwa].release(tempP);//zwolnienie odpowiedniego zamku
+}
+
 //=====================================================================================================// Metody dla Lock
 
 void Sync::acquire(Process*tempProcess)

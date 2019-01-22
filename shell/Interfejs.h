@@ -10,39 +10,50 @@
 
 using namespace std;
 
+bool dislog = false;
+
+void DisplayLog(string msg) {
+	if (dislog) {
+		cout << "PK : " << msg << endl;
+	}
+}
+
 class Interfejs {
-private:
-	struct his {
-		int numer_metody;
-		string parametr;
-	};
-
-	const bool dislog = true;
-
 public:
 	struct met {
 		string skrot;
 		string opis;
 	};
 	vector<met> metody;
-	vector<his> historia;
 
-	void DisplayLog(string msg) {
-		if (dislog) {
-			cout << msg << endl;
+	void ChangeDisLog(vector<string> abc) {
+		if (abc.size() > 2) {
+			cout << "Za duzo parametrow, dostepne parametry to:\ntrue\nfalse" << endl;
+		}
+		string bulin = abc[0];
+		if (bulin == "true") {
+			dislog = true;
+			DisplayLog("zmienilem wartosc dislog");
+		}
+		else if (bulin == "false") {
+			dislog = false;
+		}
+		else {
+			cout << "Bledny parametr, dostepne parametry to:\ntrue\nfalse" << endl;
 		}
 	}
 
 	void DisplayMethods() {
-		cout << "Metody dostepne dla uzytkownika: " << endl;
+		cout << "Metody dostepne dla uzytkownika:\n------------------------------- " << endl;
 		int x = metody.size();
 		if (x == 0) {
 			cout << "Brak metod dla uzytkownika" << endl;
 			return;
 		}
 		for (int i = 0; i < x; i++) {
-			cout << metody[i].skrot << " " << metody[i].opis << endl;
+			cout << i + 1 << ". " << metody[i].skrot << " " << metody[i].opis << endl;
 		}
+		cout << endl;
 	}
 
 	void ZgrajZTxt() {
@@ -75,8 +86,6 @@ public:
 			return;
 		}
 		string color = tab[1];
-
-
 		HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 		string kolor = tab[0];
 		int colour = stoi(color);
@@ -84,7 +93,7 @@ public:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
 		}
 		else {
-			cout << "Nie ma takiego koloru.\nDostepne kolory to green blue red white oraz liczby 0-15 " << endl;
+			cout << "Nie ma takiego koloru.\n Dostepne kolory to green blue red white oraz liczby 0-15 " << endl;
 		}
 	}
 
@@ -96,6 +105,16 @@ public:
 
 	void cls() {
 		system("cls");
+	}
+
+	void silnia(int x) {
+		int wynik = 1;
+		string str;
+		for (int i = 1; i < x + 1; i++) {
+			wynik *= i;
+			str = to_string(wynik);
+			DisplayLog(str);
+		}
 	}
 
 	vector<string> Interpret(string msg) {
@@ -173,6 +192,7 @@ public:
 		if (x > 1) {
 			for (int i = 1; i < x; i++) {
 				parametry.push_back(tab[i]);
+				parametry[i - 1] = ToDown(parametry[i - 1]);
 			}
 		}
 		if (polecenie == "help") {
@@ -180,6 +200,7 @@ public:
 		}
 		else if (polecenie == "color") {
 			SetColor(parametry);
+			DisplayLog("zmienilem kolor");
 		}
 		else if (polecenie == "exit") {
 			cin.get();
@@ -207,12 +228,23 @@ public:
 		}
 		else if (polecenie == "time") {
 			Time();
+			return;
+		}
+		else if (polecenie == "chd") {
+			ChangeDisLog(parametry);
+			return;
+		}
+		else if (polecenie == "silnia") {
+			silnia(5);
+			return;
 		}
 		else {
 			DisplayMethods();
+			return;
 		}
 
 
 	}
 
 };
+

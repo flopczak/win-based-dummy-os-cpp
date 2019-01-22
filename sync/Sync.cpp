@@ -81,7 +81,7 @@ void Sync::release(Process*tempProcess)
 	}
 	else
 	{
-		this->currentLockProcess.setProcessStatus(ZAKONCZONY); //Process do stanu terminated.
+		this->currentLockProcess->setProcessStatus(ZAKONCZONY); //Process do stanu terminated.
 	}
 
 }

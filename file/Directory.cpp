@@ -2,10 +2,9 @@
 
 
 
-Directory::Directory(std::string name)
+Directory::Directory()
 {
-	this->name = name;
-	this->files = Files();
+	this->f = Files();
 }
 
 
@@ -16,8 +15,7 @@ Directory::~Directory()
 bool Directory::setName(std::string newname)
 {
 	this->name = newname;
-	if (this->name == newname) return true;
-	return false;
+	return this->name == newname;
 }
 
 std::string Directory::getName()
@@ -27,5 +25,5 @@ std::string Directory::getName()
 
 Files Directory::getFiles()
 {
-	return this->files;
+	return this->f;
 }

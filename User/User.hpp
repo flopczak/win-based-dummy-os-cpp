@@ -1,9 +1,8 @@
 #pragma once
-
 #include <iostream>
 #include <vector>
 #include <string>
-#include "FileAccess.hpp"
+#include "Acl.hpp"
 
 using namespace std;
 class User {
@@ -14,11 +13,6 @@ private:
 	string SID;			// security ID (one per account/group)
 	static string currentLoggedUser;
 				
-	
-
-	void createAdmin();
-	//static void deleteFromList(); //Funkcja pomocnicza do usuwania z list statycznych
-
 public:
 	User();
 	User(string username, string password);
@@ -39,17 +33,26 @@ public:
 	string getSID();
 	static string getCurrentLoggedUser();
 				//other functions
-	void createUser();
-	void changeUser(); // "logout"
-	void deleteUser(User* user);
+	void createGuest();
+	void createAdmin();
+	static void createUser();
+
+	static void printUser(User* user);
+	static void logOut();
+	static void logIn();
+	static void deleteUser(string user);
 	void changePassword();
 	void generateSID();
 	static bool currentLoggedGotAdminPermissions(); // Sprawdza czy obecnie zalogowana osoba jest adminem
+	static User* getUserbyName(string name); // Zwraca wsk. do obiektu (przeszukiwanie po nazwie uzytkownika)
+	static string getUserBySID(string sid); // zwraca nazwe uzytkownika
 				//Operacje na listach
 	static void viewUserList();
 	static void viewStandardUserGroup();
 	static void viewAdminUserGroup();
-
+	static bool findInAdminUserGroup(string username);
+	static bool findInStandardUserGroup(string username);
+	static bool findInUserGroup(string username);
 	static void addToUserList(User* user); // Lista wszystkich istniejacych uzytkownikow
 	static void addUserToStandardUserGroup(User* user);
 	static void addUserToAdminGroup(User* user);

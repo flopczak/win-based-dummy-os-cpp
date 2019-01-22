@@ -1,8 +1,10 @@
 #include "Sync.hpp"
 
 //=====================================================================================================// Konstruktor / Destruktor
-Sync::Sync()
+Sync::Sync(std::string syncN, std::string fileN)
 {
+	this->syncName = syncN;
+	this->fileName = fileN;
 	this->lock=false;
 	this->cond=false;
 }
@@ -99,7 +101,7 @@ std::list<Process::Process*> Sync::getCPQ()
 }
 
 
-void Sync::wait(Process*tempProcess)
+void Sync::wait(Process *tempProcess)
 {
 	if (this->cond == false)
 	{

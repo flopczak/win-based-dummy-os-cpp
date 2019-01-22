@@ -8,18 +8,30 @@ Process_List::Process_List()
 
 }
 
-void Process_List::createProcess(string na)
+void Process_List::CP_1(vector<string>v)
 {
-	Process a(na);
+	Process a(v[0]);
 	Process_List::PrcList.push_front(a);
 
 }
 
-void Process_List::createProcess(string na, int pr)
+void Process_List::CP_2(vector<string>v)
 {
-	Process a(na, pr);
+	Process a(v[0], stoi(v[1]));
 	Process_List::PrcList.push_back(a);
 
+}
+
+void Process_List::createProcess(vector<string>v)
+{
+	if (v.size() == 1)
+	{
+		CP_1(v);
+	}
+	else
+	{
+		CP_2(v);
+	}
 }
 
 list<Process> Process_List::getReady()
@@ -29,33 +41,50 @@ list<Process> Process_List::getReady()
 	return mylist;
 }
 
-void Process_List::setStatus(string na, status b)
+void Process_List::setStatus(vector<string>v)
 {
-	Process a(na);
+	status st;
+	if (v[1] == "AKTYWNY")
+	{
+		st = AKTYWNY;
+	}
+	else if (v[1] == "GOTOWY")
+	{
+		st == GOTOWY;
+	}
+	else if (v[1] == "OCZEKUJACY")
+	{
+		st == OCZEKUJACY;
+	}
+	else if (v[1] == "ZAKONCZONY")
+	{
+		st == ZAKONCZONY;
+	}
+	Process a(v[0]);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
 		if (a.process_name == it->process_name)
 		{
-			it->setProcessStatus(b);
+			it->setProcessStatus(st);
 		}
 	}
 }
 
-void Process_List::setPriority(string na, int n)
+void Process_List::setPriority(vector<string>v)
 {
-	Process a(na);
+	Process a(v[0]);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
 		if (a.process_name == it->process_name)
 		{
-			it->setPriority(n);
+			it->setPriority(stoi(v[1]));
 		}
 	}
 }
 
-void Process_List::terminateProcess(string s)
+void Process_List::terminateProcess(vector<string>v)
 {
-	Process a(s);
+	Process a(v[0]);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
 		if (a.process_name == it->process_name)
@@ -82,9 +111,9 @@ void Process_List::removeProcess()
 }
 
 
-void Process_List::findAndDisplayProcess(string s)
+void Process_List::findAndDisplayProcess(vector<string>v)
 {
-	Process a(s);
+	Process a(v[0]);
 	bool dlaczemu = false;
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
@@ -113,4 +142,3 @@ void Process_List::displayAll()
 		cout << "Brak procesow do wyswietlenia." << endl;
 	}
 }
-

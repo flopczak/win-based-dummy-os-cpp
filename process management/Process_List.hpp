@@ -1,5 +1,6 @@
 #pragma once
 #include "Process.hpp"
+#include <vector>
 #include <list>
 using namespace std;
 
@@ -10,12 +11,13 @@ public:
 	list<Process>PrcList;
 	std::list<Process>::iterator it;
 	list<Process> getReady();
-	void createProcess(string na);
-	void createProcess(string na, int pr);
-	void setStatus(string na, status);
-	void setPriority(string na, int n);
-	void terminateProcess(string s);
+	void CP_1(vector<string>v);
+	void CP_2(vector<string>v);
+	void createProcess(vector<string>v);
+	void setStatus(vector<string>v);
+	void setPriority(vector<string>v);
+	void terminateProcess(vector<string>v);
 	void removeProcess();
-	void findAndDisplayProcess(string s);
+	void findAndDisplayProcess(vector<string>v);
 	void displayAll();
 };

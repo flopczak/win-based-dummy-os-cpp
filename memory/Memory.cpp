@@ -1,8 +1,10 @@
-#include "Memory.hpp"
+#include "Memory.h"
+using namespace std;
 
 void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {
 
 	STRON * TabStron = pcb->PobTabStronic();
+	ZapewnijWolnaRame(); //sprawiamy, ze na pewno pojawi sie wolna ramka pamieci
 
 	int NowoZajRama = PobierzWolRamePamieci();
 	int NowoWolnaRamaPWym = TabStron[nr].RamaZajeta; //zmiana stronicy z SF do RAM
@@ -123,7 +125,7 @@ void Memory::ZapiszWPamieci(Process * pcb, int addr1, char element) {
 void Memory::ZapewnijStroneWPamieci(Process * pcb, int AdresLogiczny) {
 	STRON * TabelaStron = pcb->PobTabStronic();
 
-	int NumerPam = ObliczTabliceStronic(AdresLogiczny);
+	int NumerPam = ObliczNumerStrony(AdresLogiczny);
 
 	if (TabelaStron[NumerPam].wPam == false) {
 		PrzeStroPWymDoPam(pcb, NumerPam);
@@ -169,8 +171,8 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 	int WieTabStron = ObliczTabliceStronic(size);
 	STRON * TablicaStron = new STRON[WieTabStron];
 	int PoczatekStr = 0;
-
-	for (int NrStr = 0; NrStr < WieTabStron; WieTabStron++) {
+	
+	for (int NrStr = 0; NrStr < WieTabStron; NrStr++) {
 		//jezeli plik wymiany jest pelny
 		if (WolneRamkiPlikuWymiany.empty())
 		{
@@ -182,20 +184,21 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 		TablicaStron[NrStr].RamaZajeta = NowoZajetaRamaPWym;
 		TablicaStron[NrStr].wPam = false;
 
-		string pageContent = proces.substr(PoczatekStr, WieTabStron);
+		string pageContent = proces.substr(PoczatekStr, WIE_RAM);
+		char strona = pageContent[NrStr];
 		proces.erase(PoczatekStr, WIE_RAM);
 		WpiszZasobPamDoPWym(NowoZajetaRamaPWym, pageContent);
+		
 	}
-
 	pcb->UstTabStronic(TablicaStron);
 	pcb->UstWielTabStronic(WieTabStron);
 }
 
 string Memory::odczytajString(Process * pcb, int Addr) {
-	int WielkoœæTablicyStron = pcb->PobWielTabStronic();
+	int WielkoscTablicyStron = pcb->PobWielTabStronic();
 	string result = "";
 	char byte;
-	int LimitAddr = WielkoœæTablicyStron * WIE_RAM;
+	int LimitAddr = WielkoscTablicyStron * WIE_RAM;
 	//powtarzej dopoki adres logiczny nie wskazuje na ' ' i nie przekroczyl logicznej pamieci
 	while (Addr < LimitAddr)
 	{
@@ -257,7 +260,7 @@ void Memory::WydrukujProcesy(Process * pcb, bool wRamie) {
 		}
 		else if (!wRamie) //jezeli nie chcemy wypisywac ramek w SF
 		{
-			WydrukujRame(StronProc[i].RamaZajeta, i); //Jezeli strona znajduje sie w SF
+			WydrukujRamePWym(StronProc[i].RamaZajeta, i); //Jezeli strona znajduje sie w SF
 		}
 	}
 }
@@ -291,7 +294,7 @@ bool Memory::CzyZasiegAdrWPowAdres(Process * pcb, int AddrLog, int zasieg) {
 	return true;
 }
 //
-void Memory::WydrukujRame(int RamaNr, int StronaNr) {
+void Memory::WydrukujRamePWym(int RamaNr, int StronaNr) {
 	int addr = RamaNr * WIE_RAM;
 	string space = "        ";
 	cout << "Ramka pliku wymiany nr: " << RamaNr;
@@ -378,6 +381,88 @@ void Memory::WydrukujRame(int RamaNr, int StronaNr) {
 	cout << (char)CharTable::CBR << endl;
 }
 //
+void Memory::WydrukujRame(int RamaNr, int StronaNr)
+{
+	int addr = RamaNr * WIE_RAM;
+	string space = "        ";
+	cout << "Ramka nr: " << RamaNr;
+	if (StronaNr >= 0)
+	{
+		cout << ", zawiera strone nr: " << StronaNr;
+	}
+	cout << endl;
+	// ----------------------------------------------------------------------
+	// wyzwietla gore ramki
+	cout << space << (char)CharTable::CTL;
+	for (int i = 0; i < WIE_RAM - 1; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << (char)CharTable::HL;
+		}
+		cout << (char)CharTable::HLB;
+	}
+	for (int j = 0; j < 3; j++)
+	{
+		cout << (char)CharTable::HL;
+	}
+	cout << (char)CharTable::CTR << endl;
+	// ----------------------------------------------------------------------
+	// wyzwietla indeksy RAM
+	cout << space << (char)CharTable::VL;
+	for (int i = 0; i < WIE_RAM; i++)
+	{
+		if (addr + i < 10)
+			printf(" %d ", addr + i);
+		else
+			printf("%3d", addr + i);
+		cout << (char)CharTable::VL;
+	}
+	cout << endl;
+	// ----------------------------------------------------------------------
+	// wyzwietla srodek ramki
+	cout << space << (char)CharTable::VLR;
+	for (int i = 0; i < WIE_RAM - 1; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << (char)CharTable::HL;
+		}
+		cout << (char)CharTable::Cross;
+	}
+	for (int j = 0; j < 3; j++)
+	{
+		cout << (char)CharTable::HL;
+	}
+	cout << (char)CharTable::VLL << endl;
+	// ----------------------------------------------------------------------
+	// wyzwietla zawartosc RAMu
+	addr = RamaNr * WIE_RAM;
+	cout << space << (char)CharTable::VL;
+	for (int i = 0; i < WIE_RAM; i++)
+	{
+		printf(" %c ", RAM[addr + i]);
+		cout << (char)CharTable::VL;
+	}
+	cout << endl;
+	// ----------------------------------------------------------------------
+	// wyzwietla spod ramki
+	cout << space << (char)CharTable::CBL;
+	for (int i = 0; i < WIE_RAM - 1; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << (char)CharTable::HL;
+		}
+		cout << (char)CharTable::HLT;
+	}
+	for (int j = 0; j < 3; j++)
+	{
+		cout << (char)CharTable::HL;
+	}
+	cout << (char)CharTable::CBR << endl;
+}
+
 void Memory::WyczyscRamPlikuWym(int NrRamy) {
 	int IndeksRamy = NrRamy * WIE_RAM;
 	int IndeksKRamy = NrRamy + WIE_RAM;

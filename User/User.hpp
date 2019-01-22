@@ -35,7 +35,7 @@ public:
 				//other functions
 	void createGuest();
 	void createAdmin();
-	void createUser();
+	static void createUser();
 
 	static void printUser(User* user);
 	static void logOut();
@@ -52,7 +52,7 @@ public:
 	static void viewAdminUserGroup();
 	static bool findInAdminUserGroup(string username);
 	static bool findInStandardUserGroup(string username);
-
+	static bool findInUserGroup(string username);
 	static void addToUserList(User* user); // Lista wszystkich istniejacych uzytkownikow
 	static void addUserToStandardUserGroup(User* user);
 	static void addUserToAdminGroup(User* user);

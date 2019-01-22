@@ -94,6 +94,7 @@ public:
 	void WydrukujFIFO();
 	void WydrukujTabliceStronic(Process * pcb);
 	void WydrukujRame(int RamaNr, int StronaNr = -1);
+	void WydrukujRamePWym(int RamaNr, int StronaNr = -1);
 	//----Odczytywanie i zapisywanie stringow----//
 	//(potrzebne do odczytu procesow//
 	void zapiszString(Process*pcb, int Addr1, string content);

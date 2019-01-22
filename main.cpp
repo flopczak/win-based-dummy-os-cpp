@@ -1,19 +1,18 @@
 #include <iostream>
-#include "process management\Process_List.hpp"
-#include "process management\Process.hpp"
+#include "../win-based-dummy-os-cpp/process management/Process_List.hpp"
 #include "processor\Procesor.hpp"
+#include "process management\Process.hpp"
 
-
+//TODO zmien umiejscowienie check
 
 int main() {
 	std::cout << "System start..." << std::endl;
 
 	Process_List b_list;
 	Procesor proc;
-	b_list.createProcess("DUMMY", 0);
-	//b_list.createProcess("PCB1", 3);
-	//b_list.createProcess("PCB2", 4);
-	//b_list.createProcess("PCB2", 2);
+
+	b_list.createProcess("PCB2", 4);
+	b_list.createProcess("PCB3", 2);
 	//proc->temporary = b_list->getReady(); //TODO to musi byæ w mainie ¿eby za ka¿dym razem uzupe³niaæ mape
 	//TODO wgl zapytaj blazeja jak on widzi liste bo na odwrot dodajesz i usuwasz
 
@@ -28,13 +27,18 @@ int main() {
 
 		//proc.temporary.resize(b_list.getReady().size());
 		proc.temporary = b_list.getReady(); //TODO to musi byæ w mainie ¿eby za ka¿dym razem uzupe³niaæ mape
-		if (b_list.PrcList.front().process_priority != 0)
-			b_list.PrcList.pop_front();//musi byæ zeby caly czas nie uzupelniac ta sama lista
-		else
-			cout << "procesor zostal oddany dummy..." << endl;
+		for (int a = 0; a < b_list.PrcList.size(); a++)											//musi byæ zeby caly czas nie uzupelniac ta sama lista
+		{
+			if (b_list.PrcList.front().process_priority = !0)
+			{
+				b_list.PrcList.pop_front();
+			}
+		}
+
 
 		proc.add();
 		proc.run();
+		proc.displayMap();
 
 	}
 

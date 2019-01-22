@@ -1,8 +1,5 @@
-#include"Procesor.hpp"
+#include "Procesor.hpp"
 #include <iostream>
-
-using namespace std;
-
 
 //TODO gdzies jest problem bo mapa cały czas pusta
 
@@ -13,13 +10,14 @@ bool work = true;
 
 Procesor::Procesor() //Procesor::Procesor(Process_List* p)
 {
-	//Process_List p;
-	//this->temporary = p.PrcList;
+
 	new_process = false;
 	for (int i = 0; i < 8; i++)
 	{
 		mask[i] = false;
 	}
+	running = DUMMY;
+	mask[0] = true;
 }
 
 
@@ -38,14 +36,16 @@ void Procesor::check(Process&ready)
 			running.process_status = GOTOWY;
 			int it = running.process_priority;
 			main_queue[it].push_back(running);
-			running = ready;
 			mask[it] = true;
+			running = ready;
+			;
 			cout << "nastąpilo wywlaszenie..." << endl;
 		}
 		else if (running.process_priority == 0)
 		{
 			running.process_status = GOTOWY;
 			int it = running.process_priority;
+			main_queue[it].push_back(running);
 			running = ready;
 			mask[it] = true;
 		}
@@ -63,15 +63,20 @@ void Procesor::check(Process&ready)
 //problem z procesor&p z referencja lub z raczej iteratorem listy
 void Procesor::add() // dodawanie do main_queue linija kodu z main niezbedna
 {
-	int it = temporary.front().process_priority;
-	Process ready = temporary.front();
 
-	main_queue[it].push_back(ready);
-	mask[it] = true;
+	for (int i = 0; i < temporary.size(); i++)
+	{
+		int it = temporary.front().process_priority;
+		Process ready = temporary.front();
+		main_queue[it].push_back(ready);
+		temporary.pop_front();
+		mask[it] = true;
+		check(ready);
+	}
 	//new_process = true;
 	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
 	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
-	check(ready);
+
 }
 
 //Procesor::find(Procesor&p) usunąłem z funkcji wszystkie p.
@@ -84,7 +89,7 @@ void Procesor::find()
 		{
 			running = main_queue[it].front();
 			main_queue[it].pop_front();
-			if (main_queue[it].empty())
+			if (main_queue[it].empty() == true)
 			{
 				mask[it] = false;
 			}
@@ -134,10 +139,11 @@ void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 void Procesor::priority_inc()
 {
 	int i = 7;
-	while (i < 0)
+	while (i > 0)
 	{
 		if (main_queue[i].empty())
 		{
+			i--;
 			continue;
 		}
 		else
@@ -164,8 +170,19 @@ void Procesor::priority_inc()
 		i--;
 	}
 }
+//w konstruktorze zrobic puste kolejki w kazdym szczeblu mapy tak jak tu
+void Procesor::displayMap()
+{
+	for (auto a : main_queue)
+	{
+		if (mask[a.first] == true)
+		{
+			cout << "klucz: " << a.first << endl;
+			cout << "value: " << a.second.front().process_name << endl;
 
-
+		}
+	}
+}
 
 void Procesor::age(Process& p)
 {

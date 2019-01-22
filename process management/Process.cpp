@@ -23,8 +23,6 @@ Process::Process(string na)
 	//	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
 	this->process_status = GOTOWY;
-	this->process_priority = 0;
-	this->process_status = NOWY;
 	this->process_priority = 5;
 	this->program_instructions = 0;
 	this->command_counter = 0;
@@ -84,8 +82,7 @@ this->program_instructions = in;
 
 void Process::setProcessStatus(status)
 {
-	this->process_status = AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
-this->process_status = NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
+this->process_status =  AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
 }
 
 

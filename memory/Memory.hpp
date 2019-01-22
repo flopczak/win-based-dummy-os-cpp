@@ -1,5 +1,5 @@
 #pragma once
-#include "Process.h"
+#include "../processor/Procesor.hpp"
 #include <iostream>
 #include <list>
 #include <queue>

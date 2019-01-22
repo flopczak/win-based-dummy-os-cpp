@@ -1,4 +1,4 @@
-#include "Memory.h"
+#include "../memory/Memory.hpp"
 using namespace std;
 
 void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {

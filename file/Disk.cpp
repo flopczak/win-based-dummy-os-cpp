@@ -67,55 +67,84 @@ int Disk::znajdzWolny(int index)
 
 int Disk::dodajDane(std::string name, std::string dane, int index)
 {
-	std::string temp = dane;
-	if (temp.length() > 32 * 31)
+	if (root.f.fileExists(name) == -1)
 	{
-		//Interfejs DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
-		return -1;
+		std::string temp = dane;
+		if (temp.length() > 32 * 31)
+		{
+			//Interfejs DisplayLog("Rozmiar pliku przekracza maksymalna wartosc");
+			return -1;
+		}
+		int blokI = znajdzWolny(index);
+		//std::cout << blokI << std::endl;
+		if (blokI == -1)
+		{
+			//Interfejs DisplayLog("Brak wolnych blokow!");
+			return  -1;
+		}
+		unsigned int pos = 0;
+		int rozm = ceil(temp.length() / 32.0);
+		zajBloki[blokI] = true;
+		for (int i = blokI * 32; i < blokI * 32 + rozm * 32; i++)
+		{
+			if (pos < temp.length())
+			{
+				int blokD = znajdzWolny(blokI);
+				std::cout << blokI << std::endl;
+				if (blokD == -1)
+				{
+					//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
+					return -1;
+				}
+				HDD[i] = blokD;
+				zajBloki[blokD] = true;
+				for (int e = blokD * 32; e < blokD * 32 + 32; e++)
+				{
+					if (pos < temp.length())
+					{
+						HDD[e] = temp.at(pos);
+						pos++;
+					}
+					else
+					{
+						HDD[e] = -1;
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		root.f.mkfile(name, blokI);
+		return blokI;
 	}
-	int blokI = znajdzWolny(index);
-	std::cout << blokI << std::endl;
-	if (blokI == -1)
+	else
 	{
-		//Interfejs DisplayLog("Brak wolnych blokow!");
+		//Plik istnieje
 		return  -1;
 	}
-	unsigned int pos = 0;
-	int rozm = ceil(temp.length() / 32.0);
-	zajBloki[blokI] = true;
-	for (int i = blokI * 32; i < blokI * 32 + rozm * 32; i++)
+}
+
+int Disk::dodajpPlik(std::string name)
+{
+	if(root.f.fileExists(name) == -1)
 	{
-		if (pos < temp.length())
+		int blokI = znajdzWolny(0);
+		if(blokI == -1)
 		{
-			int blokD = znajdzWolny(blokI);
-			std::cout << blokI << std::endl;
-			if (blokD == -1)
-			{
-				//Interfejs DisplayLog("Brak wolnego miejsca na dysku");
-				return -1;
-			}
-			HDD[i] = blokD;
-			zajBloki[blokD] = true;
-			for (int e = blokD * 32; e < blokD * 32 + 32; e++)
-			{
-				if (pos < temp.length())
-				{
-					HDD[e] = temp.at(pos);
-					pos++;
-				}
-				else
-				{
-					HDD[e] = -1;
-				}
-			}
+			//Brak wolnych blokow
+			return -1;
 		}
-		else
-		{
-			break;
-		}
+		zajBloki[blokI] = true;
+		root.mkfile(name, blokI);
+		return  blokI;
 	}
-	root.f.mkfile(name, blokI);
-		return blokI;
+	else
+	{
+		//Plik juz istnieje
+		return  -1;
+	}
 }
 
 std::string Disk::wypiszBlok(int index)
@@ -139,5 +168,18 @@ void Disk::wypiszDysk()
 	{
 		std::cout << "Blok nr " << i+1 << std::endl;
 		std::cout << wypiszBlok(i) << std::endl;
+	}
+}
+
+std::string Disk::wypiszPlik(std::string name)
+{
+	int i = root.f.fileExists(name);
+	if(i != -1)
+	{
+		return "";
+	}
+	else
+	{
+		return wypiszPlik(i);
 	}
 }

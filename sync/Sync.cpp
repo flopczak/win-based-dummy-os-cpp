@@ -1,4 +1,4 @@
-#include "Sync.hpp"
+#include "../sync/Sync.hpp"
 
 //=====================================================================================================// Konstruktor / Destruktor
 Sync::Sync()
@@ -96,7 +96,7 @@ bool Sync::getLock()
 	return this->lock;
 }
 
-std::list<Process::Process*> Sync::getLPQ()
+std::list<Process*> Sync::getLPQ()
 {
 	return this->LockProcessQueue;
 }
@@ -114,7 +114,7 @@ bool Sync::getCond()
 	return this->cond;
 }
 
-std::list<Process::Process*> Sync::getCPQ()
+std::list<Process*> Sync::getCPQ()
 {
 	return this->CondProcessQueue;
 }

@@ -8,7 +8,7 @@ Process::Process()
 {
 	//this->PID = 0;
 	this->process_name = "";
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = 0;
 	this->program_instructions = 0;
 	this->command_counter = 0;
@@ -36,7 +36,7 @@ Process::Process(string na, int pr)
 {
 	//this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = pr;
 	this->program_instructions = 0;
 	this->command_counter = 0;

@@ -10,6 +10,11 @@
 
 using namespace std;
 
+
+/* TODO 
+trzeba naprawic
+nie moze byc globalne
+*/
 bool dislog = false;
 
 void DisplayLog(string msg) {

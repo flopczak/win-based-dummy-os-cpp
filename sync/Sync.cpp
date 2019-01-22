@@ -12,16 +12,25 @@ Sync::~Sync()
 
 }
 
-static void Sync::lockFile(string nazwa, Process* tempP)
+void Sync::lockFile(std::string nazwa, Process* tempP)
 {
-	Sync::zamkiNaPlikach.insert(nazwa,Sync lock());//dodanie nowego zamka do mapy
-	Sync::zamkiNaPlikach[nazwa].acquire(tempP);// zajecie zamka 
+	if (Sync::zamkiNaPlikach.find(nazwa) == Sync::zamkiNaPlikach.end())
+	{
+		Sync tempS;
+		Sync::zamkiNaPlikach[nazwa] = tempS;//dodanie nowego zamka do mapy
+		Sync::zamkiNaPlikach[nazwa].acquire(tempP);// zajecie zamka 
+	}
+	else
+	{
+		Sync::zamkiNaPlikach[nazwa].acquire(tempP);
+	}
 }
 
-static void Sync::unlockFile(string nazwa, Process* tempP)
+void Sync::unlockFile(std::string nazwa, Process* tempP)
 {
 	Sync::zamkiNaPlikach[nazwa].release(tempP);//zwolnienie odpowiedniego zamku
 }
+
 
 //=====================================================================================================// Metody dla Lock
 

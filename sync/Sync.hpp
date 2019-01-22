@@ -15,11 +15,11 @@ private:
 	std::list<Process*>LockProcessQueue;//Kolejka procesow oczekujacych na zamku
 	std::list<Process*>CondProcessQueue;//Kolejka procesow oczekujacych na zmiennej warunkowej
 public:
-	static map<string, Sync> zamkiNaPlikach;
+	static map<std::string, Sync> zamkiNaPlikach;
 	Sync();
 	~Sync();
-	static void lockFile(string, Process*);
-	static void unlockFile(string, Process*);
+	static void lockFile(std::string, Process*);
+	static void unlockFile(std::string, Process*);
 	//Metody do obslugi zamkow :
 	void acquire(Process*);
 	void release(Process*);

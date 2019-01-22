@@ -84,7 +84,7 @@ public:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
 		}
 		else {
-			cout << "Nie ma takiego koloru.\n Dostepne kolory to green blue red white oraz liczby 0-15 " << endl;
+			cout << "Nie ma takiego koloru.\nDostepne kolory to green blue red white oraz liczby 0-15 " << endl;
 		}
 	}
 

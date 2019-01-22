@@ -1,12 +1,12 @@
 #pragma once
-#include"../process management/Process.hpp"
-#include"../process management/Process_List.hpp"
+#include"..\process management\Process.hpp"
+#include"..\process management\Process_List.hpp"
 #include<map>
 #include<array>
 #include<queue>
 #include<list>
 #include<vector>
-bool debug = true;
+
 
 
 class Procesor
@@ -15,15 +15,18 @@ public:
 	bool work = true;
 	bool new_process = false;
 	int w_counter;
-	Process running;
-	Process_List* temporary;
-	Procesor(Process_List* p);
+	Process running; // wkladasz to do run od konrada aby wykonac rozkaz asemblera
+					 //Process_List* temporary = new Process_List();
+	list<Process> temporary;
+	Procesor(); //Procesor(Process_List* p);
 	~Procesor();
-	void add(Process& ready); // metoda do dodawania proces�w
+	void add(); // metoda do dodawania proces�w
 	void check(Process &ready);
-	int Procesor::find(Procesor&p);
+	void Procesor::find();
 
-	void run(Procesor&p);
+	void priority_inc(); //metoda inkrementująca priorytety kazdego gotowego procesu
+
+	void run();
 	std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
 	std::array<bool, 8> mask; //maska bitowa na kolejk�
 

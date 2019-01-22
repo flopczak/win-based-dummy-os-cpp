@@ -1,13 +1,20 @@
-#include "Procesor.hpp"
+#include"Procesor.hpp"
 #include <iostream>
 
-//w konstruktorze procesu automatyczne dodawanie 
+using namespace std;
+
+
+//TODO gdzies jest problem bo mapa cały czas pusta
+
+//w konstruktorze procesu automatyczne wywołanie funkcji dodającej do mapy kolejek done V
+// zobaczyczyć jak synchronizacja zmienia stan procesu na oczekujący zeby wywłaszczenie
 
 bool work = true;
 
-Procesor::Procesor(Process_List* p)
+Procesor::Procesor() //Procesor::Procesor(Process_List* p)
 {
-	this->temporary = p;
+	//Process_List p;
+	//this->temporary = p.PrcList;
 	new_process = false;
 	for (int i = 0; i < 8; i++)
 	{
@@ -20,26 +27,31 @@ Procesor::~Procesor()
 {
 }
 
+//zmien check
+// od stattu running powinnien byc dummy / cos tu na dole jest nie tak bo runnig jest defaultowy
 void Procesor::check(Process&ready)
 {
 	if (ready.process_priority > running.process_priority)
 	{
-		if (running.process_priority != 0)
+		if (ready.process_priority > 0 && ready.process_priority < 8)
 		{
 			running.process_status = GOTOWY;
 			int it = running.process_priority;
 			main_queue[it].push_back(running);
 			running = ready;
-			running.process_status = AKTYWNY;
 			mask[it] = true;
+			cout << "nastąpilo wywlaszenie..." << endl;
 		}
-		if (running.process_priority == 0)
+		else if (running.process_priority == 0)
 		{
 			running.process_status = GOTOWY;
 			int it = running.process_priority;
 			running = ready;
-			running.process_status = AKTYWNY;
 			mask[it] = true;
+		}
+		else
+		{
+			cout << "jak to jest możliwe że prtiorytet jest spoza zakresu";
 		}
 	}
 	else
@@ -48,34 +60,37 @@ void Procesor::check(Process&ready)
 	}
 
 }
+//problem z procesor&p z referencja lub z raczej iteratorem listy
+void Procesor::add() // dodawanie do main_queue linija kodu z main niezbedna
+{
+	int it = temporary.front().process_priority;
+	Process ready = temporary.front();
 
-void Procesor::add(Process& ready)
-{;
-	int it = ready.process_priority;
 	main_queue[it].push_back(ready);
 	mask[it] = true;
-	new_process = true;
+	//new_process = true;
 	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
 	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
 	check(ready);
 }
 
-int Procesor::find(Procesor&p)
+//Procesor::find(Procesor&p) usunąłem z funkcji wszystkie p.
+void Procesor::find()
 {
 	int it = 7;
 	while (it > 0)
 	{
-		if (p.mask[it] == true)
+		if (mask[it] == true)
 		{
 			running = main_queue[it].front();
 			main_queue[it].pop_front();
 			if (main_queue[it].empty())
 			{
-				p.mask[it] = false;
+				mask[it] = false;
 			}
 			else
 			{
-				p.mask[it] = true;
+				mask[it] = true;
 			}
 			break;
 		}
@@ -89,29 +104,65 @@ int Procesor::find(Procesor&p)
 			it--;
 		}
 	}
-
-
 }
+
 
 
 //run konrada to excute bala
 
-void Procesor::run(Procesor& p) //sprawdzanie co każdą iterację pentli w main
+void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 {
+	find(); // to juz mi przypisze odpowiedni proces do running czy to moze byc?(jako wywlaszenie)
 	running.process_status = AKTYWNY;
-	//wykonanie rozkazu asemblerowego
+	//tu wstawienie running do metody run konrada w celu wykonania rozkazu asemblera
+
 	cout << "running: " << &running.process_name << endl;
+	priority_inc();
 	/*
 	to chyba powinno być w funkcji wyszukującej
 	main_queue[it].pop_front();
 
 	if (main_queue[it].empty())
 	{
-		mask[it] = false;
+	mask[it] = false;
 	}
 	*/
-	cin.get();
+	system("pause");
+}
 
+//funkcja zwiększająca wszystkie priotytety procesów gotowych!
+void Procesor::priority_inc()
+{
+	int i = 7;
+	while (i < 0)
+	{
+		if (main_queue[i].empty())
+		{
+			continue;
+		}
+		else
+		{
+			for (auto j : main_queue[i])
+			{
+				if (j.process_status == GOTOWY)
+				{
+					if (j.program_instructions > 0 && j.program_instructions < 4)
+					{
+						j.program_instructions++;
+					}
+					else if (j.program_instructions == 4)
+					{
+						age(j);
+						j.program_instructions = 0;
+					}
+					else
+						j.program_instructions = 0;
+				}
+			}
+		}
+
+		i--;
+	}
 }
 
 

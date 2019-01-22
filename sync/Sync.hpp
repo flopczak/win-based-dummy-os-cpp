@@ -15,7 +15,7 @@ private:
 	std::list<Process*>LockProcessQueue;//Kolejka procesow oczekujacych na zamku
 	std::list<Process*>CondProcessQueue;//Kolejka procesow oczekujacych na zmiennej warunkowej
 public:
-	Sync(std::string syncN, std::string fileN);
+	Sync(std::string syncN);
 	~Sync();
 	//Metody do obslugi zamkow :
 	void acquire(Process*);

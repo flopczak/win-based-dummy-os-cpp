@@ -1,10 +1,10 @@
 #include "Sync.hpp"
 
 //=====================================================================================================// Konstruktor / Destruktor
-Sync::Sync(std::string syncN, std::string fileN)
+Sync::Sync(std::string syncN)
 {
 	this->syncName = syncN;
-	this->fileName = fileN;
+	this->fileName = syncN;
 	this->lock=false;
 	this->cond=false;
 }

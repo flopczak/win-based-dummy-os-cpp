@@ -1,4 +1,5 @@
 #include "Memory.h"
+using namespace std;
 
 void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {
 
@@ -124,7 +125,7 @@ void Memory::ZapiszWPamieci(Process * pcb, int addr1, char element) {
 void Memory::ZapewnijStroneWPamieci(Process * pcb, int AdresLogiczny) {
 	STRON * TabelaStron = pcb->PobTabStronic();
 
-	int NumerPam = ObliczTabliceStronic(AdresLogiczny);
+	int NumerPam = ObliczNumerStrony(AdresLogiczny);
 
 	if (TabelaStron[NumerPam].wPam == false) {
 		PrzeStroPWymDoPam(pcb, NumerPam);
@@ -170,8 +171,8 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 	int WieTabStron = ObliczTabliceStronic(size);
 	STRON * TablicaStron = new STRON[WieTabStron];
 	int PoczatekStr = 0;
-
-	for (int NrStr = 0; NrStr < WieTabStron; WieTabStron++) {
+	
+	for (int NrStr = 0; NrStr < WieTabStron; NrStr++) {
 		//jezeli plik wymiany jest pelny
 		if (WolneRamkiPlikuWymiany.empty())
 		{
@@ -183,11 +184,12 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 		TablicaStron[NrStr].RamaZajeta = NowoZajetaRamaPWym;
 		TablicaStron[NrStr].wPam = false;
 
-		string pageContent = proces.substr(PoczatekStr, WieTabStron);
+		string pageContent = proces.substr(PoczatekStr, WIE_RAM);
+		char strona = pageContent[NrStr];
 		proces.erase(PoczatekStr, WIE_RAM);
 		WpiszZasobPamDoPWym(NowoZajetaRamaPWym, pageContent);
+		
 	}
-
 	pcb->UstTabStronic(TablicaStron);
 	pcb->UstWielTabStronic(WieTabStron);
 }

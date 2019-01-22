@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-enum status {NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
+enum status { AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY };
 
 struct STRON
 {
@@ -14,10 +14,10 @@ struct STRON
 class Process											//PCB
 {
 public:
-	
+
 	STRON* pageTable;									//Przemkowe RAM'y
-	//JACOB zmieniam parametry na publiczne
-	//STRON* pageTable;	//Przemkowe RAM'y
+														//JACOB zmieniam parametry na publiczne
+														//STRON* pageTable;	//Przemkowe RAM'y
 	int pageTableSize;
 
 	string process_name;								//nazwa procesu
@@ -30,7 +30,7 @@ public:
 	int CX;
 	int process_priority;								//priorytet
 	bool PP;											//flaga obecno�ci procesora
-	
+
 	Process();											//konstruktor domy�lny
 	Process(string n);									//konstruktor z nazw� procesu
 	Process(string n, int p);							//konstruktor z nazw� i priorytetem procesu
@@ -41,7 +41,8 @@ public:
 	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
 	int getPID();
 
-	
+
+
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y
 	int errorCode;
 	STRON* PobTabStronic();

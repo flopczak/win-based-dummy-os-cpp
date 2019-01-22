@@ -1,5 +1,5 @@
 #pragma once
-#include "Process.h"
+#include "Process.hpp"
 #include <iostream>
 #include <list>
 #include <queue>
@@ -81,11 +81,12 @@ private:
 	void DodajDoFifo(FIFO_entry entry);
 	bool BrakMieWPowAdr(Process * pcb, int logicalAddress);
 public:
+	void UtworzProgram(Process*pcb,string path);
 	//-----Pamiec-----//
 	void PrzydzialPamieci(Process * pcb, string proces, int size);
 	void zwolnieniePamieci(Process * pcb);
 	void WypiszZasobPamieci(int nrToPrint = 0);
-	void WpiszZasobPamDoPWym(int nr,string zasobPam);
+	void WpiszZasobPamDoPWym(int nr, string zasobPam);
 	//----Sprawdzanie Powierzchni Adresowej----//
 	bool CzyAdrWPowAdresss(Process * pcb, int AddrLog);
 	bool CzyZasiegAdrWPowAdres(Process * pcb, int AddrLog, int range);
@@ -103,4 +104,3 @@ public:
 	Memory();
 	~Memory();
 };
-

@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../win-based-dummy-os-cpp/process management/Process_List.hpp"
-#include "processor\Procesor.hpp"
-#include "process management\Process.hpp"
+#include "process management/Process.hpp"
+#include "process management/Process_List.hpp"
+#include "processor/Procesor.hpp"
 
 //TODO zmien umiejscowienie check
 

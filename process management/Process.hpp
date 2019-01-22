@@ -7,7 +7,7 @@ enum status { AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY };
 
 struct STRON
 {
-	int RamZajety;
+	int RamaZajeta;
 	bool wPam;
 };
 

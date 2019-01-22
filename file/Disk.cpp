@@ -1,4 +1,5 @@
 #include "../file/Disk.hpp"
+#include "../shell/Interfejs.h"
 
 Disk::Disk()
 {

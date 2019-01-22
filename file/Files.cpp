@@ -1,12 +1,8 @@
 #include "Files.hpp"
 
 
-
-
-
 Files::Files()
 {
-	
 }
 
 
@@ -16,34 +12,26 @@ Files::~Files()
 int Files::fileExists(std::string name)
 {
 	std::string comp;
-		for (File e : files)
-		{
-			comp += e.getName() + "." + e.getExt();
-			if (comp == name) return e.getIndexBlock();
-			else
-			{
-				comp = "";
-			}
-		}
+	for (File e : files)
+	{
+		comp += e.getName() + "." + e.getExt();
+		if (comp == name) return e.getIndexBlock();
+		comp = "";
+	}
 	return -1;
 }
 
 
 void Files::mkfile(std::string name, int bloki)
-{
-	if (name.length() == 0)
-	{
-		//DisplayLog("Podano nieprawidlowa nazwe pliku!")
-	}
-	if (fileExists(name))
-	{
-		//DisplayLog("Plik o podanej nazwie juz istnieje!");
-	}
+{ 
+	Acl* usr = new Acl();
 	File newf = File(name);
 	newf.setIndexBlock(bloki);
+	newf.setAccessLevel(usr->getUserPermissions());
+	//std::cout << newf.getAccessLevel();
 	files.push_back(newf);
 	//DisplayLog("Stworzono nowy plik o nazwie: " + name);
-
+	delete usr;
 }
 
 
@@ -57,8 +45,8 @@ std::string Files::getFile(std::string name)
 			// return zawartosc pliku e.getIndexBlock();
 		}
 	}
-		//DisplayLog("Plik o podanej nazwie nie istnieje!");
-		return "";
+	//DisplayLog("Plik o podanej nazwie nie istnieje!");
+	return "";
 }
 
 
@@ -66,7 +54,7 @@ void Files::showFiles()
 {
 	for (File e : files)
 	{
-		std::cout << "Plik " << e.getName() << "." << e.getExt() << " indeks " << e.getIndexBlock() << std::endl;
+		std::cout << "Plik " << e.getName() << "." << e.getExt() << " indeks " << e.getIndexBlock() << " ACL " << e.getAccessLevel() << std::endl;
 	}
 }
 
@@ -74,10 +62,12 @@ bool Files::rmfile(std::string name)
 {
 	std::string comp;
 	int pos = 0;
-	for (File e : files) {
-		if ((comp += e.getName() + "." + e.getExt()) == name) {
+	for (File e : files)
+	{
+		if ((comp += e.getName() + "." + e.getExt()) == name)
+		{
 			//Disk.remove(e.getIndexBlock());
-			files.erase(files.begin()+pos);
+			files.erase(files.begin() + pos);
 			//DisplayLog("Usunieto plik: " + name);
 			return true;
 		}
@@ -87,4 +77,3 @@ bool Files::rmfile(std::string name)
 	//DisplayLog("Brak pliku o podanej nazwie: " + name);
 	return false;
 }
-

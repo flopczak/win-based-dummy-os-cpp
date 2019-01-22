@@ -1,11 +1,12 @@
 #include "Directory.hpp"
-#include <string>
+
+
 
 class Disk
 {
 private:
-	char HDD[1024];
-	bool zajBloki[32];
+	static char HDD[1024];
+	static bool zajBloki[32];
 public:
 	Disk();
 	~Disk();
@@ -23,5 +24,7 @@ public:
 	void usunPlik(std::string name);
 	bool open(std::string name);
 	bool close(std::string name);
+	bool status(std::string name);
 	void nadpiszPlik(std::string name, std::string dane);
+	bool czyMozna(std::string fname);
 };

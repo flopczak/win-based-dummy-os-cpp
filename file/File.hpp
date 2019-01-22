@@ -5,10 +5,9 @@ class File
 private:
 	std::string name;
 	std::string ext;
-	int size;
 	int indexBlock;
-	int accessLevel;
-public:
+	int acl;
+	public:
 	File(std::string);
 	File() = default;
 	~File();
@@ -16,8 +15,6 @@ public:
 	bool setName(std::string newname);
 	std::string getExt();
 	bool setExt(std::string newext);
-	int getSize();
-	bool setSize(int newsize);
 	int getIndexBlock();
 	bool setIndexBlock(int newiblock);
 	int getAccessLevel();

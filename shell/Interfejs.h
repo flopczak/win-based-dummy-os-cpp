@@ -15,13 +15,6 @@ using namespace std;
 trzeba naprawic
 nie moze byc globalne
 */
-bool dislog = false;
-
-void DisplayLog(string msg) {
-	if (dislog) {
-		cout << "PK : " << msg << endl;
-	}
-}
 
 class Interfejs {
 public:

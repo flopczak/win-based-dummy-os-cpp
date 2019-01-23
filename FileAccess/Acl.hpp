@@ -1,5 +1,5 @@
 #pragma once
-#include "../User/User.hpp"
+#include "User.hpp"
 #include <map>
 
 using namespace std;
@@ -35,11 +35,11 @@ public:
 	string getOwner();
 				//Others
 	static void viewAclList();					//I 							// Wyswietlenie wszystkich ACL powiazanych z plikami
-	static void viewFileAcl(string file_name);	//I								// Wyswietlenie ACL konkretnego pliku
+	static void viewFileAcl(vector<string> param);	//I								// Wyswietlenie ACL konkretnego pliku
 				//
 	void viewCurrentFileAcl();													// Wyswietlanie ACL bierzacego pliku
 	void setDefaultPermissions();												// Ustanowienie podstawowych wpisow ACE
-	static void setAdditionalPermissions(string file_name);		//I				// Dodanie dodatkowych wpisów ACE 
+	static void setAdditionalPermissions(vector<string> param);		//I				// Dodanie dodatkowych wpisów ACE 
 	void defineMask();															// Inicjalizacja maski
 	static void permissionsToCharArray(Permissions permissions, int* out);		// Translacja "Flagi" na odpowiednie wartosci w char array
 	int readPermissions(string filename);										// zwraca uprawnienia do konkretnego pliku

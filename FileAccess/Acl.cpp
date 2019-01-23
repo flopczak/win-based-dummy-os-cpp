@@ -31,7 +31,7 @@ string Acl::getOwner() {
 			it->second->viewCurrentFileAcl();
 		}
 	}
-	void Acl::viewFileAcl(string file_name) {
+	void Acl::viewFileAcl(vector<string> param) {
 		if (AclList.find(file_name) != AclList.end()) {
 			map<string, Mask> temp;
 			string fileOwner;
@@ -50,7 +50,7 @@ string Acl::getOwner() {
 		}
 		else std::cout << "Nie znaleziono pliku\n";
 	}
-	void Acl::setAdditionalPermissions(string file_name) {
+	void Acl::setAdditionalPermissions(vector<string> param) {
 		string currentLoggedUser = User::getUserBySID(User::getCurrentLoggedUser());
 		if (AclList.find(file_name) != AclList.end()) {
 			string fileOwner = AclList[file_name]->getOwner();

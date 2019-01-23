@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../FileAccess/Acl.hpp"
-#include "../shell/Interfejs.h"
+#include "Acl.hpp"
+#include "Interfejs"
 
 using namespace std;
 class User {
@@ -42,7 +42,7 @@ public:
 	static void printUser(User* user);
 	static void logOut();
 	static void logIn();								//I 
-	static void deleteUser(string user);				//I		
+	static void deleteUser(vector<string> param);				//I		
 	void changePassword();								//I
 	void generateSID();
 	static bool currentLoggedGotAdminPermissions();					  // Sprawdza czy obecnie zalogowana osoba jest adminem
@@ -56,8 +56,8 @@ public:
 	static bool findInStandardUserGroup(string username);
 	static bool findInUserGroup(string username);
 	static void addToUserList(User* user);
-	static void addUserToStandardUserGroup(string username); //I				Add to Standard Group
-	static void addUserToAdminGroup(string username);		//I				Add to Admin Group
+	static void addUserToStandardUserGroup(vector<string> param); //I				Add to Standard Group
+	static void addUserToAdminGroup(vector<string> param);		//I				Add to Admin Group
 
 	static void UserStart();										// Inicjalizacja poczatkowych parametrów
 

@@ -34,14 +34,17 @@ DP name - usuwa proces
 
 */
 
-Assembler::Assembler() {
+Assembler::Assembler(Process_List *pl, Memory *m, Disk *d) {
+	this->pl = pl;
+	this->m = m;
+	this->d = d;
 	PID = 0;
 	regAX = 0;
 	regBX = 0;
 	regCX = 0;
 	PC = 0;
 }
-
+Assembler::~Assembler() {}
 
 void Assembler::getRegistersState(Process &pcb) {
 	PID = pcb.PID;
@@ -103,24 +106,28 @@ int Assembler::get_register(std::string reg) {
 	}
 }
 
-std::string Assembler::getOrder(Memory &m, Process &pcb) {
+std::string Assembler::getOrder(Process &pcb) {
 	std::string order;
 	order = m.odczytajString(&pcb,PC);
 	PC += order.size() + 1;
 	return order;
 }
 
+void Assembler::error(Process &pcb) {
+	std::cout << "Blad parsowania. Proces " << pcb.getPID() << " zostal zatrzymany!" << std::endl;
+	pcb.setProcessStatus(ZAKONCZONY);
+	return;
+}
+
 std::map<std::string, Sync>Sync::zamkiNaPlikach;
 
-// tu powinno byæ pusto, a przekazanie powinno byc w konstruktorze
-void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
+void Assembler::run(Process &pcb) {
 	
-
 	getRegistersState(pcb);
 
 	std::string order;
 	order.clear();
-	order = getOrder(m, pcb);
+	order = getOrder(this->m, pcb);
 	std::string arg1, arg2, arg3;
 	int value = 0;
 
@@ -140,11 +147,12 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 			set_register(arg1, get_register(arg1) + get_register(arg2));
 		}
 
+
 		printRegisters();
 		saveRegisters(pcb);
 	}
 
-	if (order == "SB") {
+	else if (order == "SB") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
@@ -164,7 +172,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "MP") {
+	else if (order == "MP") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
@@ -184,7 +192,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "DV") {
+	else if (order == "DV") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
@@ -198,7 +206,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 			}
 
 			else {
-				std::cout << "Don't divide by 0" << std::endl;
+				std::cout << "Nie mozna dzielic przez 0." << std::endl;
 			}
 		}
 
@@ -208,7 +216,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 			}
 
 			else {
-				std::cout << "Don't divide by 0" << std::endl;
+				std::cout << "Nie mozna dzielic przez zero." << std::endl;
 			}
 		}
 
@@ -216,7 +224,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "MV") {
+	else if (order == "MV") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
@@ -236,7 +244,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "IC") {
+	else if (order == "IC") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
@@ -248,7 +256,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "DC") {
+	else if (order == "DC") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
@@ -260,29 +268,29 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "LC") {
+	else if (order == "LC") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
 		Sync::lockFile(arg1, &pcb);
 	}
 
-	if (order == "UL") {
+	else if (order == "UL") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		Sync::unlockFile(arg1, &pcb);
 	}
 
-	if (order == "CR") {
+	else if (order == "CR") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		////////
-		disk.dodajpPlik(arg1);
+		d.dodajpPlik(arg1);
 		saveRegisters(pcb);
 		
 	}
 
-	if (order == "WF") {
+	else if (order == "WF") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::regex wzorzec("\".*\"");
@@ -306,7 +314,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "AF") {
+	else if (order == "AF") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::regex wzorzec("\".*\"");
@@ -330,7 +338,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "RF") {
+	else if (order == "RF") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		if (disk.czyMozna(arg1)) {
@@ -350,7 +358,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 	}
 
 
-	if (order == "DF") {
+	else if (order == "DF") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		if (disk.czyMozna(arg1)) {
@@ -359,25 +367,27 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "CP") {
+	else if (order == "CP") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
-		arg3 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << "" << arg3 << std::endl;
-		
-
+		std::vector<std::string> doprocesu;
+		doprocesu.push_back(arg1);
+		doprocesu.push_back(arg2);
+		pl.createProcess(doprocesu);
 		saveRegisters(pcb);
 	}
 
-	if (order == "DP") {
+	else if (order == "DP") {
 		arg1 = getOrder(m, pcb);
-		arg2 = getOrder(m, pcb);
-		std::cout << "Order: " << order << " " << arg1 << " " << arg2 << std::endl;
-		/////////////////
+		std::cout << "Order: " << order << " " << arg1 << std::endl;
+		std::vector<std::string> doprocesu;
+		doprocesu.push_back(arg1);
+		pl.terminateProcess(doprocesu);
 		saveRegisters(pcb);
 	}
 
-	if (order == "JP") {
+	else if (order == "JP") {
 		arg1 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 
@@ -391,7 +401,7 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "JZ") {
+	else if (order == "JZ") {
 		arg1 = getOrder(m, pcb);
 		arg2 = getOrder(m, pcb);
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
@@ -410,10 +420,13 @@ void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 		saveRegisters(pcb);
 	}
 
-	if (order == "HL") {
+	else if (order == "HL") {
 		std::cout << "Order: " << order << std::endl;
+		std::vector<std::string> doprocesu;
+		doprocesu.push_back();
 		saveRegisters(pcb);
-		//////
-	
+	}
+	else {
+		error(pcb);
 	}
 }

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef File_H
+#define File_H
 #include "../file/Inc.hpp"
 
 class File
@@ -23,3 +25,5 @@ public:
 
 	std::string getSpecName(std::string);
 };
+
+#endif

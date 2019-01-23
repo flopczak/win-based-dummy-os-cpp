@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Sync_H
+#define Sync_H
 #include"../process management/Process.hpp"
 #include <list>
 #include <map>
@@ -37,3 +39,4 @@ public:
 
 };
 
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Asm_H
+#define Asm_H
 #include "../process management/Process.hpp"
 #include "../process management/Process_List.hpp"
 #include "../memory/Memory.hpp"
@@ -34,3 +36,4 @@ public:
 	void error(Process &p);
 };
 
+#endif

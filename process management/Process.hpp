@@ -1,4 +1,6 @@
 #pragma once
+#ifndef PCB_H
+#define PCB_H
 #include <list>
 #include <string>
 using namespace std;
@@ -49,3 +51,4 @@ public:
 	void UstWielTabStronic(int num);
 	int PobWielTabStronic();
 };
+#endif

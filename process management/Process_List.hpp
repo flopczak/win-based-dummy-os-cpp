@@ -1,4 +1,6 @@
 #pragma once
+#ifndef PCBList_H
+#define PCBList_H
 #include "Process.hpp"
 #include "../processor/Procesor.hpp"
 #include <vector>
@@ -22,3 +24,5 @@ public:
 	void findAndDisplayProcess(vector<string>v);
 	void displayAll();
 };
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef CPU_H
+#define CPU_H
 #include"../process management/Process.hpp"
 #include"../process management/Process_List.hpp"
 #include "../processor/Procesor.hpp"
@@ -51,4 +53,4 @@ public:
 	void age(Process& p);
 
 };
-
+#endif

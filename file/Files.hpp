@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Files_H
+#define Files_H
 #include "../file/File.hpp"
 
 class Files : public File
@@ -15,3 +17,4 @@ public:
 	void showFiles();
 	bool rmfile(std::string name);
 };
+#endfile

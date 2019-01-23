@@ -1,3 +1,6 @@
+#pragma once
+#ifndef Shell_H
+#define Shell_H
 #include <iostream>
 #include <vector>
 #include <string>
@@ -400,3 +403,4 @@ public:
 	}
 };
 
+#endif

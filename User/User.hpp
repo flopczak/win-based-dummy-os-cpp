@@ -1,9 +1,11 @@
 #pragma once
+#ifndef User_H
+#define User_H
 #include <iostream>
 #include <vector>
 #include <string>
 #include "Acl.hpp"
-#include "Inteferjs.h"
+#include "../shel/Inteferjs.h"
 
 class User {
 

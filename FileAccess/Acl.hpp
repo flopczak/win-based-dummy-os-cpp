@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ACL_H
+#define ACL_H
 #include "User.hpp"
 #include <map>
 #include "Interfejs.h"
@@ -46,3 +48,5 @@ public:
 	int readPermissions(string filename);										// zwraca uprawnienia do konkretnego pliku
 	static int getUserPermissions();											// Zwraca maks. poczatkowe uprawnienia obecnego uzytkownika														
 };
+
+#endif

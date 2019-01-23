@@ -10,7 +10,7 @@ int main() {
 	std::cout << "System start..." << std::endl;
 	User user();
 	Acl acl();
-	Disk dysk();
+	Disk dysk = Disk();
 	Process_List PL();
 	Sync sync();
 	Memory memory;

@@ -112,7 +112,8 @@ std::string Assembler::getOrder(Memory &m, Process &pcb) {
 
 std::map<std::string, Sync>Sync::zamkiNaPlikach;
 
-void Assembler::run(Process &pcb, Memory &m, Disk &disk) {
+// tu powinno byæ pusto, a przekazanie powinno byc w konstruktorze
+void Assembler::run(Process *pcb, Memory *m, Disk *disk) {
 	
 
 	getRegistersState(pcb);

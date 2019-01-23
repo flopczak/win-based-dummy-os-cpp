@@ -11,9 +11,11 @@
 
 bool work = true;
 
-Procesor::Procesor() //Procesor::Procesor(Process_List* p)
+Procesor::Procesor(Assembler *a, Memory *m, Disk *d) //Procesor::Procesor(Process_List* p)
 {
-	
+	this->a = a;
+	this->m = m;
+	this->d = d;
 	new_process = false;
 	for (int i = 0; i < 8; i++)
 	{
@@ -185,12 +187,12 @@ void Procesor::ramka()
 
 //run konrada to excute bala
 
-void Procesor::run(Assembler& a,Memory &m,Disk &d) //sprawdzanie co każdą iterację pentli w main
+void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 {
 	find(); // to juz mi przypisze odpowiedni proces do running czy to moze byc?(jako wywlaszenie)
 	running.process_status = AKTYWNY;
 	//tu wstawienie running do metody run konrada w celu wykonania rozkazu asemblera
-	a.run(running,m,d);
+	this->a->run(running,this->m,this->d);
 	cout << "running: " << running.getName() << endl;
 	priority_inc();
 	/*

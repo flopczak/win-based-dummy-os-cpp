@@ -1,17 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "process management/Process.hpp"
-#include "process management/Process_List.hpp"
-
-#include "processor/Procesor.hpp"
+#include "Inklud.hpp"
 
 //TODO zmien umiejscowienie check
 
 int main() {
 	std::cout << "System start..." << std::endl;
 	Procesor proc;
-	Assembler asm;
+	Interfejs shell(&proc);
 
 	while (proc.work == true)
 	{

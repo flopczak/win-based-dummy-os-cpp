@@ -22,7 +22,7 @@ public:
 	void printRegisters();
 	int get_register(std::string reg);
 	void set_register(std::string reg, int value);
-	void run(Process &pcb, Memory &m, Disk &disk);
+	void run(Process *pcb, Memory *m, Disk *disk);
 	std::string getOrder(Memory &m, Process &pcb);
 	Assembler();
 };

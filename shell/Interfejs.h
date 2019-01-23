@@ -15,6 +15,8 @@ using namespace std;
 
 
 class Interfejs {
+private:
+	Procesor *proc;
 public:
 	
 	struct met {
@@ -23,6 +25,10 @@ public:
 	};
 	vector<met> metody;
 	vector<string> kroki;
+
+	Interfejs(Procesor *proc) {
+		this->proc = proc;
+	}
 
 	void DisplayLog(string msg) {
 		kroki.push_back(msg);

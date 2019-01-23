@@ -3,12 +3,10 @@
 #include <string>
 #include "Interfejs.h"
 using namespace std;
-
 Acl::Acl() {
 	this->defineMask();
 	this->owner = User::getUserBySID(User::getCurrentLoggedUser());
 	this->setDefaultPermissions();
-	this->interfejs = new Interfejs();
 }
 Acl::~Acl() {}
 

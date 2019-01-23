@@ -1,7 +1,7 @@
-#include "..\FileAccess\Acl.hpp"
+#include "Acl.hpp"
 #include "User.hpp"
 #include <random>
-#include "..\shell\Interfejs.h"
+#include "Interfejs.h"
 
 User::User() {
 	//this->interfejs = new Interfejs();

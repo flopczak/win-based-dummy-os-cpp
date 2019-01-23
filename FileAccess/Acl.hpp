@@ -1,6 +1,7 @@
 #pragma once
-#include "../user/User.hpp"
+#include "User.hpp"
 #include <map>
+#include "Interfejs.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ enum Permissions {
 	ADMIN_WRITE = 5,
 };
 
+
 struct Mask {
 	int values[5];
 };
@@ -22,7 +24,6 @@ private:
 	string owner;
 	Mask mask;
 	map<string, Mask> Ace_container;
-	Interfejs *interfejs;
 
 public:
 	static map<string, Acl*> AclList;

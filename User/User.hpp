@@ -2,10 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../FileAccess/Acl.hpp"
-#include "../shell/Interfejs.h"
+#include "Acl.hpp"
+#include "Inteferjs.h"
 
-using namespace std;
 class User {
 
 private:
@@ -13,7 +12,6 @@ private:
 	string password;
 	string SID;			// security ID (one per account/group)
 	static string currentLoggedUser;
-	Interfejs *interfejs;
 				
 public:
 	User();

@@ -127,7 +127,11 @@ void Procesor::find()
 
 void Procesor::ramka()
 {
-	string i, int q, int w, int j;
+
+	string i;
+	int q;
+	int w; 
+	int j;
 	
 	map<int, string>stat;
 	stat[0] = "AKTYWNY";
@@ -194,7 +198,7 @@ void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 	//tu wstawienie running do metody run konrada w celu wykonania rozkazu asemblera
 	
 	
-	this->a->run(prtrunning,this->m,this->d);
+	this->a->run(*prtrunning);
 
 
 	cout << "running: " << running.getName() << endl;

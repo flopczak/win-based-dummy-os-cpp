@@ -13,10 +13,10 @@ int main() {
 	Disk dysk = Disk();
 	Process_List PL();
 	Sync sync();
-	Memory memory;
-	Assembler assem(&memory, &dysk, &PL);
+	Memory memory();
+	Assembler assem(&PL, &memory, &dysk);
 	Procesor proc(&assem, &memory, &dysk);
-	Interfejs shell(&memory, &PL, &user, &acl, &dysk, &proc, &sync);
+	//Interfejs shell(&memory, &PL, &user, &acl, &dysk, &proc, &sync);
 
 	while (proc.work == true)
 	{

@@ -54,15 +54,15 @@ void Process_List::setStatus(vector<string>v)
 	}
 	else if (v[1] == "GOTOWY")
 	{
-		st == GOTOWY;
+		st = GOTOWY;
 	}
 	else if (v[1] == "OCZEKUJACY")
 	{
-		st == OCZEKUJACY;
+		st = OCZEKUJACY;
 	}
 	else if (v[1] == "ZAKONCZONY")
 	{
-		st == ZAKONCZONY;
+		st = ZAKONCZONY;
 	}
 	Process a(v[0]);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)

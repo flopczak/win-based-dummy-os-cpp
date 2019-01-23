@@ -4,7 +4,7 @@ Disk::Disk()
 {
 	for (int i = 0; i < 1024; i++)
 	{
-		HDD[i] = -1;
+		this->HDD[i] = -1;
 	}
 	this->root = Directory();
 	this->root.setName("root");
@@ -38,15 +38,15 @@ void Disk::wypiszPlik(int index)
 	std::cout << "Wypisuje plik o podanym numerze bloku indeksowego: " + to_string(index) << std::endl;
 	for (int i = index * 32; i < (index * 32) + 32; i++)
 	{
-		if (HDD[i] != -1)
+		if (this->HDD[i] != -1)
 		{
 			////("Przechodze do bloku danych numer: " + HDD[i]);
 			std::cout << "Przechodze do bloku danych numer: " + to_string(HDD[i]) << std::endl;
-			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[i] * 32) + 32; j++)
 			{
-				if (HDD[j] != -1)
+				if (this->HDD[j] != -1)
 				{
-					zawartosc += HDD[j];
+					zawartosc += this->HDD[j];
 				}
 			}
 		}
@@ -202,10 +202,10 @@ void Disk::wypiszBlok(int index)
 	if (index != -1) {
 		for (int i = index * 32; i < (index * 32) + 32; i++)
 		{
-			if (HDD[i] == -1) temp += '-';
+			if (this->HDD[i] == -1) temp += '-';
 			else
 			{
-				temp += HDD[i];
+				temp += this->HDD[i];
 			}
 		}
 		std::cout << temp;
@@ -252,28 +252,28 @@ void Disk::nadpiszPlik(std::string name, std::string dane)
 	{
 		if (koniec == false)
 		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[j] * 32) + 32; j++)
 			{
 				if (pos < dane.length())
 				{
-					HDD[j] = dane.at(pos);
+					this->HDD[j] = dane.at(pos);
 					pos++;
 				}
 				else
 				{
-					HDD[j] = -1;
+					this->HDD[j] = -1;
 					koniec = true;
 				}
 			}
 		}
 		else
 		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[j] * 32) + 32; j++)
 			{
-				HDD[j] = -1;
+				this->HDD[j] = -1;
 			}
 			zajeBloki[i] = false;
-			HDD[i] = -1;
+			this->HDD[i] = -1;
 		}
 	}
 }
@@ -295,7 +295,7 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 	std::vector<int> wolne;
 	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
 	{
-		if (HDD[i] == -1)
+		if (this->HDD[i] == -1)
 		{
 			wolne.push_back(i);
 		}
@@ -317,13 +317,13 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 	std::cout << "Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny" << std::endl;
 	if (wolne.size() != 32)
 	{
-		int temp = HDD[wolne[0] - 1];
+		int temp = this->HDD[wolne[0] - 1];
 		for (int i = temp * 32; i < (temp * 32) + 32; i++)
 		{
-			if (HDD[i] == -1)
+			if (this->HDD[i] == -1)
 			{
 				if (pos >= dane.length()) return;
-				HDD[i] = dane.at(pos);
+				this->HDD[i] = dane.at(pos);
 				pos++;
 			}
 		}
@@ -340,18 +340,18 @@ void Disk::dopiszDoPliku(std::string name, std::string dane)
 			return;
 		}
 		zajeBloki[blokD] = true;
-		HDD[e] = blokD;
+		this->HDD[e] = blokD;
 
 		for (int e = blokD * 32; e < blokD * 32 + 32; e++)
 		{
 			if (pos < dane.length())
 			{
-				HDD[e] = dane[pos];
+				this->HDD[e] = dane[pos];
 				pos++;
 			}
 			else
 			{
-				HDD[e] = -1;
+				this->HDD[e] = -1;
 				return;
 			}
 		}
@@ -386,15 +386,15 @@ void Disk::usunPlik(std::string name)
 	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
 	{
 
-		if (HDD[i] != -1)
+		if (this->HDD[i] != -1)
 		{
-			zajeBloki[HDD[i]] = false;
+			zajeBloki[this->HDD[i]] = false;
 
-			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[i] * 32) + 32; j++)
 			{
-				HDD[j] = -1;
+				this->HDD[j] = -1;
 			}
-			HDD[i] = -1;
+			this->HDD[i] = -1;
 		}
 	}
 	zajeBloki[blokI] = false;
@@ -467,18 +467,18 @@ void Disk::dodajDane(std::vector<std::string> vec)
 						std::cout << "Brak wolnego miejsca na dysku!" << std::endl;
 						return;
 					}
-					HDD[i] = blokD;
+					this->HDD[i] = blokD;
 					zajeBloki[blokD] = true;
 					for (int e = blokD * 32; e < blokD * 32 + 32; e++)
 					{
 						if (pos < temp.length())
 						{
-							HDD[e] = temp.at(pos);
+							this->HDD[e] = temp.at(pos);
 							pos++;
 						}
 						else
 						{
-							HDD[e] = -1;
+							this->HDD[e] = -1;
 						}
 					}
 				}
@@ -535,18 +535,18 @@ void Disk::dodajDane(std::vector<std::string> vec)
 						std::cout << "Brak wolnego miejsca na dysku!" << std::endl;
 						return;
 					}
-					HDD[i] = blokD;
+					this->HDD[i] = blokD;
 					zajeBloki[blokD] = true;
 					for (int e = blokD * 32; e < blokD * 32 + 32; e++)
 					{
 						if (pos < temp.length())
 						{
-							HDD[e] = temp.at(pos);
+							this->HDD[e] = temp.at(pos);
 							pos++;
 						}
 						else
 						{
-							HDD[e] = -1;
+							this->HDD[e] = -1;
 						}
 					}
 				}
@@ -600,10 +600,10 @@ void Disk::wypiszBlok(std::vector<std::string> vec)
 	if (index != -1) {
 		for (int i = index * 32; i < (index * 32) + 32; i++)
 		{
-			if (HDD[i] == -1) temp += '-';
+			if (this->HDD[i] == -1) temp += '-';
 			else
 			{
-				temp += HDD[i];
+				temp += this->HDD[i];
 			}
 		}
 		std::cout << temp;
@@ -663,7 +663,7 @@ void Disk::dopiszDoPliku(std::vector<std::string> vec)
 	std::vector<int> wolne;
 	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
 	{
-		if (HDD[i] == -1)
+		if (this->HDD[i] == -1)
 		{
 			wolne.push_back(i);
 		}
@@ -685,13 +685,13 @@ void Disk::dopiszDoPliku(std::vector<std::string> vec)
 	std::cout << "Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny" << std::endl;
 	if (wolne.size() != 32)
 	{
-		int temp = HDD[wolne[0] - 1];
+		int temp = this->HDD[wolne[0] - 1];
 		for (int i = temp * 32; i < (temp * 32) + 32; i++)
 		{
-			if (HDD[i] == -1)
+			if (this->HDD[i] == -1)
 			{
 				if (pos >= dane.length()) return;
-				HDD[i] = dane.at(pos);
+				this->HDD[i] = dane.at(pos);
 				pos++;
 			}
 		}
@@ -708,18 +708,18 @@ void Disk::dopiszDoPliku(std::vector<std::string> vec)
 			return;
 		}
 		zajeBloki[blokD] = true;
-		HDD[e] = blokD;
+		this->HDD[e] = blokD;
 
 		for (int e = blokD * 32; e < blokD * 32 + 32; e++)
 		{
 			if (pos < dane.length())
 			{
-				HDD[e] = dane[pos];
+				this->HDD[e] = dane[pos];
 				pos++;
 			}
 			else
 			{
-				HDD[e] = -1;
+				this->HDD[e] = -1;
 				return;
 			}
 		}
@@ -743,15 +743,15 @@ void Disk::usunPlik(std::vector<std::string> vec)
 	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
 	{
 
-		if (HDD[i] != -1)
+		if (this->HDD[i] != -1)
 		{
-			zajeBloki[HDD[i]] = false;
+			zajeBloki[this->HDD[i]] = false;
 
-			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[i] * 32) + 32; j++)
 			{
-				HDD[j] = -1;
+				this->HDD[j] = -1;
 			}
-			HDD[i] = -1;
+			this->HDD[i] = -1;
 		}
 	}
 	zajeBloki[blokI] = false;
@@ -792,28 +792,28 @@ void Disk::nadpiszPlik(std::vector<std::string> vec)
 	{
 		if (koniec == false)
 		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[j] * 32) + 32; j++)
 			{
 				if (pos < dane.length())
 				{
-					HDD[j] = dane.at(pos);
+					this->HDD[j] = dane.at(pos);
 					pos++;
 				}
 				else
 				{
-					HDD[j] = -1;
+					this->HDD[j] = -1;
 					koniec = true;
 				}
 			}
 		}
 		else
 		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			for (int j = this->HDD[i] * 32; j < (this->HDD[j] * 32) + 32; j++)
 			{
-				HDD[j] = -1;
+				this->HDD[j] = -1;
 			}
 			zajeBloki[i] = false;
-			HDD[i] = -1;
+			this->HDD[i] = -1;
 		}
 	}
 }
@@ -826,10 +826,10 @@ void Disk::wypiszBlokIndeksowy(std::vector<std::string> vec)
 	if (index != -1) {
 		for (int i = index * 32; i < (index * 32) + 32; i++)
 		{
-			if (HDD[i] == -1) std::cout << '-';
+			if (this->HDD[i] == -1) std::cout << '-';
 			else
 			{
-				std::cout << static_cast<int>(HDD[i]) << "";
+				std::cout << static_cast<int>(this->HDD[i]) << "";
 			}
 		}
 		std::cout << std::endl;

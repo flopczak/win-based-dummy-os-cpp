@@ -1,9 +1,9 @@
 #pragma once
 #ifndef ACL_H
 #define ACL_H
-#include "User.hpp"
+#include "..\User\User.hpp"
 #include <map>
-#include "Interfejs.h"
+#include "..\shell\Interfejs.h"
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #include "Acl.hpp"
-#include "User.hpp"
+#include "..\User\User.hpp"
 #include <string>
-#include "Interfejs.h"
+#include "..\shell\Interfejs.h"
 using namespace std;
 Acl::Acl() {
 	this->defineMask();

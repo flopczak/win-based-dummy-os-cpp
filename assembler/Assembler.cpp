@@ -343,7 +343,7 @@ void Assembler::run(Process &pcb) {
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		if (d->czyMozna(arg1)) {
 			if (d->open(arg1)) {
-				d->wypiszPlik(arg1); //Andrzej do poprawy
+				d->wypiszPlik(arg1);
 				d->close(arg1);
 			}
 			else {
@@ -363,6 +363,9 @@ void Assembler::run(Process &pcb) {
 		std::cout << "Order: " << order << " " << arg1 << std::endl;
 		if (d->czyMozna(arg1)) {
 			d->usunPlik(arg1);
+		}
+		else {
+			std::cout << "Brak uprawnien do pliku" << std::endl;
 		}
 		saveRegisters(pcb);
 	}

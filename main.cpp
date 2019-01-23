@@ -8,7 +8,8 @@
 int main() {
 	std::cout << "System start..." << std::endl;
 	Procesor proc;
-	Interfejs shell(&proc);
+	//Interfejs shell(&proc);
+	//Disk dysk 
 
 	while (proc.work == true)
 	{

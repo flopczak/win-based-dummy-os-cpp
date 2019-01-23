@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Acl.hpp"
-#include "Interfejs"
+#include "../FileAccess/Acl.hpp"
+#include "../shell/Interfejs.h"
 
 using namespace std;
 class User {

@@ -173,8 +173,12 @@ void Procesor::ramka()
 
 		}
 	}
-	
-	
+	i = running.process_name;
+	q = running.process_status;
+	w = running.process_priority;
+	cout << "----------------------------------------" << endl;
+	cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << w << "      |" << endl;
+	cout << "----------------------------------------" << endl;	
 }
 
 

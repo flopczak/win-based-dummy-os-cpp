@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Memory_H
+#define Memory_H
 #include "../process management/Process.hpp"
 #include <iostream>
 #include <list>
@@ -104,3 +106,4 @@ public:
 	Memory();
 	~Memory();
 };
+#endif

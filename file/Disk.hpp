@@ -1,5 +1,7 @@
+#pragma once
+#ifndef Disk_h
+#define Disk_h
 #include "../file/Directory.hpp"
-
 
 class Disk
 {
@@ -38,3 +40,4 @@ public:
 	void sciezkaDoPliku(std::vector<std::string> vec);
 	void zmienUprawnienia(std::vector<std::string> vec);
 };
+#endif

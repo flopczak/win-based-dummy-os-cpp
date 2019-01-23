@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Dir_h
+#define Dir_h
 #include "../file/Files.hpp"
 
 class Directory : public Files
@@ -12,3 +14,4 @@ public:
 	std::string getName();
 	Files getFiles();
 };
+#endif

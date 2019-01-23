@@ -10,11 +10,8 @@ class Process_List
 public:
 	Process_List();
 	static list<Process>PrcList;
-<<<<<<< Updated upstream
 	std::list<Process>::iterator it;
-=======
 	list<Process>::iterator it;
->>>>>>> Stashed changes
 	list<Process> getReady();
 	Process CP_1(vector<string>v);
 	Process CP_2(vector<string>v);

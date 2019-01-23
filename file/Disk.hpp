@@ -19,7 +19,10 @@ public:
 	bool status(std::string name);
 	bool czyMozna(std::string fname);
 	void dodajpPlik(std::string name); // Przeciazona funkcja dla assemblera nie dla uzytkownika
-
+	void Disk::nadpiszPlik(std::string name, std::string dane);
+	void Disk::dopiszDoPliku(std::string name, std::string dane);
+	void Disk::wypiszPlik(std::string name);
+	void Disk::usunPlik(std::string name);
 	// Do uzytku uzytkownika V
 	void dodajDane(std::vector<std::string> vec);
 	void dodajpPlik(std::vector<std::string> vec);

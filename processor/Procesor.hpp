@@ -36,7 +36,7 @@ public:
 	void run(Assembler& a, Memory &m, Disk &d);
 	static std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
 	static std::array<bool, 8> mask; //maska bitowa na kolejk�
-
+	void ramka();
 	list<Process> synchro(list<Process>& s);
 	void age(Process& p);
 

@@ -123,6 +123,62 @@ void Procesor::find()
 
 
 
+void Procesor::ramka()
+{
+	string i, int q, int w, int j;
+	
+	map<int, string>stat;
+	stat[0] = "AKTYWNY";
+	stat[1] = "GOTOWY";
+	stat[2] = "OCZEKUJACY";
+	stat[3] = "ZAKONCZONY";
+
+	string a, c, d;
+	string b;
+	int temp = (12 - i.size()) / 2;
+	int temp2 = (12 - stat[q].size()) / 2;
+	if (i.size() % 2 == 0)
+	{
+		a.resize(temp);
+		b.resize(temp);
+	}
+	else if (i.size() % 2 == 1)
+	{
+		a.resize(temp - 1);
+		b.resize(temp + 2);
+	}
+	if (i.size() % 2 == 0)
+	{
+		c.resize(temp2);
+		d.resize(temp2);
+	}
+	else if (i.size() % 2 == 1)
+	{
+		c.resize(temp2 - 1);
+		d.resize(temp2 + 2);
+	}
+	cout << "Procesy posiadane przez procesor:" << endl;
+	cout << "----------------------------------------" << endl;
+	cout << "|   NAZWA    |   STATUS   | PRIORYTET  |" << endl;
+	for (auto z : main_queue)
+	{
+		if (mask[z.first] == true)
+		{
+			i = z.second.front().process_name;
+			q = z.second.front().process_status;
+			w = z.second.front().process_priority;
+			cout << "----------------------------------------" << endl;
+			cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << w << "      |" << endl;
+			cout << "----------------------------------------" << endl;
+
+		}
+	}
+	
+	
+}
+
+
+
 //run konrada to excute bala
 
 void Procesor::run(Assembler& a,Memory &m,Disk &d) //sprawdzanie co każdą iterację pentli w main
@@ -181,15 +237,19 @@ void Procesor::priority_inc()
 		i--;
 	}
 }
+//string i, int q, int w, int j
 //w konstruktorze zrobic puste kolejki w kazdym szczeblu mapy tak jak tu
 void Procesor::displayMap()
 {
+	int j = 0,w,q ;
+	string s;
 	for (auto a : main_queue)
 	{
 		if (mask[a.first] == true)
 		{
-			cout << "klucz: " << a.first << endl;
-			cout << "value: " << a.second.front().process_name << endl;
+			j++;
+			// a.first << endl;
+			 // a.second.front().process_name << endl;
 
 		}
 	}

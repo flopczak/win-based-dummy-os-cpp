@@ -1,5 +1,6 @@
 #pragma once
 #include "../file/Inc.hpp"
+
 class File
 {
 private:
@@ -7,7 +8,7 @@ private:
 	std::string ext;
 	int indexBlock;
 	int acl;
-	public:
+public:
 	File(std::string);
 	File() = default;
 	~File();
@@ -21,6 +22,4 @@ private:
 	bool setAccessLevel(int newAL);
 
 	std::string getSpecName(std::string);
-
 };
-

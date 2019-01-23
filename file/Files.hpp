@@ -4,8 +4,8 @@
 class Files : public File
 {
 public:
-	std::vector <File> files;
-	std::vector <std::string> openFiles;
+	std::vector<File> files;
+	std::vector<std::string> openFiles;
 	Files();
 	~Files();
 	int fileExists(std::string name);
@@ -15,4 +15,3 @@ public:
 	void showFiles();
 	bool rmfile(std::string name);
 };
-

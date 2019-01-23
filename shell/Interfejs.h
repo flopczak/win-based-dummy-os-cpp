@@ -17,6 +17,13 @@ using namespace std;
 class Interfejs {
 private:
 	Procesor *proc;
+	Memory *memory;
+	Process_List *PL;
+	User *user;
+	Acl *acl;
+	Disk *dysk;
+	Procesor *procek;
+	Sync *sync;
 public:
 	
 	struct met {
@@ -26,8 +33,16 @@ public:
 	vector<met> metody;
 	vector<string> kroki;
 
-	Interfejs(Procesor *proc) {
+	Interfejs(Memory *memory
+		, Process_List *PL, User  *user, Acl *acl, Disk *dysk, Procesor *procek, Sync *sync) {
 		this->proc = proc;
+		this->memory = memory;
+		this->PL = PL;
+		this->user = user;
+		this->acl = acl;
+		this->dysk = dysk;
+		this->procek = procek;
+		this->sync = sync;
 	}
 
 	void DisplayLog(string msg) {
@@ -199,8 +214,7 @@ public:
 	}
 
 
-	void Wywolaj(vector<string> tab, Memory memory
-		,Process_List PL,User  user, Acl acl, Disk dysk,Procesor procek)
+	void Wywolaj(vector<string> tab)
 	{
 		int x = tab.size();
 		if (x == 0) {

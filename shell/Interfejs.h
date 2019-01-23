@@ -9,12 +9,9 @@
 #include <time.h>
 
 using namespace std;
+//Memory *m;
+//Process_List a;
 
-
-/* TODO 
-trzeba naprawic
-nie moze byc globalne
-*/
 
 class Interfejs {
 public:
@@ -195,10 +192,26 @@ public:
 		}
 		if (polecenie == "help") {
 			DisplayMethods();
+			return;
 		}
 		else if (polecenie == "color") {
 			SetColor(parametry);
-			DisplayLog("zmienilem kolor");
+			return;
+		}
+		else if (polecenie == "tk") {
+			a.findAndDisplayProcess(parametry);
+			return;
+		}
+		else if (polecenie == "tkl") {
+			a.displayAll();
+			return;
+		}
+		else if (polecenie == "tkk") {
+			a.terminateProcess(parametry);
+		}
+		else if (polecenie == "ss") {
+			a.setStatus(parametry);
+			return;
 		}
 		else if (polecenie == "exit") {
 			cin.get();
@@ -218,10 +231,12 @@ public:
 		}
 		else if (polecenie == "cp") {
 			cout << "stworzylem proces" << endl;
+			a.createProcess(parametry);
 			return;
 		}
 		else if (polecenie == "sp") {
 			cout << "ustawilem priorytet" << endl;
+			a.setPriority(parametry);
 			return;
 		}
 		else if (polecenie == "time") {
@@ -230,10 +245,6 @@ public:
 		}
 		else if (polecenie == "chd") {
 			ChangeDisLog(parametry);
-			return;
-		}
-		else if (polecenie == "silnia") {
-			silnia(5);
 			return;
 		}
 		else {

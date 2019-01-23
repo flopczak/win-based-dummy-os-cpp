@@ -9,9 +9,10 @@ File::File(std::string name)
 	this->name = temp;
 	std::getline(f, temp);
 	this->ext = temp;
-
-	//std::cout << "Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
-	//" i poziomie dostepu " + to_string(this->acl) << std::endl;
+	////(
+	//	"Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
+	//	" i poziomie dostepu " + to_string(this->acl));
+	std::cout << "Stworzono plik o nazwie " + this->name + "." + this->ext << std::endl;
 }
 
 
@@ -54,8 +55,7 @@ int File::getIndexBlock()
 bool File::setIndexBlock(int newiblock)
 {
 	this->indexBlock = newiblock;
-	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " blok indeksowy [" +
-		to_string(this->indexBlock) + "]" << std::endl;
+	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " blok indeksowy [" + to_string(this->indexBlock) +"]" << std::endl;
 	return this->indexBlock == newiblock;
 }
 
@@ -67,8 +67,7 @@ int File::getAccessLevel()
 bool File::setAccessLevel(int newAL)
 {
 	this->acl = newAL;
-	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " ACL [" + to_string(this->acl) + "]" <<
-		std::endl;
+	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " ACL [" + to_string(this->acl) + "]" << std::endl;
 	return this->acl == newAL;
 }
 

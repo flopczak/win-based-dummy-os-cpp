@@ -6,6 +6,8 @@
 
 using namespace std;
 
+list<Process>Process_List::PrcList = {};
+
 Process_List::Process_List()
 {
 }

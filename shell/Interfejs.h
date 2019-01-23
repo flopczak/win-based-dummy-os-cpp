@@ -25,10 +25,22 @@ public:
 		string opis;
 	};
 	vector<met> metody;
+	vector<string> kroki;
 
 	void DisplayLog(string msg) {
-		cout << msg << endl;
+		kroki.push_back(msg);
 	}
+
+	/*void Wyswietl() {
+		int ilosc=0;
+		for (int i = 0; i < kroki.size(); i++) {
+			cout << kroki[i] << endl;
+			ilosc++;
+		}
+		kroki.erase(kroki.begin(), kroki.begin()+ilosc);
+		cout << "Nacisnij dowolny klawisz aby kontynuowac..." << endl;
+		cin.get();
+	}*/
 
 	void ChangeDisLog(vector<string> abc) {
 		if (abc.size() > 2) {
@@ -36,7 +48,7 @@ public:
 		}
 		string bulin = abc[0];
 		if (bulin == "true") {
-			dislog = true;
+			//dislog = true;
 			//DisplayLog("zmienilem wartosc dislog");
 		}
 		else if (bulin == "false") {
@@ -203,6 +215,9 @@ public:
 			DisplayMethods();
 			return;
 		}
+		else if (polecenie == "GO") {
+			return;
+		}
 		else if (polecenie == "COLOR") {
 			SetColor(parametry);
 			return;
@@ -364,9 +379,6 @@ public:
 			DisplayMethods();
 			return;
 		}
-
-
 	}
-
 };
 

@@ -13,7 +13,7 @@ private:
 	string password;
 	string SID;			// security ID (one per account/group)
 	static string currentLoggedUser;
-	Interfejs* interfejs;
+	Interfejs *interfejs;
 				
 public:
 	User();
@@ -59,6 +59,6 @@ public:
 	static void addUserToStandardUserGroup(vector<string> param); //I				Add to Standard Group
 	static void addUserToAdminGroup(vector<string> param);		//I				Add to Admin Group
 
-	static void UserStart();										// Inicjalizacja poczatkowych parametrów
+	static void UserStart();										// Inicjalizacja poczatkowych parametrï¿½w
 
 };

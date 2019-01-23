@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <cstdlib>
 #include <time.h>
-#include "../Inklud.hpp"
+#include "..\Inklud.hpp"
 
 
 using namespace std;
@@ -16,7 +16,6 @@ using namespace std;
 
 class Interfejs {
 private:
-	Procesor *proc;
 	Memory *memory;
 	Process_List *PL;
 	User *user;
@@ -35,7 +34,7 @@ public:
 
 	Interfejs(Memory *memory
 		, Process_List *PL, User  *user, Acl *acl, Disk *dysk, Procesor *procek, Sync *sync) {
-		this->proc = proc;
+		this->procek = procek;
 		this->memory = memory;
 		this->PL = PL;
 		this->user = user;
@@ -242,18 +241,18 @@ public:
 			return;
 		}
 		else if (polecenie == "TK") {
-			PL.findAndDisplayProcess(parametry);
+			PL->findAndDisplayProcess(parametry);
 			return;
 		}
 		else if (polecenie == "TKL") {
-			PL.displayAll();
+			PL->displayAll();
 			return;
 		}
 		else if (polecenie == "TKK") {
-			PL.terminateProcess(parametry);
+			PL->terminateProcess(parametry);
 		}
 		else if (polecenie == "SS") {
-			PL.setStatus(parametry);
+			PL->setStatus(parametry);
 			return;
 		}
 		else if (polecenie == "EXIT") {
@@ -265,59 +264,59 @@ public:
 			return;
 		}
 		else if (polecenie == "CU") {
-			user.createUser();
+			user->createUser();
 			return;
 		}
 		else if (polecenie == "PCL") {
-			user.printCurrentLoggedUser();
+			user->printCurrentLoggedUser();
 			return;
 		}
 		else if (polecenie == "LOG") {
-			user.logIn();
+			user->logIn();
 			return;
 		}
 		else if (polecenie == "DU") {
-			user.deleteUser(parametry);
+			user->deleteUser(parametry);
 			return;
 		}
 		else if (polecenie == "VUL") {
-			user.viewUserList();
+			user->viewUserList();
 			return;
 		}
 		else if (polecenie == "VSUG") {
-			user.viewStandardUserGroup();
+			user->viewStandardUserGroup();
 			return;
 		}
 		else if (polecenie == "VAUG") {
-			user.viewAdminUserGroup();
+			user->viewAdminUserGroup();
 			return;
 		}
 		else if (polecenie == "AUTS") {
-			user.addUserToStandardUserGroup(parametry);
+			user->addUserToStandardUserGroup(parametry);
 			return;
 		}
 		else if (polecenie == "AUTA") {
-			user.addUserToAdminGroup(parametry);
+			user->addUserToAdminGroup(parametry);
 			return;
 		}
 		else if (polecenie == "VAL") {
-			acl.viewAclList();
+			acl->viewAclList();
 			return;
 		}
 		else if (polecenie == "VFA") {
-			acl.viewFileAcl(parametry);
+			acl->viewFileAcl(parametry);
 			return;
 		}
 		else if (polecenie == "SAP") {
-			acl.setAdditionalPermissions(parametry);
+			acl->setAdditionalPermissions(parametry);
 			return;
 		}
 		else if (polecenie == "WZP") {
-			memory.WypiszZasobPamieci();
+			memory->WypiszZasobPamieci();
 			return;
 		}
 		else if (polecenie == "WF") {
-			memory.WydrukujFIFO();
+			memory->WydrukujFIFO();
 			return; 
 		}
 		/*else if (polecenie == "DD" && parametry.size()==0) {
@@ -325,65 +324,65 @@ public:
 			return;
 		}*/
 		else if (polecenie == "PB") {
-			dysk.pobierzBlok(parametry);
+			//dysk->pobierzBlok(parametry);
 			return;
 		}
 		else if (polecenie == "DD") {
-			dysk.dodajDane(parametry);
+			dysk->dodajDane(parametry);
 			return;
 		}
 		else if (polecenie == "DP") {
-			dysk.dodajPlik(parametry);
+			//dysk->dodajPlik(parametry);
 			return;
 		}
 		else if (polecenie == "WB") {
-			dysk.wypiszBlok(parametry);
+			dysk->wypiszBlok(parametry);
 			return;
 		}
 		else if (polecenie == "WD") {
-			dysk.wypiszDysk();
+			dysk->wypiszDysk();
 			return;
 		}
 		else if (polecenie == "WP") {
-			dysk.wypiszPlik(parametry);
+			dysk->wypiszPlik(parametry);
 			return;
 		}
 		else if (polecenie == "DDP") {
-			dysk.dopiszDoPliku(parametry);
+			dysk->dopiszDoPliku(parametry);
 			return;
 		}
 		else if (polecenie == "UP") {
-			dysk.usunPlik(parametry);
+			dysk->usunPlik(parametry);
 			return;
 		}
 		else if (polecenie == "NP") {
-			dysk.nadpiszPlik(parametry);
+			dysk->nadpiszPlik(parametry);
 			return;
 		}
 		else if (polecenie == "WBI") {
-			dysk.wypiszBlokIndeksowy();
+			dysk->wypiszBlokIndeksowy(parametry);
 			return;
 		}
 		else if (polecenie == "WK") {
-			dysk.wypiszKatalog();
+			dysk->wypiszKatalog();
 			return;
 		}
 		else if (polecenie == "FRMT") {
-			dysk.formatuj();
+			//dysk->formatuj();
 			return;
 		}
 		else if (polecenie == "WPP") {
-			procek.ramka();
+			procek->ramka();
 			return;
 		}
 		else if (polecenie == "CP") {
 			cout << "stworzylem proces" << endl;
-			PL.createProcess(parametry);
+			PL->createProcess(parametry);
 			return;
 		}
 		else if (polecenie == "SP") {
 			cout << "ustawilem priorytet" << endl;
-			PL.setPriority(parametry);
+			PL->setPriority(parametry);
 			return;
 		}
 		else if (polecenie == "TIME") {

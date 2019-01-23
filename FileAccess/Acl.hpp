@@ -22,7 +22,7 @@ private:
 	string owner;
 	Mask mask;
 	map<string, Mask> Ace_container;
-	Interfejs* interfejs;
+	Interfejs *interfejs;
 
 public:
 	static map<string, Acl*> AclList;

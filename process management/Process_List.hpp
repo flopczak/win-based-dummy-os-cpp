@@ -1,5 +1,6 @@
 #pragma once
 #include "Process.hpp"
+#include "../processor/Procesor.hpp"
 #include <vector>
 #include <list>
 using namespace std;

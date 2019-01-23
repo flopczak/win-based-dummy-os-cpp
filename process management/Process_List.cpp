@@ -1,6 +1,8 @@
+#include "../processor/Procesor.hpp"
 #include "Process_List.hpp"
 #include "Process.hpp"
 #include <iostream>
+
 using namespace std;
 
 Process_List::Process_List()
@@ -12,14 +14,16 @@ void Process_List::CP_1(vector<string>v)
 {
 	Process a(v[0]);
 	Process_List::PrcList.push_front(a);
-
+	Procesor dupa;
+	dupa.add(a);
 }
 
 void Process_List::CP_2(vector<string>v)
 {
 	Process a(v[0], stoi(v[1]));
 	Process_List::PrcList.push_back(a);
-
+	Procesor dupa;
+	dupa.add(a);
 }
 
 void Process_List::createProcess(vector<string>v)

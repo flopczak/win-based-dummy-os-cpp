@@ -18,6 +18,8 @@ int main() {
 	vector<string>p2;
 	p2.push_back("PCB3");
 	p2.push_back("2");
+	vector<string>v3;
+	b_list.terminateProcess(v3);
 
 	b_list.createProcess(p1);
 	b_list.createProcess(p2);

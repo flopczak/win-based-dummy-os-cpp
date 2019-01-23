@@ -1,4 +1,5 @@
-#include "Memory.h"
+#include "../memory/Memory.hpp"
+#include <fstream>
 using namespace std;
 
 void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {
@@ -98,7 +99,7 @@ int Memory::ObliczAdresFizyczny(Process * pcb, int addr1) {
 int Memory::ObliczTabliceStronic(int siBytes) {
 	double wielkoscRamy = static_cast<double>(WIE_RAM);
 	double CalkowitaWielkosc = static_cast<double>(siBytes);
-	double wynik = ceil(CalkowitaWielkosc/ wielkoscRamy);
+	double wynik = ceil(CalkowitaWielkosc / wielkoscRamy);
 	return static_cast<int>(wynik);
 }
 //
@@ -115,7 +116,7 @@ char Memory::OdczytajZPamieci(Process * pcb, int addr1) {
 void Memory::ZapiszWPamieci(Process * pcb, int addr1, char element) {
 	if (BrakMieWPowAdr(pcb, addr1)) {
 		pcb->errorCode = static_cast<int>(BledyPam::OUT_OF_RANGE);
-		return ;
+		return;
 	}
 	ZapewnijStroneWPamieci(pcb, addr1);
 	int p_Addr = ObliczAdresFizyczny(pcb, addr1);
@@ -171,7 +172,7 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 	int WieTabStron = ObliczTabliceStronic(size);
 	STRON * TablicaStron = new STRON[WieTabStron];
 	int PoczatekStr = 0;
-	
+
 	for (int NrStr = 0; NrStr < WieTabStron; NrStr++) {
 		//jezeli plik wymiany jest pelny
 		if (WolneRamkiPlikuWymiany.empty())
@@ -188,7 +189,7 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 		char strona = pageContent[NrStr];
 		proces.erase(PoczatekStr, WIE_RAM);
 		WpiszZasobPamDoPWym(NowoZajetaRamaPWym, pageContent);
-		
+
 	}
 	pcb->UstTabStronic(TablicaStron);
 	pcb->UstWielTabStronic(WieTabStron);
@@ -251,7 +252,7 @@ void Memory::WydrukujProcesy(Process * pcb, bool wRamie) {
 	STRON * StronProc = pcb->PobTabStronic();
 	int WieStronProc = pcb->PobWielTabStronic();
 
-	cout << " --- Pamiec zarezerwowana przez proces: " << pcb->GetPID() << " ---\n";
+	cout << " --- Pamiec zarezerwowana przez proces: " << pcb->getName() << " ---\n";
 	for (int i = 0; i < WieStronProc; i++)
 	{
 		if (StronProc[i].wPam)
@@ -270,7 +271,7 @@ void Memory::WydrukujFIFO() {
 		<< "Format: [{PID_procesu},{numer strony}]" << endl;
 	for (auto entry : FIFO)
 	{
-		cout << "[" << entry.pcb->GetPID() << "," << entry.pageNumber << "] ";
+		cout << "[" << entry.pcb->getName() << "," << entry.pageNumber << "] ";
 	}
 	cout << endl;
 }
@@ -495,6 +496,7 @@ void Memory::zwolnieniePamieci(Process * pcb) {
 	}
 
 	delete[] TablicaStron;
+	
 
 	pcb->UstTabStronic(nullptr);
 	pcb->UstWielTabStronic(0);
@@ -512,7 +514,7 @@ void Memory::WydrukujTabliceStronic(Process * pcb) {
 	STRON * TablicaStron = pcb->PobTabStronic();
 	int WTablicyStron = pcb->PobWielTabStronic();
 
-	cout << " --- Tablica stron procesu: " << pcb->GetPID() << " ---\n";
+	cout << " --- Tablica stron procesu: " << pcb->getName() << " ---\n";
 	//cout << " Nr strony " << (char)CharTable::VL << " Nr  ramki " << (char)CharTable::VL << " Czy w pamieci?\n";
 
 	for (int page = 0; page < WTablicyStron; page++)
@@ -536,6 +538,46 @@ void Memory::WydrukujTabliceStronic(Process * pcb) {
 	}
 }
 //
+void Memory::UtworzProgram(Process*pcb, string path)
+{
+	int a = 0;
+	string program;
+	std::ifstream file;
+	path = path + ".txt";
+	file.open(path);
+	string pliki1;
+	if (file.good())
+	{
+		while (getline(file, pliki1))
+		{
+
+			if (!file.eof())
+			{
+				pliki1 += " ";
+			}
+			program = program + pliki1;
+
+		}
+		pliki1.clear();
+	}
+	PrzydzialPamieci(pcb, program, program.size());
+	cout << program;
+	for (int i = 0; i < program.size(); i++)
+	{
+		pliki1 += program[i];
+		if (pliki1.size() == 16)
+		{
+			for (int i = 0; i < program.size(); i++) {
+				zapiszString(pcb,a,program);
+				pliki1.clear();
+			}
+			
+		}
+		
+
+	}
+
+}
 Memory::Memory()
 {
 	RAM = new char[WIE_PAM];
@@ -560,4 +602,3 @@ Memory::~Memory()
 	delete[] RAM;
 	delete[] PlikWymiany;
 }
-

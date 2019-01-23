@@ -1,18 +1,24 @@
 #pragma once
 #include "Process.hpp"
-#include <deque>
+#include "../processor/Procesor.hpp"
+#include <vector>
 #include <list>
 using namespace std;
 
 class Process_List
 {
 public:
-	static list<Process>PrcList;
+	Process_List();
+	list<Process>PrcList;
+	std::list<Process>::iterator it;
 	list<Process> getReady();
-	void terminateProcess(string s);
+	void CP_1(vector<string>v);
+	void CP_2(vector<string>v);
+	void createProcess(vector<string>v);
+	void setStatus(vector<string>v);
+	void setPriority(vector<string>v);
+	void terminateProcess(vector<string>v);
 	void removeProcess();
-	void createProcess(string na);
-	void createProcess(string na, int pr);
-	void findAndDisplayProcess(string s);
+	void findAndDisplayProcess(vector<string>v);
 	void displayAll();
 };

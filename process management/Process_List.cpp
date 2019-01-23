@@ -1,67 +1,133 @@
-#include <iostream>
+#include "../processor/Procesor.hpp"
 #include "Process_List.hpp"
 #include "Process.hpp"
+#include <iostream>
+
 using namespace std;
 
-void Process_List::createProcess(string na)
+Process_List::Process_List()
 {
-	Process a(na);
-	Process_List::PrcList.push_front(a);
+
 }
 
-void Process_List::createProcess(string na, int pr)
+void Process_List::CP_1(vector<string>v)
 {
-	Process a(na, pr);
+	Process a(v[0]);
 	Process_List::PrcList.push_front(a);
+	Procesor dupa;
+	dupa.add(a);
+}
+
+void Process_List::CP_2(vector<string>v)
+{
+	Process a(v[0], stoi(v[1]));
+	Process_List::PrcList.push_back(a);
+	Procesor dupa;
+	dupa.add(a);
+}
+
+void Process_List::createProcess(vector<string>v)
+{
+	if (v.size() == 1)
+	{
+		CP_1(v);
+	}
+	else
+	{
+		CP_2(v);
+	}
 }
 
 list<Process> Process_List::getReady()
 {
 	list<Process>mylist;
-	for (auto const& it : Process_List::PrcList)
-	{
-		if (it.process_status == GOTOWY)
-		{
-			mylist.push_front(it);
-		}
-	}
+	mylist = PrcList;
 	return mylist;
 }
 
-void Process_List::terminateProcess(string s)
+void Process_List::setStatus(vector<string>v)
 {
-	for (auto const& it : Process_List::PrcList)
+	status st;
+	if (v[1] == "AKTYWNY")
 	{
-		if (it.process_name == s)
+		st = AKTYWNY;
+	}
+	else if (v[1] == "GOTOWY")
+	{
+		st == GOTOWY;
+	}
+	else if (v[1] == "OCZEKUJACY")
+	{
+		st == OCZEKUJACY;
+	}
+	else if (v[1] == "ZAKONCZONY")
+	{
+		st == ZAKONCZONY;
+	}
+	Process a(v[0]);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
 		{
-			Process_List::PrcList.remove(it);
+			it->setProcessStatus(st);
 		}
 	}
 }
 
-void Process_List::removeProcess() 
+void Process_List::setPriority(vector<string>v)
 {
-	for (auto const& it : Process_List::PrcList)
+	Process a(v[0]);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
-		if (it.process_status == ZAKONCZONY)
+		if (a.process_name == it->process_name)
 		{
-			Process_List::PrcList.remove(it);
+			it->setPriority(stoi(v[1]));
 		}
 	}
 }
 
-void Process_List::findAndDisplayProcess(string s)
+void Process_List::terminateProcess(vector<string>v)
 {
-	bool czy = false;
-	for (auto const& it : Process_List::PrcList)
+	Process a(v[0]);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
-		if (it.process_name == s)
+		if (a.process_name == it->process_name)
 		{
-			//it.display();
-			czy = true;
+			PrcList.remove(*it);
+			break;
 		}
 	}
-	if (czy == false)
+}
+
+
+void Process_List::removeProcess()
+{
+	Process a;
+	a.setProcessStatus(ZAKONCZONY);
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_status == it->process_status)
+		{
+			PrcList.remove(*it);
+			break;
+		}
+	}
+}
+
+
+void Process_List::findAndDisplayProcess(vector<string>v)
+{
+	Process a(v[0]);
+	bool dlaczemu = false;
+	for (it = PrcList.begin(); it != PrcList.end(); ++it)
+	{
+		if (a.process_name == it->process_name)
+		{
+			it->display();
+			dlaczemu = true;
+		}
+	}
+	if (dlaczemu != true)
 	{
 		cout << "Proces o podanej nazwie nie istnieje.";
 	}
@@ -69,9 +135,14 @@ void Process_List::findAndDisplayProcess(string s)
 
 void Process_List::displayAll()
 {
-	for (auto const& it : Process_List::PrcList)
+	if (PrcList.size() != 0) {
+		for (it = PrcList.begin(); it != PrcList.end(); ++it)
+		{
+			it->displayHelper();
+		}
+	}
+	else
 	{
-		//it.displayHelper();
+		cout << "Brak procesow do wyswietlenia." << endl;
 	}
 }
-

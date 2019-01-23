@@ -1,5 +1,4 @@
-#include "File.hpp"
-
+#include "../file/File.hpp"
 
 
 File::File(std::string name)
@@ -10,7 +9,10 @@ File::File(std::string name)
 	this->name = temp;
 	std::getline(f, temp);
 	this->ext = temp;
-	//this->accessLevel = getUserPermissions();
+	DisplayLog(
+		"Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
+		" i poziomie dostepu " + to_string(this->acl));
+	//std::cout << "Stworzono plik o nazwie " + this->name + "." + this->ext << std::endl;
 }
 
 
@@ -44,17 +46,6 @@ bool File::setExt(std::string newext)
 	return this->ext == newext;
 }
 
-int File::getSize()
-{
-	return this->size;
-}
-
-bool File::setSize(int newsize)
-{
-	this->size = newsize;
-	if (this->size = newsize) return true;
-	return false;
-}
 
 int File::getIndexBlock()
 {
@@ -64,18 +55,22 @@ int File::getIndexBlock()
 bool File::setIndexBlock(int newiblock)
 {
 	this->indexBlock = newiblock;
+	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " blok indeksowy [" +
+		to_string(this->indexBlock) + "]" << std::endl;
 	return this->indexBlock == newiblock;
 }
 
 int File::getAccessLevel()
 {
-	return this->accessLevel;
+	return this->acl;
 }
 
 bool File::setAccessLevel(int newAL)
 {
-	this->accessLevel = newAL;
-	return this->accessLevel == newAL;
+	this->acl = newAL;
+	std::cout << "Nadano plikowi o nazwie " + this->name + "." + this->ext + " ACL [" + to_string(this->acl) + "]" <<
+		std::endl;
+	return this->acl == newAL;
 }
 
 std::string File::getSpecName(std::string name)

@@ -1,10 +1,8 @@
-#include "Sync.hpp"
+#include "../sync/Sync.hpp"
 
 //=====================================================================================================// Konstruktor / Destruktor
-Sync::Sync(std::string syncN, std::string fileN)
+Sync::Sync()
 {
-	this->syncName = syncN;
-	this->fileName = fileN;
 	this->lock=false;
 	this->cond=false;
 }
@@ -13,6 +11,27 @@ Sync::~Sync()
 {
 
 }
+
+void Sync::lockFile(std::string nazwa, Process* tempP)
+{
+	if (Sync::zamkiNaPlikach.find(nazwa) == Sync::zamkiNaPlikach.end())
+	{
+		Sync tempS;
+		Sync::zamkiNaPlikach[nazwa] = tempS;//dodanie nowego zamka do mapy
+		Sync::zamkiNaPlikach[nazwa].acquire(tempP);// zajecie zamka 
+	}
+	else
+	{
+		Sync::zamkiNaPlikach[nazwa].acquire(tempP);
+	}
+}
+
+void Sync::unlockFile(std::string nazwa, Process* tempP)
+{
+	Sync::zamkiNaPlikach[nazwa].release(tempP);//zwolnienie odpowiedniego zamku
+}
+
+
 //=====================================================================================================// Metody dla Lock
 
 void Sync::acquire(Process*tempProcess)
@@ -62,7 +81,7 @@ void Sync::release(Process*tempProcess)
 	}
 	else
 	{
-		this->currentLockProcess.setProcessStatus(ZAKONCZONY); //Process do stanu terminated.
+		this->currentLockProcess->setProcessStatus(ZAKONCZONY); //Process do stanu terminated.
 	}
 
 }
@@ -77,7 +96,7 @@ bool Sync::getLock()
 	return this->lock;
 }
 
-std::list<Process::Process*> Sync::getLPQ()
+std::list<Process*> Sync::getLPQ()
 {
 	return this->LockProcessQueue;
 }
@@ -95,7 +114,7 @@ bool Sync::getCond()
 	return this->cond;
 }
 
-std::list<Process::Process*> Sync::getCPQ()
+std::list<Process*> Sync::getCPQ()
 {
 	return this->CondProcessQueue;
 }

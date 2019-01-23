@@ -1,6 +1,4 @@
-#include "Acl.hpp"
 #include "User.hpp"
-#include "Interfejs.h"
 #include <random>
 
 User::User() {}
@@ -72,15 +70,15 @@ string User::getCurrentLoggedUser()
 void User::createUser() 
 {
 	if (getCurrentLoggedUser()[0] == 'g') {
-		 Interfejs::DisplayLog("\nGosc nie moze tworzyc uzytkownikow");
+		 DisplayLog("\nGosc nie moze tworzyc uzytkownikow");
 		return;
 	}
 	string temp;
 	User* temporary = new User();
-	 Interfejs::DisplayLog("\nPodaj nazwe uzytkownika: ");
+	 DisplayLog("\nPodaj nazwe uzytkownika: ");
 	std::cin >> temp;
 	temporary->setUsername(temp);
-	 Interfejs::DisplayLog("\nPodaj haslo: ");
+	 DisplayLog("\nPodaj haslo: ");
 	std::cin >> temp;
 	temporary->setPassword(temp);
 	temporary->generateSID();
@@ -93,7 +91,7 @@ void User::deleteUser(string username)
 	User* user = User::getUserbyName(username);
 	if (currentLoggedGotAdminPermissions() == true) {
 		if (user->getSID() == User::getCurrentLoggedUser()) {
-			Interfejs::DisplayLog("\nUzytkownik jest obecnie zalogowany.");
+			DisplayLog("\nUzytkownik jest obecnie zalogowany.");
 			return;
 		}
 		if (user->getSID()[0] == 'a') {
@@ -122,50 +120,50 @@ void User::deleteUser(string username)
 		}
 	}
 	else {
-		Interfejs::DisplayLog("\nWystapil blad. Brak uprawnien.");
+		DisplayLog("\nWystapil blad. Brak uprawnien.");
 		return;
 	}
-	Interfejs::DisplayLog("\nPomyslnie usunieto uzytkownika.");
+	DisplayLog("\nPomyslnie usunieto uzytkownika.");
 	delete user;
 }
 void User::changePassword() 
 {
 	if (getCurrentLoggedUser()[0] == 'g') return;
 	string check, temp;
-	Interfejs::DisplayLog("\nPodaj stare haslo: ");
+	DisplayLog("\nPodaj stare haslo: ");
 	std::cin >> check;
 	while (check != this->getPassword()) {
-		Interfejs::DisplayLog("\nBledne haslo! Sprobuj ponownie lub zakoncz wpisujac '0'.");
+		DisplayLog("\nBledne haslo! Sprobuj ponownie lub zakoncz wpisujac '0'.");
 		std::cin >> check;
 		if (check == "0") return;
 	}
-	Interfejs::DisplayLog("\nPodaj nowe haslo: ");
+	DisplayLog("\nPodaj nowe haslo: ");
 	std::cin >> temp;
-	Interfejs::DisplayLog("\nPowtorz wprowadzone haslo: ");
+	DisplayLog("\nPowtorz wprowadzone haslo: ");
 	std::cin >> check;
 	while (check != temp) {
-		Interfejs::DisplayLog("\nWprowadzone hasla nie sa takie same.  Sprobuj ponownie lub zakoncz wpisujac '0'.");
+		DisplayLog("\nWprowadzone hasla nie sa takie same.  Sprobuj ponownie lub zakoncz wpisujac '0'.");
 		std::cin >> check;
 		if (check == "0") return;
 	}
 	this->setPassword(temp);
-	Interfejs::DisplayLog("\nPoprawnie zmieniono haslo!");
+	DisplayLog("\nPoprawnie zmieniono haslo!");
 }
 void User::logOut() {
 	User::setCurrentLoggedUser("-1");
-	Interfejs::DisplayLog("\nWylogowano.");
+	DisplayLog("\nWylogowano.");
 }
 void User::logIn() {
 	User::logOut();
 	string temp;
-	Interfejs::DisplayLog("\nPodaj nazwe uzytkownika: ");
+	DisplayLog("\nPodaj nazwe uzytkownika: ");
 	std::cin >> temp;
 	vector<User*>::iterator it;
 	for (it = User::userList.begin(); it != User::userList.end(); it++) {
 		if ((*it)->getUsername() == temp) {
 			if ((*it)->getPassword() == "") break;
 			else if ((*it)->getPassword() != "") {
-				Interfejs::DisplayLog("\nPodaj haslo: ");
+				DisplayLog("\nPodaj haslo: ");
 				std::cin >> temp;
 				while (temp != (*it)->getPassword()) {
 					std::cout << "\nBledne haslo! Sprobuj ponownie lub zakoncz wpisujac '0'.";
@@ -217,7 +215,7 @@ void User::generateSID()
 }
 void User::printUser(User* user) {
 	string napis = "\nNazwa uzytkownika: " + user->getUsername() + " haslo: " + user->getPassword() + " SID: " + user->getSID();
-	Interfejs::DisplayLog(napis);
+	DisplayLog(napis);
 }
 bool User::currentLoggedGotAdminPermissions()
 {
@@ -250,11 +248,11 @@ string User::getUserBySID(string sid) {
 
 void User::viewUserList() 
 {
-	Interfejs::DisplayLog("\nLista wszystkichh uzytkownikow: ");
+	DisplayLog("\nLista wszystkichh uzytkownikow: ");
 	vector<User*>::iterator it; string napis;
 	for (it = User::userList.begin(); it != User::userList.end(); it++) {
 		napis = "\n| Nazwa uzytkownika: " + (*it)->getUsername() + "| Haslo: " + (*it)->getPassword() + "| SID: " + (*it)->getSID();
-		Interfejs::DisplayLog(napis);
+		DisplayLog(napis);
 	}
 }
 void User::viewStandardUserGroup() 

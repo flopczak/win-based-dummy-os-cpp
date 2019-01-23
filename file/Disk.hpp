@@ -1,9 +1,8 @@
-#include "Directory.hpp"
-#include <string>
+#include "../file/Directory.hpp"
+
 
 class Disk
 {
-private:
 	char HDD[1024];
 	bool zajBloki[32];
 public:
@@ -15,7 +14,20 @@ public:
 	bool czyZaj(int index);
 	int znajdzWolny(int index);
 	int dodajDane(std::string name, std::string dane, int index);
-	std::string wypiszBlok(int index);
+	int dodajDane(std::string name, std::string dane);
+	int dodajpPlik(std::string name);
+	void wypiszBlok(int index);
 	void wypiszDysk();
-
+	void wypiszPlik(std::string name);
+	void dopiszDoPliku(std::string name, std::string dane);
+	void usunPlik(std::string name);
+	bool open(std::string name);
+	bool close(std::string name);
+	bool status(std::string name);
+	void nadpiszPlik(std::string name, std::string dane);
+	bool czyMozna(std::string fname);
+	void wypiszBlokIndeksowy(int index);
+	void wypiszKatalog();
+	std::string sciezka(std::string name);
+	void formatuj();
 };

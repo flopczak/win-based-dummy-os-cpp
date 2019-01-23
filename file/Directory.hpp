@@ -1,7 +1,7 @@
 #pragma once
-#include "Files.hpp"
+#include "../file/Files.hpp"
 
-class Directory :public Files
+class Directory : public Files
 {
 public:
 	std::string name;
@@ -12,4 +12,3 @@ public:
 	std::string getName();
 	Files getFiles();
 };
-

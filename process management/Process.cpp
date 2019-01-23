@@ -9,7 +9,7 @@ Process::Process()
 {
 	this->PID = 0;
 	this->process_name = "";
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = 0;
 	this->AX = 0;
 	this->BX = 0;
@@ -22,7 +22,7 @@ Process::Process(string na)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = 0;
 	this->AX = 0;
 	this->BX = 0;
@@ -35,7 +35,7 @@ Process::Process(string na, int pr)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
-	this->process_status = NOWY;
+	this->process_status = GOTOWY;
 	this->process_priority = pr;
 	this->AX = 0;
 	this->BX = 0;
@@ -53,15 +53,15 @@ void Process::setPriority(int n)
 	this->process_priority = n;
 }
 
-void Process::setProcessStatus(status)
+void Process::setProcessStatus(status a)
 {
-	this->process_status = NOWY, AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY;
+	this->process_status = a;
 }
 
-void Process::display() 
+void Process::display()
 {
-	cout << "PID: " << this->PID << endl;
 	cout << "Nazwa procesu: " << this->process_name << endl;
+	cout << "PID: " << this->PID << endl;
 	cout << "Status procesu: " << this->process_status << endl;
 	cout << "Priorytet: " << this->process_priority << endl;
 	cout << "AX: " << this->AX << endl;
@@ -71,8 +71,8 @@ void Process::display()
 
 void Process::displayHelper()
 {
-	cout << "PID: " << this->PID << endl;
 	cout << "Nazwa procesu: " << this->process_name << endl;
+	cout << "PID: " << this->PID << endl;
 	cout << "Status procesu: " << this->process_status << endl;
 	cout << "Priorytet: " << this->process_priority << endl;
 }
@@ -81,6 +81,21 @@ int Process::getPID()
 {
 	return this->PID;
 }
+
+string Process::getName()
+{
+	return this->process_name;
+}
+
+bool operator==(const Process& b, const Process& a)
+{
+	if (a.process_name == b.process_name)
+	{
+		return true;
+	}
+	else return false;
+}
+
 
 //---------------------------------------------------------------------//
 
@@ -103,5 +118,6 @@ int Process::PobWielTabStronic()
 {
 	return this->pageTableSize;
 }
+
 
 

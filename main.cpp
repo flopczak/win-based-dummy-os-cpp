@@ -36,7 +36,8 @@ int main() {
 
 
 		//proc.temporary.resize(b_list.getReady().size());
-		proc.temporary = b_list.getReady(); //TODO to musi byæ w mainie ¿eby za ka¿dym razem uzupe³niaæ mape
+		//proc.temporary = b_list.getReady(); //TODO to musi byæ w mainie ¿eby za ka¿dym razem uzupe³niaæ mape
+		/*
 		for (int a = 0; a < b_list.PrcList.size(); a++)											//musi byæ zeby caly czas nie uzupelniac ta sama lista
 		{
 			if (b_list.PrcList.front().process_priority = !0)
@@ -44,9 +45,9 @@ int main() {
 				b_list.PrcList.pop_front();
 			}
 		}
+		*/
 
-
-		proc.add();
+	
 		proc.run();
 		proc.displayMap();
 

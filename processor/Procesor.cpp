@@ -1,4 +1,7 @@
 #include "../processor/Procesor.hpp"
+#include "../assembler/Assembler.hpp"
+#include "../memory/Memory.hpp"
+#include "../file/Disk.hpp"
 #include <iostream>
 
 //TODO gdzies jest problem bo mapa cały czas pusta
@@ -62,12 +65,24 @@ void Procesor::check(Process&ready)
 }
 //problem z procesor&p z referencja lub z raczej iteratorem listy
 void Procesor::add(Process& ready) // dodawanie do main_queue linija kodu z main niezbedna
-{
+{	
 
+	list<Process>::iterator a;
 		int it = ready.process_priority;
-		main_queue[it].push_back(ready);
-		mask[it] = true;
-		check(ready);
+		for (a = main_queue[it].begin(); a != main_queue[it].end(); a++)
+		{
+			if (a->PID != ready.PID)
+			{
+				main_queue[it].push_back(ready);
+				mask[it] = true;
+				check(ready);
+			}
+			else
+			{
+				cout << "process juz isnieje..." << endl;
+			}
+		}
+		
 	//new_process = true;
 	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
 	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
@@ -110,13 +125,13 @@ void Procesor::find()
 
 //run konrada to excute bala
 
-void Procesor::run() //sprawdzanie co każdą iterację pentli w main
+void Procesor::run(Assembler& a,Memory &m,Disk &d) //sprawdzanie co każdą iterację pentli w main
 {
 	find(); // to juz mi przypisze odpowiedni proces do running czy to moze byc?(jako wywlaszenie)
 	running.process_status = AKTYWNY;
 	//tu wstawienie running do metody run konrada w celu wykonania rozkazu asemblera
-
-	cout << "running: " << &running.process_name << endl;
+	a.run(running,m,d);
+	cout << "running: " << running.getName() << endl;
 	priority_inc();
 	/*
 	to chyba powinno być w funkcji wyszukującej

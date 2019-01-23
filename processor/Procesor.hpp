@@ -1,14 +1,16 @@
 #pragma once
 #include"../process management/Process.hpp"
 #include"../process management/Process_List.hpp"
-
+#include "../processor/Procesor.hpp"
+#include "../memory/Memory.hpp"
+#include "../file/Disk.hpp"
 #include<map>
 #include<array>
 #include<queue>
 #include<list>
 #include<vector>
 
-
+extern class Assembler;
 
 class Procesor
 {
@@ -31,9 +33,9 @@ public:
 
 	void priority_inc(); //metoda inkrementująca priorytety kazdego gotowego procesu
 
-	void run();
-	std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
-	std::array<bool, 8> mask; //maska bitowa na kolejk�
+	void run(Assembler& a, Memory &m, Disk &d);
+	static std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
+	static std::array<bool, 8> mask; //maska bitowa na kolejk�
 
 	list<Process> synchro(list<Process>& s);
 	void age(Process& p);

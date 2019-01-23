@@ -162,7 +162,6 @@ bool Disk::status(std::string name)
 	return false;
 }
 
-
 bool Disk::czyMozna(std::string fname)
 {
 	std::string comp;
@@ -195,13 +194,15 @@ bool Disk::czyMozna(std::string fname)
 	return false;
 }
 
-
 //
+
 
 // FUNKCJE INTERFEJSU
 
 void Disk::dodajDane(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
+
 	std::string name = vec[0];
 	std::string dane = vec[1];
 	if (vec.size() == 3)
@@ -346,6 +347,7 @@ void Disk::dodajDane(std::vector<std::string> vec)
 
 void Disk::dodajpPlik(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	if (root.f.fileExists(name) == -1)
 	{
@@ -368,10 +370,29 @@ void Disk::dodajpPlik(std::vector<std::string> vec)
 }
 // Metoda przeciazona dla interpretera nie dla interfejsu
 
+void Disk::dodajpPlik(std::string name)
+{
+	if (root.f.fileExists(name) == -1)
+	{
+		int blokI = znajdzWolny(0);
+		if (blokI == -1)
+		{
+			//DisplayLog("Brak wolnych blokow!");
+			return;
+		}
+		zajeBloki[blokI] = true;
+		root.mkfile(name, blokI);
+		//DisplayLog("Stworzono plik o podanej nazwie " + name + " z blokiem indeksowym o numerze " + to_string(blokI));
+		return;
+	}
+	//DisplayLog("Plik o podanej nazwie juz istnieje" + name);
+	return;
+}
 
 
 void Disk::wypiszBlok(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	int index = stoi(vec[0]);
 	////("Wypisuje blok o podanym indeksie " + to_string(index));
 	//std::cout << "Wypisuje blok o podanym indeksie " + to_string(index) << std::endl;
@@ -391,6 +412,7 @@ void Disk::wypiszBlok(std::vector<std::string> vec)
 
 void Disk::wypiszDysk()
 {
+
 	////("Wypisuje zawartosc calego dysku.");
 	std::cout << "Wypisuje zawartosc calego dysku." << std::endl;
 	for (int i = 0; i < 32; i++)
@@ -403,6 +425,7 @@ void Disk::wypiszDysk()
 
 void Disk::wypiszPlik(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	////("Wypisuje plik " + name);
 	std::cout << "Wypisuje plik " + name << std::endl;
@@ -417,6 +440,7 @@ void Disk::wypiszPlik(std::vector<std::string> vec)
 
 void Disk::dopiszDoPliku(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	if (vec.size() == 1)
 	{
@@ -504,6 +528,7 @@ void Disk::dopiszDoPliku(std::vector<std::string> vec)
 
 void Disk::usunPlik(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	////("Usuwam plik " + name);
 	int blokI = root.f.fileExists(name);
@@ -551,6 +576,7 @@ void Disk::usunPlik(std::vector<std::string> vec)
 
 void Disk::nadpiszPlik(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	std::string dane = vec[1];
 	int blokI = root.f.fileExists(name);
@@ -595,6 +621,7 @@ void Disk::nadpiszPlik(std::vector<std::string> vec)
 
 void Disk::wypiszBlokIndeksowy(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	int index = stoi(vec[0]);
 	std::cout << "Wypisuje zawartosc bloku indeksowego nr " + to_string(index) << std::endl;
 	if (index != -1) {
@@ -617,6 +644,7 @@ void Disk::wypiszKatalog()
 
 void Disk::sciezkaDoPliku(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	std::string path;
 	if(root.f.fileExists(name)!= -1)
@@ -628,6 +656,7 @@ void Disk::sciezkaDoPliku(std::vector<std::string> vec)
 
 void Disk::zmienUprawnienia(std::vector<std::string> vec)
 {
+	if (vec.size() == 0) return;
 	std::string name = vec[0];
 	int al = stoi(vec[1]);
 	if (al>5) return; //kurwa co za pojebany lvl

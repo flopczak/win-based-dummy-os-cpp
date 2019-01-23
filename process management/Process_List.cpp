@@ -106,7 +106,7 @@ void Process_List::removeProcess()
 	a.setProcessStatus(ZAKONCZONY);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{
-		if (a.process_name == it->process_name)
+		if (a.process_status == it->process_status)
 		{
 			PrcList.remove(*it);
 			break;

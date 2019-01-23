@@ -10,7 +10,6 @@ class Process_List
 public:
 	Process_List();
 	static list<Process>PrcList;
-	std::list<Process>::iterator it;
 	list<Process>::iterator it;
 	list<Process> getReady();
 	Process CP_1(vector<string>v);

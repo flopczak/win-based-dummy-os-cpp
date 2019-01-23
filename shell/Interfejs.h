@@ -7,10 +7,15 @@
 #include <windows.h>
 #include <cstdlib>
 #include <time.h>
+#include "Inklud.hpp"
 
 using namespace std;
-//Memory *m;
-//Process_List a;
+Memory memory;
+Process_List PL;
+User  user;
+Acl acl;
+Disk dysk;  
+Processor procek;
 
 
 class Interfejs {
@@ -21,6 +26,10 @@ public:
 	};
 	vector<met> metody;
 
+	void DisplayLog(string msg) {
+		cout << msg << endl;
+	}
+
 	void ChangeDisLog(vector<string> abc) {
 		if (abc.size() > 2) {
 			cout << "Za duzo parametrow, dostepne parametry to:\ntrue\nfalse" << endl;
@@ -28,10 +37,10 @@ public:
 		string bulin = abc[0];
 		if (bulin == "true") {
 			dislog = true;
-			DisplayLog("zmienilem wartosc dislog");
+			//DisplayLog("zmienilem wartosc dislog");
 		}
 		else if (bulin == "false") {
-			dislog = false;
+			//dislog = false;
 		}
 		else {
 			cout << "Bledny parametr, dostepne parametry to:\ntrue\nfalse" << endl;
@@ -182,7 +191,7 @@ public:
 			return;
 		}
 		string polecenie = tab[0];
-		polecenie = ToDown(polecenie);
+		polecenie = ToUp(polecenie);
 		vector<string> parametry;
 		if (x > 1) {
 			for (int i = 1; i < x; i++) {
@@ -190,60 +199,164 @@ public:
 				parametry[i - 1] = ToDown(parametry[i - 1]);
 			}
 		}
-		if (polecenie == "help") {
+		if (polecenie == "HELP") {
 			DisplayMethods();
 			return;
 		}
-		else if (polecenie == "color") {
+		else if (polecenie == "COLOR") {
 			SetColor(parametry);
 			return;
 		}
-		else if (polecenie == "tk") {
-			a.findAndDisplayProcess(parametry);
+		else if (polecenie == "TK") {
+			PL.findAndDisplayProcess(parametry);
 			return;
 		}
-		else if (polecenie == "tkl") {
-			a.displayAll();
+		else if (polecenie == "TKL") {
+			PL.displayAll();
 			return;
 		}
-		else if (polecenie == "tkk") {
-			a.terminateProcess(parametry);
+		else if (polecenie == "TKK") {
+			PL.terminateProcess(parametry);
 		}
-		else if (polecenie == "ss") {
-			a.setStatus(parametry);
+		else if (polecenie == "SS") {
+			PL.setStatus(parametry);
 			return;
 		}
-		else if (polecenie == "exit") {
+		else if (polecenie == "EXIT") {
 			cin.get();
 			exit(0);
 		}
-		else if (polecenie == "cls") {
+		else if (polecenie == "CLS") {
 			cls();
 			return;
 		}
-		else if (polecenie == "mkdir") {
-			cout << "stworzy³em folder" << endl;
+		else if (polecenie == "CU") {
+			user.createUser();
 			return;
 		}
-		else if (polecenie == "rmdir") {
-			cout << "usunalem folder" << endl;
+		else if (polecenie == "PCL") {
+			user.printCurrentLoggedUser();
 			return;
 		}
-		else if (polecenie == "cp") {
+		else if (polecenie == "LOG") {
+			user.logIn();
+			return;
+		}
+		else if (polecenie == "DU") {
+			user.deleteUser(parametry);
+			return;
+		}
+		else if (polecenie == "VUL") {
+			user.viewUserList();
+			return;
+		}
+		else if (polecenie == "VSUG") {
+			user.viewStandardUserGroup();
+			return;
+		}
+		else if (polecenie == "VAUG") {
+			user.viewAdminUserGroup();
+			return;
+		}
+		else if (polecenie == "AUTS") {
+			user.addUserToStandardUserGroup(parametry);
+			return;
+		}
+		else if (polecenie == "AUTA") {
+			user.addUserToAdminGroup(parametry);
+			return;
+		}
+		else if (polecenie == "VAL") {
+			acl.viewAclList();
+			return;
+		}
+		else if (polecenie == "VFA") {
+			acl.viewFileAcl(parametry);
+			return;
+		}
+		else if (polecenie == "SAP") {
+			setAdditionalPermissions(parametry);
+			return;
+		}
+		else if (polecenie == "WZP") {
+			memory.WypiszZasobPamieci();
+			return;
+		}
+		else if (polecenie == "WF") {
+			memory.WydrukujFIFO();
+			return; 
+		}
+		/*else if (polecenie == "DD" && parametry.size()==0) {
+			dysk.dodajDane();
+			return;
+		}*/
+		else if (polecenie == "PB") {
+			dysk.pobierzBlok(parametry);
+			return;
+		}
+		else if (polecenie == "DD") {
+			dysk.dodajDane(parametry);
+			return;
+		}
+		else if (polecenie == "DP") {
+			dysk.dodajPlik(parametry);
+			return;
+		}
+		else if (polecenie == "WB") {
+			dysk.wypiszBlok(parametry;);
+			return;
+		}
+		else if (polecenie == "WD") {
+			dysk.wypiszDysk()
+			return;
+		}
+		else if (polecenie == "WP") {
+			dysk.wypiszPlik(parametry);
+			return;
+		}
+		else if (polecenie == "DDP") {
+			dysk.dopiszDoPliku(parametry);
+			return;
+		}
+		else if (polecenie == "UP") {
+			dysk.usunPlik(parametry);
+			return;
+		}
+		else if (polecenie == "NP") {
+			dysk.nadpiszPlik(parametry);
+			return;
+		}
+		else if (polecenie == "WBI") {
+			dysk.wypiszBlokIndeksowy();
+			return;
+		}
+		else if (polecenie == "WK") {
+			dysk.wypiszKatalog();
+			return;
+		}
+		else if (polecenie == "FRMT") {
+			dysk.formatuj();
+			return;
+		}
+		else if (polecenie == "WPP") {
+			procek.ramka();
+			return;
+		}
+		else if (polecenie == "CP") {
 			cout << "stworzylem proces" << endl;
-			a.createProcess(parametry);
+			PL.createProcess(parametry);
 			return;
 		}
-		else if (polecenie == "sp") {
+		else if (polecenie == "SP") {
 			cout << "ustawilem priorytet" << endl;
-			a.setPriority(parametry);
+			PL.setPriority(parametry);
 			return;
 		}
-		else if (polecenie == "time") {
+		else if (polecenie == "TIME") {
 			Time();
 			return;
 		}
-		else if (polecenie == "chd") {
+		else if (polecenie == "CHD") {
 			ChangeDisLog(parametry);
 			return;
 		}

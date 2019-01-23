@@ -100,7 +100,7 @@ void User::createUser()
 	User::standardUserGroup.push_back(temporary);
 	User::addToUserList(temporary);
 }
-void User::deleteUser(string username) 
+void User::deleteUser(vector<string> param)
 {
 	if (getCurrentLoggedUser()[0] == 'g') {
 		interfejs->DisplayLog("Gosc nie moze usuwac uzytkownikow");
@@ -342,7 +342,7 @@ void User::addToUserList(User* user)
 {
 	User::userList.push_back(user);
 }
-void User::addUserToStandardUserGroup(string username)
+void User::addUserToStandardUserGroup(vector<string> param)
 {
 	User* user = new User();
 	user = User::getUserbyName(username);
@@ -376,7 +376,7 @@ void User::addUserToStandardUserGroup(string username)
 	else user->setSID("s-" + user->getSID());
 	User::standardUserGroup.push_back(user);
 }
-void User::addUserToAdminGroup(string username)
+void User::addUserToAdminGroup(vector<string> param)
 {
 	User* user = new User();
 	user = User::getUserbyName(username);

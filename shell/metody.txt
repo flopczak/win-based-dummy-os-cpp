@@ -1,0 +1,35 @@
+help wyswietla wszystkie metody
+cls czysci ekran
+time wyswietla czas
+color zmienia kolor
+cp tworzenie procesu
+sp ustawianie priorytetu
+exit wyjscie z systemu
+wpp wypisuje wszystkie procesy w gotowsci oraz proces ktory aktualnie dziala
+pb pobiera blok
+wp wypisuje plik
+dd dodaje dane
+dp dodaje plik
+wb wypisz blok
+wd wypisuje dysk
+ddp dopisuje do pliku
+up usuwa plik
+np nadpisuje plik
+wbi wypisuje blok indeksowy
+wk wypisuje katalog
+frmt formatuje
+cu tworzy uzytkownika
+pcl wyswietla aktualnego uzytkownika
+log loguje
+du usuwa uzytkownika
+vul wyswietla liste uzytkownikow
+vaug wyswietla adminow
+auts dodaje uzytkownika
+auta dodaje admina
+val wyswietla liste acl
+vfa wyswietla plik acl
+sap ustawia dodatkowe pozwolenia
+tk wyswietla proces
+tkl wyswietla wszystkie procesy
+tkk zabija proces
+ss ustawia status

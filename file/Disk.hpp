@@ -18,11 +18,11 @@ public:
 	bool close(std::string name);
 	bool status(std::string name);
 	bool czyMozna(std::string fname);
+	void dodajpPlik(std::string name); // Przeciazona funkcja dla assemblera nie dla uzytkownika
 
-
+	// Do uzytku uzytkownika V
 	void dodajDane(std::vector<std::string> vec);
 	void dodajpPlik(std::vector<std::string> vec);
-	void dodajpPlik();
 	void wypiszBlok(std::vector<std::string> vec);
 	void wypiszDysk();
 	void wypiszPlik(std::vector<std::string> vec);

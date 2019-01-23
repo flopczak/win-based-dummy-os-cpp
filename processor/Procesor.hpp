@@ -39,6 +39,7 @@ public:
 
 	void displayMap();
 
+	Process * prtrunning = new Process(running);
 
 	void priority_inc(); //metoda inkrementująca priorytety kazdego gotowego procesu
 

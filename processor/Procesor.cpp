@@ -168,7 +168,7 @@ void Procesor::ramka()
 		{
 			i = z.second.front().process_name;
 			q = z.second.front().process_status;
-			 z.second.front().process_priority
+			z.second.front().process_priority;
 			cout << "----------------------------------------" << endl;
 			cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << z.second.front().process_priority << "      |" << endl;
 			cout << "----------------------------------------" << endl;
@@ -192,7 +192,11 @@ void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 	find(); // to juz mi przypisze odpowiedni proces do running czy to moze byc?(jako wywlaszenie)
 	running.process_status = AKTYWNY;
 	//tu wstawienie running do metody run konrada w celu wykonania rozkazu asemblera
-	this->a->run(running,this->m,this->d);
+	
+	
+	this->a->run(prtrunning,this->m,this->d);
+
+
 	cout << "running: " << running.getName() << endl;
 	priority_inc();
 	/*

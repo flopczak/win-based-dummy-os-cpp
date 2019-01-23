@@ -22,7 +22,7 @@ public:
 	list<Process> temporary;
 	Procesor(); //Procesor(Process_List* p);
 	~Procesor();
-	void add(); // metoda do dodawania proces�w
+	void add(Process&ready); // metoda do dodawania proces�w
 	void check(Process &ready);
 	void Procesor::find();
 
@@ -35,7 +35,7 @@ public:
 	std::map<int, std::list<Process>> main_queue; //kolejka proces�w w stanie gotowo�ci da�em vec bez wskaznika czy to zle?
 	std::array<bool, 8> mask; //maska bitowa na kolejk�
 
-
+	list<Process> synchro(list<Process>& s);
 	void age(Process& p);
 
 };

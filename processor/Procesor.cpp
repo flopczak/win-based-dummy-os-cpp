@@ -10,7 +10,7 @@ bool work = true;
 
 Procesor::Procesor() //Procesor::Procesor(Process_List* p)
 {
-
+	
 	new_process = false;
 	for (int i = 0; i < 8; i++)
 	{
@@ -61,22 +61,17 @@ void Procesor::check(Process&ready)
 
 }
 //problem z procesor&p z referencja lub z raczej iteratorem listy
-void Procesor::add() // dodawanie do main_queue linija kodu z main niezbedna
+void Procesor::add(Process& ready) // dodawanie do main_queue linija kodu z main niezbedna
 {
 
-	for (int i = 0; i < temporary.size(); i++)
-	{
-		int it = temporary.front().process_priority;
-		Process ready = temporary.front();
+		int it = ready.process_priority;
 		main_queue[it].push_back(ready);
-		temporary.pop_front();
 		mask[it] = true;
 		check(ready);
-	}
 	//new_process = true;
 	//check gdy flaga new proces jest true wywołanie funkcji check w celu sprawdzenia czy nowy
 	//proces ma wyższy priorytet od bierzącego w razie ew wywłaszenia
-
+	//zmien tu na pojedynczy process i blazej to bedzie wolał jak się doda nowy proces w konstruktorze(chyba może)
 }
 
 //Procesor::find(Procesor&p) usunąłem z funkcji wszystkie p.
@@ -138,6 +133,7 @@ void Procesor::run() //sprawdzanie co każdą iterację pentli w main
 //funkcja zwiększająca wszystkie priotytety procesów gotowych!
 void Procesor::priority_inc()
 {
+	
 	int i = 7;
 	while (i > 0)
 	{
@@ -184,11 +180,19 @@ void Procesor::displayMap()
 	}
 }
 
+
+list<Process> Procesor::synchro(list<Process>& s)
+{
+	return s;
+}
+
 void Procesor::age(Process& p)
 {
+	
 	if (p.process_priority > 0 && p.process_priority < 2)
 	{
 		p.process_priority = 2;
+
 	}
 	else if (p.process_priority > 0 && p.process_priority > 1 && p.process_priority < 4)
 	{
@@ -202,4 +206,5 @@ void Procesor::age(Process& p)
 	{
 		p.process_priority = 7;
 	}
+	//synchro(temp);
 }

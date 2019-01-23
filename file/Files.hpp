@@ -17,4 +17,4 @@ public:
 	void showFiles();
 	bool rmfile(std::string name);
 };
-#endfile
+#endif

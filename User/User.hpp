@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include "Acl.hpp"
-#include "../shel/Inteferjs.h"
+#include "../shell/Interfejs.h"
 
 class User {
 
@@ -62,3 +62,5 @@ public:
 	static void UserStart();										// Inicjalizacja poczatkowych parametr�w
 
 };
+
+#endif

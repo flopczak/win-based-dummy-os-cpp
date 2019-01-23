@@ -1,5 +1,4 @@
 #include "assembler\Assembler.hpp"
-#include "authentication\Authentication.hpp"
 #include "file\Directory.hpp"
 #include "file\Disk.hpp"
 #include "file\File.hpp"

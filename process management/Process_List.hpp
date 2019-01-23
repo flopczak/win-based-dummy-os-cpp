@@ -18,7 +18,7 @@ public:
 	void setStatus(vector<string>v);
 	void setPriority(vector<string>v);
 	void terminateProcess(vector<string>v);
-	void removeProcess();
+	void removeProcess(Process a);
 	void findAndDisplayProcess(vector<string>v);
 	void displayAll();
 };

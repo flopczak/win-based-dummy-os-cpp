@@ -9,17 +9,14 @@
 #include <time.h>
 #include "../Inklud.hpp"
 
+
 using namespace std;
-Memory memory;
-Process_List PL;
-User  user;
-Acl acl;
-Disk dysk;  
-Procesor procek;
+
 
 
 class Interfejs {
 public:
+	
 	struct met {
 		string skrot;
 		string opis;
@@ -196,7 +193,9 @@ public:
 	}
 
 
-	void Wywolaj(vector<string> tab) {
+	void Wywolaj(vector<string> tab, Memory memory
+		,Process_List PL,User  user, Acl acl, Disk dysk,Procesor procek)
+	{
 		int x = tab.size();
 		if (x == 0) {
 			cout << "Brak elementow do wywolania" << endl;
@@ -290,7 +289,7 @@ public:
 			return;
 		}
 		else if (polecenie == "SAP") {
-			setAdditionalPermissions(parametry);
+			acl.setAdditionalPermissions(parametry);
 			return;
 		}
 		else if (polecenie == "WZP") {
@@ -318,11 +317,11 @@ public:
 			return;
 		}
 		else if (polecenie == "WB") {
-			dysk.wypiszBlok(parametry;);
+			dysk.wypiszBlok(parametry);
 			return;
 		}
 		else if (polecenie == "WD") {
-			dysk.wypiszDysk()
+			dysk.wypiszDysk();
 			return;
 		}
 		else if (polecenie == "WP") {

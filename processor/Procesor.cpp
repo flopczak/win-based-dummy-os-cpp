@@ -166,15 +166,19 @@ void Procesor::ramka()
 		{
 			i = z.second.front().process_name;
 			q = z.second.front().process_status;
-			w = z.second.front().process_priority;
+			 z.second.front().process_priority
 			cout << "----------------------------------------" << endl;
-			cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << w << "      |" << endl;
+			cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << z.second.front().process_priority << "      |" << endl;
 			cout << "----------------------------------------" << endl;
 
 		}
 	}
-	
-	
+	i = running.process_name;
+	q = running.process_status;
+	w = running.process_priority;
+	cout << "----------------------------------------" << endl;
+	cout << "|" << a << i << b << "|" << c << stat[q] << d << "|" << "     " << w << "      |" << endl;
+	cout << "----------------------------------------" << endl;	
 }
 
 

@@ -9,10 +9,10 @@ File::File(std::string name)
 	this->name = temp;
 	std::getline(f, temp);
 	this->ext = temp;
-	////(
-	//	"Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
-	//	" i poziomie dostepu " + to_string(this->acl));
-	std::cout << "Stworzono plik o nazwie " + this->name + "." + this->ext << std::endl;
+	DisplayLog(
+		"Stworzono plik o nazwie " + this->name + "." + this->ext + " blok indeksowy: " + to_string(this->indexBlock) +
+		" i poziomie dostepu " + to_string(this->acl));
+	//std::cout << "Stworzono plik o nazwie " + this->name + "." + this->ext << std::endl;
 }
 
 

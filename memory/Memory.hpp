@@ -5,7 +5,7 @@
 #include <queue>
 #include <string>
 using namespace std;
-enum class CharTable : char
+enum class CharTable : unsigned char
 {
 	CTL = 218, //Corner Top Left
 	CTR = 191, //Corner Top Right

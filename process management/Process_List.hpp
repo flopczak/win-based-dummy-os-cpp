@@ -10,10 +10,14 @@ class Process_List
 public:
 	Process_List();
 	static list<Process>PrcList;
+<<<<<<< Updated upstream
 	std::list<Process>::iterator it;
+=======
+	list<Process>::iterator it;
+>>>>>>> Stashed changes
 	list<Process> getReady();
-	void CP_1(vector<string>v);
-	void CP_2(vector<string>v);
+	Process CP_1(vector<string>v);
+	Process CP_2(vector<string>v);
 	void createProcess(vector<string>v);
 	void setStatus(vector<string>v);
 	void setPriority(vector<string>v);

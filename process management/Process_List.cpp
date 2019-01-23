@@ -8,23 +8,20 @@ using namespace std;
 
 Process_List::Process_List()
 {
-
 }
 
-void Process_List::CP_1(vector<string>v)
+Process Process_List::CP_1(vector<string>v)
 {
 	Process a(v[0]);
 	Process_List::PrcList.push_front(a);
-	Procesor dupa;
-	dupa.add(a);
+	return a;
 }
 
-void Process_List::CP_2(vector<string>v)
+Process Process_List::CP_2(vector<string>v)
 {
 	Process a(v[0], stoi(v[1]));
 	Process_List::PrcList.push_back(a);
-	Procesor dupa;
-	dupa.add(a);
+	return a;
 }
 
 void Process_List::createProcess(vector<string>v)
@@ -100,7 +97,6 @@ void Process_List::terminateProcess(vector<string>v)
 	}
 }
 
-
 void Process_List::removeProcess()
 {
 	Process a;
@@ -114,7 +110,6 @@ void Process_List::removeProcess()
 		}
 	}
 }
-
 
 void Process_List::findAndDisplayProcess(vector<string>v)
 {

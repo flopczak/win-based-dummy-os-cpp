@@ -194,9 +194,230 @@ bool Disk::czyMozna(std::string fname)
 	return false;
 }
 
+void Disk::wypiszBlok(int index)
+{
+	////("Wypisuje blok o podanym indeksie " + to_string(index));
+	//std::cout << "Wypisuje blok o podanym indeksie " + to_string(index) << std::endl;
+	std::string temp;
+	if (index != -1) {
+		for (int i = index * 32; i < (index * 32) + 32; i++)
+		{
+			if (HDD[i] == -1) temp += '-';
+			else
+			{
+				temp += HDD[i];
+			}
+		}
+		std::cout << temp;
+	}
+}
+
 //
 
 
+// Metoda przeciazona dla interpretera nie dla interfejsu
+
+void Disk::dodajpPlik(std::string name)
+{
+	if (root.f.fileExists(name) == -1)
+	{
+		int blokI = znajdzWolny(0);
+		if (blokI == -1)
+		{
+			//DisplayLog("Brak wolnych blokow!");
+			return;
+		}
+		zajeBloki[blokI] = true;
+		root.mkfile(name, blokI);
+		//DisplayLog("Stworzono plik o podanej nazwie " + name + " z blokiem indeksowym o numerze " + to_string(blokI));
+		return;
+	}
+	//DisplayLog("Plik o podanej nazwie juz istnieje" + name);
+	return;
+}
+
+void Disk::nadpiszPlik(std::string name, std::string dane)
+{
+	int blokI = root.f.fileExists(name);
+	if (!czyMozna(name)) return;
+	if (blokI == -1)
+	{
+		////("Plik o podanej nazwie nie istnieje " + name);
+		std::cout << "Plik o podanej nazwie nie istnieje " + name << std::endl;
+		return;
+	}
+	int pos = 0;
+	bool koniec = false;
+	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
+	{
+		if (koniec == false)
+		{
+			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			{
+				if (pos < dane.length())
+				{
+					HDD[j] = dane.at(pos);
+					pos++;
+				}
+				else
+				{
+					HDD[j] = -1;
+					koniec = true;
+				}
+			}
+		}
+		else
+		{
+			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
+			{
+				HDD[j] = -1;
+			}
+			zajeBloki[i] = false;
+			HDD[i] = -1;
+		}
+	}
+}
+
+void Disk::dopiszDoPliku(std::string name, std::string dane)
+{
+
+	////("Dopisuje do pliku " + name);
+	std::cout << "Dopisuje do pliku " + name << std::endl;
+
+	int blokI = root.f.fileExists(name);
+	if (blokI == -1)
+	{
+		////("Podany plik "+name+" nie istnieje");
+		std::cout << "Podany plik " + name + " nie istnieje" << std::endl;
+		return;
+	}
+	if (!czyMozna(name)) return;
+	std::vector<int> wolne;
+	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
+	{
+		if (HDD[i] == -1)
+		{
+			wolne.push_back(i);
+		}
+	}
+	if (wolne.empty())
+	{
+		////("Plik "+ name +" osiagnal maksymalny rozmiar.");
+		std::cout << "Plik " + name + " osiagnal maksymalny rozmiar." << std::endl;
+		return;
+	}
+	if (sizeof(wolne) * 32 < dane.length())
+	{
+		////("Dane zbyt duze.");
+		std::cout << "Dane zbyt duze." << std::endl;
+		return;
+	}
+	int pos = 0;
+	////("Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny");
+	std::cout << "Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny" << std::endl;
+	if (wolne.size() != 32)
+	{
+		int temp = HDD[wolne[0] - 1];
+		for (int i = temp * 32; i < (temp * 32) + 32; i++)
+		{
+			if (HDD[i] == -1)
+			{
+				if (pos >= dane.length()) return;
+				HDD[i] = dane.at(pos);
+				pos++;
+			}
+		}
+	}
+	////("Dopisujemy do pliku " + name);
+	std::cout << "Dopisujemy do pliku " + name << std::endl;
+	for (auto e : wolne)
+	{
+		int blokD = znajdzWolny(0);
+		if (blokD == -1)
+		{
+			////("Brak wolnych blokow.");
+			std::cout << "Brak wolnych blokow!" << std::endl;
+			return;
+		}
+		zajeBloki[blokD] = true;
+		HDD[e] = blokD;
+
+		for (int e = blokD * 32; e < blokD * 32 + 32; e++)
+		{
+			if (pos < dane.length())
+			{
+				HDD[e] = dane[pos];
+				pos++;
+			}
+			else
+			{
+				HDD[e] = -1;
+				return;
+			}
+		}
+	}
+}
+
+void Disk::wypiszPlik(std::string name)
+{
+	////("Wypisuje plik " + name);
+	std::cout << "Wypisuje plik " + name << std::endl;
+	int i = root.f.fileExists(name);
+	if (i != -1)
+	{
+		//Brak pliku o podanej nazwie
+	}
+	if (!czyMozna(name)) return; // nie mozna;
+	wypiszPlik(i);
+}
+
+void Disk::usunPlik(std::string name)
+{
+	////("Usuwam plik " + name);
+	int blokI = root.f.fileExists(name);
+
+	if (blokI == -1)
+	{
+		std::cout << "Brak pliku o podanej nazwie " + name << std::endl;
+	}
+	if (!czyMozna(name)) return;
+	std::cout << "Usuwam plik " + name << std::endl;
+
+	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
+	{
+
+		if (HDD[i] != -1)
+		{
+			zajeBloki[HDD[i]] = false;
+
+			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
+			{
+				HDD[j] = -1;
+			}
+			HDD[i] = -1;
+		}
+	}
+	zajeBloki[blokI] = false;
+	root.f.rmfile(name);
+	int pos = 0;
+	for (auto e : root.f.openFiles)
+	{
+		if (e == name)
+		{
+			root.f.openFiles.erase(root.f.openFiles.begin() + pos);
+			////("Usunieto plik "+ name +" z tablicy otwartosci.");
+			std::cout << "Usunieto plik " + name + " z tablicy otwartosci." << std::endl;
+			break;
+		}
+		pos++;
+	}
+
+	////("Plik o podanej nazwie nie istnieje " + name);
+	std::cout << "Plik o podanej nazwie juz nie istnieje " + name << std::endl;
+}
+
+
+//////
 // FUNKCJE INTERFEJSU
 
 void Disk::dodajDane(std::vector<std::string> vec)
@@ -368,215 +589,7 @@ void Disk::dodajpPlik(std::vector<std::string> vec)
 	std::cout << "Plik o podanej nazwie juz istnieje" + name << std::endl;
 	return;
 }
-// Metoda przeciazona dla interpretera nie dla interfejsu
 
-void Disk::dodajpPlik(std::string name)
-{
-	if (root.f.fileExists(name) == -1)
-	{
-		int blokI = znajdzWolny(0);
-		if (blokI == -1)
-		{
-			//DisplayLog("Brak wolnych blokow!");
-			return;
-		}
-		zajeBloki[blokI] = true;
-		root.mkfile(name, blokI);
-		//DisplayLog("Stworzono plik o podanej nazwie " + name + " z blokiem indeksowym o numerze " + to_string(blokI));
-		return;
-	}
-	//DisplayLog("Plik o podanej nazwie juz istnieje" + name);
-	return;
-}
-
-void Disk::nadpiszPlik(std::string name, std::string dane)
-{
-	int blokI = root.f.fileExists(name);
-	if (!czyMozna(name)) return;
-	if (blokI == -1)
-	{
-		////("Plik o podanej nazwie nie istnieje " + name);
-		std::cout << "Plik o podanej nazwie nie istnieje " + name << std::endl;
-		return;
-	}
-	int pos = 0;
-	bool koniec = false;
-	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
-	{
-		if (koniec == false)
-		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
-			{
-				if (pos < dane.length())
-				{
-					HDD[j] = dane.at(pos);
-					pos++;
-				}
-				else
-				{
-					HDD[j] = -1;
-					koniec = true;
-				}
-			}
-		}
-		else
-		{
-			for (int j = HDD[i] * 32; j < (HDD[j] * 32) + 32; j++)
-			{
-				HDD[j] = -1;
-			}
-			zajeBloki[i] = false;
-			HDD[i] = -1;
-		}
-	}
-}
-
-void Disk::dopiszDoPliku(std::string name, std::string dane)
-{
-
-	if (vec.size() == 1)
-	{
-		////("Nie mam co dopisac, brak danch.");
-		std::cout << "Nie mam co dopisac, brak danch." << std::endl;
-		return;
-	}
-	////("Dopisuje do pliku " + name);
-	std::cout << "Dopisuje do pliku " + name << std::endl;
-
-	int blokI = root.f.fileExists(name);
-	if (blokI == -1)
-	{
-		////("Podany plik "+name+" nie istnieje");
-		std::cout << "Podany plik " + name + " nie istnieje" << std::endl;
-		return;
-	}
-	if (!czyMozna(name)) return;
-	std::vector<int> wolne;
-	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
-	{
-		if (HDD[i] == -1)
-		{
-			wolne.push_back(i);
-		}
-	}
-	if (wolne.empty())
-	{
-		////("Plik "+ name +" osiagnal maksymalny rozmiar.");
-		std::cout << "Plik " + name + " osiagnal maksymalny rozmiar." << std::endl;
-		return;
-	}
-	if (sizeof(wolne) * 32 < dane.length())
-	{
-		////("Dane zbyt duze.");
-		std::cout << "Dane zbyt duze." << std::endl;
-		return;
-	}
-	int pos = 0;
-	////("Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny");
-	std::cout << "Sprawdzamy czy mozemy dopisac do zajetego bloku danych, ktory moze nie byc pelny" << std::endl;
-	if (wolne.size() != 32)
-	{
-		int temp = HDD[wolne[0] - 1];
-		for (int i = temp * 32; i < (temp * 32) + 32; i++)
-		{
-			if (HDD[i] == -1)
-			{
-				if (pos >= dane.length()) return;
-				HDD[i] = dane.at(pos);
-				pos++;
-			}
-		}
-	}
-	////("Dopisujemy do pliku " + name);
-	std::cout << "Dopisujemy do pliku " + name << std::endl;
-	for (auto e : wolne)
-	{
-		int blokD = znajdzWolny(0);
-		if (blokD == -1)
-		{
-			////("Brak wolnych blokow.");
-			std::cout << "Brak wolnych blokow!" << std::endl;
-			return;
-		}
-		zajeBloki[blokD] = true;
-		HDD[e] = blokD;
-
-		for (int e = blokD * 32; e < blokD * 32 + 32; e++)
-		{
-			if (pos < dane.length())
-			{
-				HDD[e] = dane[pos];
-				pos++;
-			}
-			else
-			{
-				HDD[e] = -1;
-				return;
-			}
-		}
-	}
-}
-
-void Disk::wypiszPlik(std::string name)
-{
-	////("Wypisuje plik " + name);
-	std::cout << "Wypisuje plik " + name << std::endl;
-	int i = root.f.fileExists(name);
-	if (i != -1)
-	{
-		//Brak pliku o podanej nazwie
-	}
-	if (!czyMozna(name)) return; // nie mozna;
-	wypiszPlik(i);
-}
-
-void Disk::usunPlik(std::string name)
-{
-	////("Usuwam plik " + name);
-	int blokI = root.f.fileExists(name);
-
-	if (blokI == -1)
-	{
-		std::cout << "Brak pliku o podanej nazwie " + name << std::endl;
-	}
-	if (!czyMozna(name)) return;
-	std::cout << "Usuwam plik " + name << std::endl;
-
-	for (int i = blokI * 32; i < (blokI * 32) + 32; i++)
-	{
-
-		if (HDD[i] != -1)
-		{
-			zajeBloki[HDD[i]] = false;
-
-			for (int j = HDD[i] * 32; j < (HDD[i] * 32) + 32; j++)
-			{
-				HDD[j] = -1;
-			}
-			HDD[i] = -1;
-		}
-	}
-	zajeBloki[blokI] = false;
-	root.f.rmfile(name);
-	int pos = 0;
-	for (auto e : root.f.openFiles)
-	{
-		if (e == name)
-		{
-			root.f.openFiles.erase(root.f.openFiles.begin() + pos);
-			////("Usunieto plik "+ name +" z tablicy otwartosci.");
-			std::cout << "Usunieto plik " + name + " z tablicy otwartosci." << std::endl;
-			break;
-		}
-		pos++;
-	}
-
-	////("Plik o podanej nazwie nie istnieje " + name);
-	std::cout << "Plik o podanej nazwie juz nie istnieje " + name << std::endl;
-}
-
-
-//////
 void Disk::wypiszBlok(std::vector<std::string> vec)
 {
 	if (vec.size() == 0) return;

@@ -18,6 +18,7 @@ public:
 	bool close(std::string name);
 	bool status(std::string name);
 	bool czyMozna(std::string fname);
+	void Disk::wypiszBlok(int index);
 	void dodajpPlik(std::string name); // Przeciazona funkcja dla assemblera nie dla uzytkownika
 	void Disk::nadpiszPlik(std::string name, std::string dane);
 	void Disk::dopiszDoPliku(std::string name, std::string dane);

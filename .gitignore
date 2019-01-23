@@ -39,3 +39,8 @@ Debug/
 *.sln
 *.vcxproj
 *.vcxproj*
+
+# CLion
+.idea/
+cmake-build-debug/
+CMakeLists.txt

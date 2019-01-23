@@ -99,9 +99,9 @@ void Process_List::terminateProcess(vector<string>v)
 	}
 }
 
-void Process_List::removeProcess()
+void Process_List::removeProcess(Process a)
 {
-	Process a;
+	
 	a.setProcessStatus(ZAKONCZONY);
 	for (it = PrcList.begin(); it != PrcList.end(); ++it)
 	{

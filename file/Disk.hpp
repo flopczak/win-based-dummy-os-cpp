@@ -9,6 +9,7 @@ public:
 	Disk();
 	~Disk();
 	Directory root;
+	/*
 	std::string pobierzBlok(int index);
 	std::string wypiszPlik(int index);
 	bool czyZaj(int index);
@@ -29,5 +30,27 @@ public:
 	void wypiszBlokIndeksowy(int index);
 	void wypiszKatalog();
 	std::string sciezka(std::string name);
+	void formatuj();
+	*/
+	std::string pobierzBlok(std::vector v);
+	std::string wypiszPlik(std::vector v);
+	bool czyZaj(std::vector v);
+	int znajdzWolny(std::vector v);
+	int dodajDane(std::vector v);
+	int dodajDane(std::vector v);
+	int dodajpPlik(std::vector v);
+	void wypiszBlok(std::vector v);
+	void wypiszDysk();
+	void wypiszPlik(std::vector v);
+	void dopiszDoPliku(std::vector v);
+	void usunPlik(std::vector v);
+	bool open(std::vector v);
+	bool close(std::vector v);
+	bool status(std::vector v);
+	void nadpiszPlik(std::vector v);
+	bool czyMozna(std::vector v);
+	void wypiszBlokIndeksowy(std::vector v);
+	void wypiszKatalog();
+	std::string sciezka(std::vector v);
 	void formatuj();
 };

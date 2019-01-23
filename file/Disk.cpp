@@ -618,10 +618,10 @@ void Disk::formatuj()
 	{
 		 	}
 }
-*/
+
 
 //void
-std::string Disk::pobierzBlok(std::vector v)
+std::string Disk::pobierzBlok(std::vector<std::string> v)
 {
 	//std::cout << "Odczytuje zawartosc bloku o indeksie: " + to_string(index) << std::endl;
 
@@ -634,7 +634,7 @@ std::string Disk::pobierzBlok(std::vector v)
 }
 
 //void
-std::string Disk::wypiszPlik(std::vector v)
+std::string Disk::wypiszPlik(std::vector<std::string> v)
 {
 	std::string zawartosc;
 
@@ -656,14 +656,14 @@ std::string Disk::wypiszPlik(std::vector v)
 	return zawartosc;
 }
 
-bool Disk::czyZaj(std::vector v)
+bool Disk::czyZaj(std::vector<std::string> v)
 {
 
 	//std::cout << "Sprawdzam czy blok o indeksie " + to_string(index) + " jest wolny." << std::endl;
 	return zajBloki[index];
 }
 
-int Disk::znajdzWolny(std::vector v)
+int Disk::znajdzWolny(std::vector<std::string> v)
 {
 
 	//std::cout << "Szukam pierwszego wolnego bloku od podanego indeksu " + to_string(index) << std::endl;
@@ -690,7 +690,7 @@ int Disk::znajdzWolny(std::vector v)
 	return -1;
 }//void
 
-int Disk::dodajDane(std::vector v)
+int Disk::dodajDane(std::vector<std::string> v)
 {
 	if (name.length() == 0)
 	{
@@ -759,8 +759,8 @@ int Disk::dodajDane(std::vector v)
 	//std::cout << "Plik o podanej nazwie ju¿ istnieje! " + name << std::endl;
 	return -1;
 } //void
-
-int Disk::dodajDane(std::vector v)
+/*
+int Disk::dodajDane(std::vector<std::string> v)
 {
 	if (name.length() == 0)
 	{
@@ -830,7 +830,7 @@ int Disk::dodajDane(std::vector v)
 	return -1;
 } //void
 
-int Disk::dodajpPlik(std::vector v)
+int Disk::dodajpPlik(std::vector<std::string> v)
 {
 	if (root.f.fileExists(name) == -1)
 	{
@@ -853,7 +853,7 @@ int Disk::dodajpPlik(std::vector v)
 	return -1;
 }// void 
 
-void Disk::wypiszBlokstd::vector v)
+void Disk::wypiszBlok(std::vector<std::string> v)
 {
 
 	//std::cout << "Wypisuje blok o podanym indeksie " + to_string(index) << std::endl;
@@ -884,7 +884,7 @@ void Disk::wypiszDysk()
 	std::cout << std::endl;
 }
 
-void Disk::wypiszPlik(std::vector v)
+void Disk::wypiszPlik(std::vector<std::string> v)
 {
 	if (!czyMozna(name))
 	{
@@ -901,7 +901,7 @@ void Disk::wypiszPlik(std::vector v)
 	std::cout << wypiszPlik(i) << std::endl;
 }
 
-void Disk::dopiszDoPliku(std::vector v)
+void Disk::dopiszDoPliku(std::vector<std::string> v)
 {
 	if (!czyMozna(name))
 	{
@@ -989,7 +989,7 @@ void Disk::dopiszDoPliku(std::vector v)
 	}
 }
 
-void Disk::usunPlik(std::vector v)
+void Disk::usunPlik(std::vector<std::string> v)
 {
 	if (!czyMozna(name))
 	{
@@ -1029,7 +1029,7 @@ void Disk::usunPlik(std::vector v)
 	//std::cout << "Plik o podanej nazwie juz nie istnieje " + name << std::endl;
 }
 
-bool Disk::open(std::vector v)
+bool Disk::open(std::vector<std::string> v)
 {
 	//std::cout << "Otwieram plik o podanej nazwie " + name << std::endl;
 	if (root.f.fileExists(name) != -1)
@@ -1050,7 +1050,7 @@ bool Disk::open(std::vector v)
 	return false;
 }
 
-bool Disk::close(std::vector v)
+bool Disk::close(std::vector<std::string> v)
 {
 	//std::cout << "Zamykam plik " + name << std::endl;
 	if (root.f.fileExists(name) != -1)
@@ -1073,7 +1073,7 @@ bool Disk::close(std::vector v)
 	return false;
 }
 
-bool Disk::status(std::vector ve)
+bool Disk::status(std::vector<std::string> ve)
 {
 	if (root.f.fileExists(name) != -1)
 	{
@@ -1092,7 +1092,7 @@ bool Disk::status(std::vector ve)
 	return false;
 }
 
-void Disk::nadpiszPlik(std::vector v)
+void Disk::nadpiszPlik(std::vector<std::string> v)
 {
 	if (!czyMozna(name))
 	{
@@ -1136,7 +1136,7 @@ void Disk::nadpiszPlik(std::vector v)
 	}
 }
 
-bool Disk::czyMozna(std::vector v)
+bool Disk::czyMozna(std::vector<std::string> v)
 {
 	std::string comp;
 	if (root.f.fileExists(fname) != -1)
@@ -1166,7 +1166,7 @@ bool Disk::czyMozna(std::vector v)
 	return false;
 }
 
-void Disk::wypiszBlokIndeksowy(std::vector v)
+void Disk::wypiszBlokIndeksowy(std::vector<std::string> v)
 {
 	//std::cout << "Wypisuje zawartosc bloku indeksowego nr " + to_string(index) << std::endl;
 	if (index != -1)
@@ -1188,7 +1188,7 @@ void Disk::wypiszKatalog()
 	this->root.f.showFiles();
 }
 
-std::string Disk::sciezka(std::vector v)
+std::string Disk::sciezka(std::vector<std::string> v)
 {
 	std::string path;
 	if (root.f.fileExists(name) != -1)
@@ -1219,3 +1219,4 @@ void Disk::formatuj()
 	{
 	}
 }
+*/

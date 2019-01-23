@@ -7,7 +7,7 @@
 
 int main() {
 	std::cout << "System start..." << std::endl;
-	Procesor proc;
+	Procesor proc();
 	Interfejs shell(&proc);
 
 	while (proc.work == true)

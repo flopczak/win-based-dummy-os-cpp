@@ -31,7 +31,6 @@ public:
 	Process running; // wkladasz to do run od konrada aby wykonac rozkaz asemblera
 					 //Process_List* temporary = new Process_List();
 	list<Process> temporary;
-	Procesor(); //Procesor(Process_List* p);
 	~Procesor();
 	void add(Process&ready); // metoda do dodawania proces�w
 	void check(Process &ready);

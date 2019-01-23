@@ -33,6 +33,7 @@
 
 # Visual Studio
 .vs/
+.vscode/
 x64/
 x86/
 Debug/

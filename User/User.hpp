@@ -2,8 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Acl.hpp"
-#include "Interfejs"
+#include "../Inklud.hpp"
 
 using namespace std;
 class User {

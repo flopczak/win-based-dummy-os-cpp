@@ -9,7 +9,7 @@
 #include "../file/Disk.hpp"
 
 
-class Assembler{
+class Assembler {
 public:
 	int PID;
 	int regAX;

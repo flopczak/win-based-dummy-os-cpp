@@ -17,13 +17,12 @@ using namespace std;
 class Interfejs {
 private:
 	Procesor *proc;
-	Memory *memory;
-	Process_List *PL;
+	Assembler *assembler;
+	Disk *dysk;
+	Memory *mem;
 	User *user;
 	Acl *acl;
-	Disk *dysk;
-	Procesor *procek;
-	Sync *sync;
+	Process_List *PL;
 public:
 	
 	struct met {
@@ -33,16 +32,14 @@ public:
 	vector<met> metody;
 	vector<string> kroki;
 
-	Interfejs(Memory *memory
-		, Process_List *PL, User  *user, Acl *acl, Disk *dysk, Procesor *procek, Sync *sync) {
+	Interfejs(Procesor *proc, Assembler *assembler, Disk *dysk, Memory *mem, User *user, Acl *acl, Process_List *PL) {
 		this->proc = proc;
-		this->memory = memory;
-		this->PL = PL;
-		this->user = user;
+		this->mem = mem;
 		this->acl = acl;
+		this->assembler = assembler;
 		this->dysk = dysk;
-		this->procek = procek;
-		this->sync = sync;
+		this->user = user;
+		this->PL = PL;
 	}
 
 	void DisplayLog(string msg) {
@@ -242,18 +239,18 @@ public:
 			return;
 		}
 		else if (polecenie == "TK") {
-			PL.findAndDisplayProcess(parametry);
+			this->PL->findAndDisplayProcess(parametry);
 			return;
 		}
 		else if (polecenie == "TKL") {
-			PL.displayAll();
+			this->PL->displayAll();
 			return;
 		}
 		else if (polecenie == "TKK") {
-			PL.terminateProcess(parametry);
+			this->PL->terminateProcess(parametry);
 		}
 		else if (polecenie == "SS") {
-			PL.setStatus(parametry);
+			this->PL->setStatus(parametry);
 			return;
 		}
 		else if (polecenie == "EXIT") {
@@ -265,59 +262,59 @@ public:
 			return;
 		}
 		else if (polecenie == "CU") {
-			user.createUser();
+			this->user->createUser();
 			return;
 		}
 		else if (polecenie == "PCL") {
-			user.printCurrentLoggedUser();
+			this->user->printCurrentLoggedUser();
 			return;
 		}
 		else if (polecenie == "LOG") {
-			user.logIn();
+			this->user->logIn();
 			return;
 		}
 		else if (polecenie == "DU") {
-			user.deleteUser(parametry);
+			this->user->deleteUser(parametry);
 			return;
 		}
 		else if (polecenie == "VUL") {
-			user.viewUserList();
+			this->user->viewUserList();
 			return;
 		}
 		else if (polecenie == "VSUG") {
-			user.viewStandardUserGroup();
+			this->user->viewStandardUserGroup();
 			return;
 		}
 		else if (polecenie == "VAUG") {
-			user.viewAdminUserGroup();
+			this->user->viewAdminUserGroup();
 			return;
 		}
 		else if (polecenie == "AUTS") {
-			user.addUserToStandardUserGroup(parametry);
+			this->user->addUserToStandardUserGroup(parametry);
 			return;
 		}
 		else if (polecenie == "AUTA") {
-			user.addUserToAdminGroup(parametry);
+			this->user->addUserToAdminGroup(parametry);
 			return;
 		}
 		else if (polecenie == "VAL") {
-			acl.viewAclList();
+			this->acl->viewAclList();
 			return;
 		}
 		else if (polecenie == "VFA") {
-			acl.viewFileAcl(parametry);
+			this->acl->viewFileAcl(parametry);
 			return;
 		}
 		else if (polecenie == "SAP") {
-			acl.setAdditionalPermissions(parametry);
+			this->acl->setAdditionalPermissions(parametry);
 			return;
 		}
 		else if (polecenie == "WZP") {
-			memory.WypiszZasobPamieci();
+			this->memory->WypiszZasobPamieci();
 			return;
 		}
 		else if (polecenie == "WF") {
-			memory.WydrukujFIFO();
+			this->memory->WydrukujFIFO();
 			return; 
 		}
 		/*else if (polecenie == "DD" && parametry.size()==0) {
@@ -325,65 +322,65 @@ public:
 			return;
 		}*/
 		else if (polecenie == "PB") {
-			dysk.pobierzBlok(parametry);
+			this->dysk->pobierzBlok(parametry);
 			return;
 		}
 		else if (polecenie == "DD") {
-			dysk.dodajDane(parametry);
+			this->dysk->dodajDane(parametry);
 			return;
 		}
 		else if (polecenie == "DP") {
-			dysk.dodajPlik(parametry);
+			this->dysk->dodajPlik(parametry);
 			return;
 		}
 		else if (polecenie == "WB") {
-			dysk.wypiszBlok(parametry);
+			this->dysk->wypiszBlok(parametry);
 			return;
 		}
 		else if (polecenie == "WD") {
-			dysk.wypiszDysk();
+			this->dysk->wypiszDysk();
 			return;
 		}
 		else if (polecenie == "WP") {
-			dysk.wypiszPlik(parametry);
+		this->dysk->wypiszPlik(parametry);
 			return;
 		}
 		else if (polecenie == "DDP") {
-			dysk.dopiszDoPliku(parametry);
+		this->dysk->dopiszDoPliku(parametry);
 			return;
 		}
 		else if (polecenie == "UP") {
-			dysk.usunPlik(parametry);
+		this->dysk->usunPlik(parametry);
 			return;
 		}
 		else if (polecenie == "NP") {
-			dysk.nadpiszPlik(parametry);
+		this->dysk->nadpiszPlik(parametry);
 			return;
 		}
 		else if (polecenie == "WBI") {
-			dysk.wypiszBlokIndeksowy();
+		this->dysk->wypiszBlokIndeksowy();
 			return;
 		}
 		else if (polecenie == "WK") {
-			dysk.wypiszKatalog();
+			this->dysk->wypiszKatalog();
 			return;
 		}
 		else if (polecenie == "FRMT") {
-			dysk.formatuj();
+			this->dysk->formatuj();
 			return;
 		}
 		else if (polecenie == "WPP") {
-			procek.ramka();
+			this->proc->ramka();
 			return;
 		}
 		else if (polecenie == "CP") {
 			cout << "stworzylem proces" << endl;
-			PL.createProcess(parametry);
+			this->PL->createProcess(parametry);
 			return;
 		}
 		else if (polecenie == "SP") {
 			cout << "ustawilem priorytet" << endl;
-			PL.setPriority(parametry);
+			this->PL->setPriority(parametry);
 			return;
 		}
 		else if (polecenie == "TIME") {

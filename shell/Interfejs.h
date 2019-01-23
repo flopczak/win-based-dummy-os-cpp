@@ -51,7 +51,7 @@ public:
 			return;
 		}
 		for (int i = 0; i < x; i++) {
-			cout << i + 1 << ". " << metody[i].skrot << " " << metody[i].opis << endl;
+			cout << i + 1 << ". " << ToUp(metody[i].skrot) << " " << metody[i].opis << endl;
 		}
 		cout << endl;
 	}

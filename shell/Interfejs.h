@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <cstdlib>
 #include <time.h>
-#include "Inklud.hpp"
+#include "../Inklud.hpp"
 
 using namespace std;
 Memory memory;
@@ -15,7 +15,7 @@ Process_List PL;
 User  user;
 Acl acl;
 Disk dysk;  
-Processor procek;
+Procesor procek;
 
 
 class Interfejs {

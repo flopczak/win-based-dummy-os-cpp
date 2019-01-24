@@ -6,7 +6,7 @@ using namespace std;
 
 Process::Process(int pid, string na, int priority, int cc,  Memory * m, int inst_size)
 {
-	this->PID = rand() % 9999 + 1000;
+	this->PID = pid;
 	this->process_name = na;
 	this->process_status = GOTOWY;
 	this->program_instructions = inst_size;
@@ -18,9 +18,7 @@ Process::Process(int pid, string na, int priority, int cc,  Memory * m, int inst
 	this->mmr = m;
 }
 
-Process::~Process()
-{
-}
+Process::~Process()=default;
 
 //settery
 void Process::setPriority(int n)

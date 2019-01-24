@@ -1,7 +1,4 @@
-#include "../processor/Procesor.hpp"
 #include "Process_List.hpp"
-#include "Process.hpp"
-#include "../processor/Procesor.hpp"
 #include <iostream>
 
 using namespace std;
@@ -15,10 +12,9 @@ Process_List::Process_List()
 	this->assembler = new Assembler(this, this->mem, this->disk);
 }
 
-void Process_List::createProcess(string name, string instr, int pr)
+void Process_List::createProcess(const string &name, const string &instr, const int &pr)
 {
-	int pid = rand() & 9999 * 1000;
-	//dodac instr do pamieci w miejscu pid
+	int pid = rand() % 9999 + 1000;
 	Process p = Process(pid, name, pr, 0, this->mem, instr.size());
 	PCBList.insert(pair<int, Process*>(pid, &p));
 	//dodanie tego procesu do listy gotowych procesow w procesorze

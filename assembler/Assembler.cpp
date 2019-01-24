@@ -7,24 +7,24 @@
 //Operacje arytmetyczne//
 AD - dodawanie
 SB - odejmowanie
-MP - mno¿enie
+MP - mnoï¿½enie
 DV - dzielenie
 MV - przenoszenie wartoci
-IC - zwiêkszenie wartosci rejestru o 1
+IC - zwiï¿½kszenie wartosci rejestru o 1
 DC - zmniejszenie wartosci rejestru o 1
 
 JP - skok bezwarunkowy
-JZ - skok przy zerowej wartoœci
+JZ - skok przy zerowej wartoï¿½ci
 HL - koniec programu
 
 //Operacje na plikach//
 CR file_name - utworzenie pliku o podanej nazwie
-WF file_name content - zapisuje zawartoœæ do pliku
-AF file_name content - dopisuje zawartoœæ do pliku
+WF file_name content - zapisuje zawartoï¿½ï¿½ do pliku
+AF file_name content - dopisuje zawartoï¿½ï¿½ do pliku
 RF file_name - odczyt z pliku
 DF file_name - usuwa plik
 
-LC file_name - tworzy i zamyka zamek powi¹zany z nazw¹ pliku
+LC file_name - tworzy i zamyka zamek powiï¿½zany z nazwï¿½ pliku
 UL file_name - otwiera zamek
 
 //Operacje na procesach//
@@ -34,7 +34,7 @@ DP name - usuwa proces
 
 */
 
-Assembler::Assembler(Process_List *pl, Memory *m, Disk *d) {
+Assembler::Assembler(const Process_List *pl, Memory *m, Disk *d) {
 	this->pl = pl;
 	this->m = m;
 	this->d = d;

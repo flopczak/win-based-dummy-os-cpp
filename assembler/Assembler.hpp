@@ -24,7 +24,7 @@ private:
 public:
 
 
-	Assembler(Process_List *pl, Memory *m, Disk *d);
+	Assembler(const Process_List *pl, Memory *m, Disk *d);
 	~Assembler();
 	void getRegistersState(Process &pcb);
 	void saveRegisters(Process &pcb);

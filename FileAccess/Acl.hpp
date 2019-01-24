@@ -35,7 +35,7 @@ public:
 	string getOwner();
 				//Others
 	static void viewAclList();					//I 							// Wyswietlenie wszystkich ACL powiazanych z plikami
-	static void viewFileAcl(string username);	//I								// Wyswietlenie ACL konkretnego pliku
+	static void viewFileAcl(string filename);	//I								// Wyswietlenie ACL konkretnego pliku
 				//
 	void viewCurrentFileAcl();													// Wyswietlanie ACL bierzacego pliku
 	void setDefaultPermissions();												// Ustanowienie podstawowych wpisow ACE

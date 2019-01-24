@@ -40,8 +40,13 @@ string Acl::getOwner() {
 			map<string, Mask>::iterator it = temp.begin();
 			for (it; it != temp.end(); it++) {
 				cout << it->first << " ";
-				for (int i = 0; i <= 5; i++) {
-					cout << it->second.values[i];
+				for (int i = 0; i < 5; i++) {
+					if (it->second.values[i] == 1) {
+						if (i == 1) cout << " STANDARD_READ |";
+						if (i == 2) cout << " STANDARD_WRITE |";
+						if (i == 3) cout << " ADMIN_READ |";
+						if (i == 4) cout << " ADMIN_WRITE |";
+					}
 				}
 				cout << "\n";
 			}
@@ -89,7 +94,12 @@ string Acl::getOwner() {
 		for (it; it != Ace_container.end(); it++) {
 			cout << it->first << " ";
 			for (int i = 0; i< 5; i++) {
-				cout << it->second.values[i];
+				if (it->second.values[i] == 1) {
+					if (i == 1) cout << " STANDARD_READ |";
+					if (i == 2) cout << " STANDARD_WRITE |";
+					if (i == 3) cout << " ADMIN_READ |";
+					if (i == 4) cout << " ADMIN_WRITE |";
+				}
 			}
 			cout << "\n";
 		}

@@ -84,7 +84,7 @@ void User::createUser()
 	cout <<"\nPodaj nazwe uzytkownika: ";
 	std::cin >> temp_name;
 	while (findInUserGroup(temp_name)) {
-		cout <<"\nUzytkownik o podanej nazwie juz istenieje. Podaj nazwe uzytkownika: ";
+		cout <<"\nUzytkownik o podanej nazwie juz istnieje. Podaj nazwe uzytkownika: ";
 		cin >> temp_name;
 	}
 	temporary->setUsername(temp_name);
@@ -100,9 +100,10 @@ void User::createUser()
 		temporary->setSID("s-" + ending);
 	User::standardUserGroup.push_back(temporary);
 	User::addToUserList(temporary);
+	cout << "\nPomyslnie utworzono uzytkownika\n";
 }
 void User::deleteUser(string username)
-{
+{	
 	if (getCurrentLoggedUser()[0] == 'g') {
 		cout <<"\nGosc nie moze usuwac uzytkownikow";
 		return;
@@ -111,7 +112,7 @@ void User::deleteUser(string username)
 		cout <<"\nGosc nie moze zostac usuniety";
 		return;
 	}
-	if (username == "Admin") {
+	if (username == "Admin" ) {
 		cout <<"\nAdmin nie moze zostac usuniety";
 		return;
 	}
@@ -120,7 +121,10 @@ void User::deleteUser(string username)
 		return;
 	}
 	User* user = User::getUserbyName(username);
-	cout << "SID: " << user->getSID();
+	if (username == user->getUsername()) {
+		cout << "\n Uzytkownik jest administratorem. Nie moze zostac usuniety\n";
+		return;
+	}
 	if (currentLoggedGotAdminPermissions() == true) {
 			if (user->getSID() == User::getCurrentLoggedUser()) {
 				cout <<"\nUzytkownik jest obecnie zalogowany.";
@@ -213,7 +217,7 @@ void User::logIn() {
 		return;
 	}
 	User::setCurrentLoggedUser((*it)->getSID());
-	std::cout << "\nPomyslnie zalogowano. Biezacy uzytkownik: "; User::printUser(*it);
+	cout << "\nPomyslnie zalogowano uzytkownika\n";
 	return;
 }
 void User::generateSID() 
@@ -286,8 +290,9 @@ void User::viewUserList()
 	cout <<"\nLista wszystkich uzytkownikow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::userList.begin(); it != User::userList.end(); it++) {
-		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
+		napis = "\n| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
 		cout << napis <<"\n";
+		cout << "---------------------------------------------------------------------";
 	}
 	cout <<"\n";
 }
@@ -296,8 +301,9 @@ void User::viewStandardUserGroup()
 	cout <<"\nLista standardowych uzytkownikow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::standardUserGroup.begin(); it != User::standardUserGroup.end(); it++) {	
-		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
+		napis = "\n| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
 		cout << napis << "\n";
+		cout << "---------------------------------------------------------------------";
 	}
 	cout <<"\n";
 }
@@ -306,8 +312,9 @@ void User::viewAdminUserGroup()
 	cout <<"\nLista Administratorow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::adminGroup.begin(); it != User::adminGroup.end(); it++) {
-		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
+		napis = "\n| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
 		cout << napis << "\n";
+		cout << "---------------------------------------------------------------------";
 	}
 	cout <<"\n";
 }
@@ -376,6 +383,7 @@ void User::addUserToStandardUserGroup(string username)
 	}
 	else user->setSID("s-" + user->getSID());
 	User::standardUserGroup.push_back(user);
+	cout << "\nPomyslnie dodano uzytkownika\n";
 }
 void User::addUserToAdminGroup(string username)
 {
@@ -406,7 +414,7 @@ void User::addUserToAdminGroup(string username)
 		User::adminGroup.push_back(user);
 	}
 	else  std::cout << "Obecnie zalogowany uzytkownik nie ma uprawnien administratora!.\n";
-
+	cout << "\nPomyslnie dodano uzytkownika\n";
 }
 void User::UserStart() {
 	User* admin = new User();
@@ -418,10 +426,15 @@ void User::UserStart() {
 	User* guest = new User();
 	guest->createGuest();
 	User::userList.push_back(guest);
-	cout << "POMYSLNIE WYSTARTOWANO MODU£\n";
+	cout << "POMYSLNIE WYSTARTOWANO MODUL\n";
 }
 void User::printCurrentLoggedUser() {
 	cout <<"\nObecnie zalogowany uzytkownik: ";
-	cout << User::getCurrentLoggedUser();
+	vector<User*>::iterator it;
+	for (it = userList.begin(); it != userList.end(); it++) {
+		if ((*it)->getSID() == User::getCurrentLoggedUser()) {
+			cout << (*it)->getUsername();
+		}
+	}
 }
 

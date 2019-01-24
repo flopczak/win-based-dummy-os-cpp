@@ -10,7 +10,6 @@
 #include <windows.h>
 #include <cstdlib>
 #include <time.h>
-#include "..\Inklud.hpp"
 
 
 using namespace std;
@@ -46,7 +45,6 @@ public:
 		this->procek = procek;
 		this->sync = sync;
 	}
-
 	void DisplayLog(string msg) {
 		kroki.push_back(msg);
 	}
@@ -61,7 +59,6 @@ public:
 		cout << "Nacisnij dowolny klawisz aby kontynuowac..." << endl;
 		cin.get();
 	}*/
-
 	void ChangeDisLog(vector<string> abc) {
 		if (abc.size() > 2) {
 			cout << "Za duzo parametrow, dostepne parametry to:\ntrue\nfalse" << endl;
@@ -78,6 +75,7 @@ public:
 			cout << "Bledny parametr, dostepne parametry to:\ntrue\nfalse" << endl;
 		}
 	}
+	void static DisplayLog(string msg);
 
 	void DisplayMethods() {
 		cout << "Metody dostepne dla uzytkownika:\n------------------------------- " << endl;

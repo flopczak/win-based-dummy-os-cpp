@@ -1,7 +1,7 @@
 #include "Acl.hpp"
-#include "..\User\User.hpp"
+#include "User.hpp"
 #include <string>
-#include "..\shell\Interfejs.h"
+
 using namespace std;
 Acl::Acl() {
 	this->defineMask();
@@ -29,8 +29,7 @@ string Acl::getOwner() {
 			it->second->viewCurrentFileAcl();
 		}
 	}
-	void Acl::viewFileAcl(vector<string> param) {
-		string file_name = param[0];
+	void Acl::viewFileAcl(string file_name) {
 		if (AclList.find(file_name) != AclList.end()) {
 			map<string, Mask> temp;
 			string fileOwner;
@@ -49,8 +48,7 @@ string Acl::getOwner() {
 		}
 		else std::cout << "Nie znaleziono pliku\n";
 	}
-	void Acl::setAdditionalPermissions(vector<string> param) {
-		string file_name = param[0];
+	void Acl::setAdditionalPermissions(string file_name) {
 		string currentLoggedUser = User::getUserBySID(User::getCurrentLoggedUser());
 		if (AclList.find(file_name) != AclList.end()) {
 			string fileOwner = AclList[file_name]->getOwner();

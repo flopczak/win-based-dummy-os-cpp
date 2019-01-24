@@ -1,7 +1,8 @@
-#include "..\FileAccess\Acl.hpp"
+#include <iostream>
+#include "Acl.hpp"
 #include "User.hpp"
 #include <random>
-#include "..\shell\Interfejs.h"
+#include <time.h>
 
 User::User() {
 	//this->interfejs = new Interfejs();
@@ -75,19 +76,19 @@ string User::getCurrentLoggedUser()
 void User::createUser() 
 {
 	if (getCurrentLoggedUser()[0] == 'g') {
-		 //interfejs->DisplayLog("\nGosc nie moze tworzyc uzytkownikow");
+		cout << "\nGosc nie moze tworzyc uzytkownikow";
 		return;
 	}
 	string temp_name, temp_pass;
 	User* temporary = new User();
-	//interfejs->DisplayLog("\nPodaj nazwe uzytkownika: ");
+	cout <<"\nPodaj nazwe uzytkownika: ";
 	std::cin >> temp_name;
 	while (findInUserGroup(temp_name)) {
-		//interfejs->DisplayLog("\nUzytkownik o podanej nazwie juz istenieje. Podaj nazwe uzytkownika: ");
+		cout <<"\nUzytkownik o podanej nazwie juz istenieje. Podaj nazwe uzytkownika: ";
 		cin >> temp_name;
 	}
 	temporary->setUsername(temp_name);
-	//interfejs->DisplayLog("\nPodaj haslo: ");
+	cout <<"\nPodaj haslo: ";
 	std::cin >> temp_pass;
 	temporary->setPassword(temp_pass);
 	temporary->generateSID();
@@ -100,30 +101,29 @@ void User::createUser()
 	User::standardUserGroup.push_back(temporary);
 	User::addToUserList(temporary);
 }
-void User::deleteUser(vector<string> param)
+void User::deleteUser(string username)
 {
-	string username = param[0];
 	if (getCurrentLoggedUser()[0] == 'g') {
-		//interfejs->DisplayLog("Gosc nie moze usuwac uzytkownikow");
+		cout <<"\nGosc nie moze usuwac uzytkownikow";
 		return;
 	}
 	if (username == "Guest") {
-		//interfejs->DisplayLog("Gosc nie moze zostac usuniety");
+		cout <<"\nGosc nie moze zostac usuniety";
 		return;
 	}
 	if (username == "Admin") {
-		//interfejs->DisplayLog("Admin nie moze zostac usuniety");
+		cout <<"\nAdmin nie moze zostac usuniety";
 		return;
 	}
 	if (!User::findInUserGroup(username)) {
-		//interfejs->DisplayLog("Uzytkownik nie istnieje");
+		cout <<"\nUzytkownik nie istnieje";
 		return;
 	}
 	User* user = User::getUserbyName(username);
 	cout << "SID: " << user->getSID();
 	if (currentLoggedGotAdminPermissions() == true) {
 			if (user->getSID() == User::getCurrentLoggedUser()) {
-				//interfejs->DisplayLog("Uzytkownik jest obecnie zalogowany.");
+				cout <<"\nUzytkownik jest obecnie zalogowany.";
 				return;
 			}
 			if (user->getSID()[0] == 'a') {
@@ -152,10 +152,10 @@ void User::deleteUser(vector<string> param)
 			}
 		}
 	else {
-		//interfejs->DisplayLog("\nWystapil blad. Brak uprawnien admina.");
+		cout <<"\nWystapil blad. Brak uprawnien admina.";
 		return;
 	}
-	//interfejs->DisplayLog("\nPomyslnie usunieto uzytkownika.");
+	cout <<"\nPomyslnie usunieto uzytkownika.";
 }
 void User::changePassword() 
 {
@@ -185,19 +185,19 @@ void User::changePassword()
 }
 void User::logOut() {
 	User::setCurrentLoggedUser("-1");
-	//interfejs->DisplayLog("\nWylogowano.");
+	cout <<"\nWylogowano.";
 }
 void User::logIn() {
 	User::logOut();
 	string temp;
-	//interfejs->DisplayLog("\nPodaj nazwe uzytkownika: ");
+	cout <<"\nPodaj nazwe uzytkownika: ";
 	std::cin >> temp;
 	vector<User*>::iterator it;
 	for (it = User::userList.begin(); it != User::userList.end(); it++) {
 		if ((*it)->getUsername() == temp) {
 			if ((*it)->getPassword() == "") break;
 			else if ((*it)->getPassword() != "") {
-				//interfejs->DisplayLog("\nPodaj haslo: ");
+				cout <<"\nPodaj haslo: ";
 				std::cin >> temp;
 				while (temp != (*it)->getPassword()) {
 					std::cout << "\nBledne haslo! Sprobuj ponownie lub zakoncz wpisujac '0'.";
@@ -283,33 +283,33 @@ string User::getUserBySID(string sid) {
 
 void User::viewUserList() 
 {
-	//interfejs->DisplayLog("\nLista wszystkich uzytkownikow:");
+	cout <<"\nLista wszystkich uzytkownikow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::userList.begin(); it != User::userList.end(); it++) {
 		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
-		//interfejs->DisplayLog(napis);
+		cout << napis <<"\n";
 	}
-	//interfejs->DisplayLog("");
+	cout <<"\n";
 }
 void User::viewStandardUserGroup() 
 {
-	//interfejs->DisplayLog("Lista standardowych uzytkownikow: ");
+	cout <<"\nLista standardowych uzytkownikow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::standardUserGroup.begin(); it != User::standardUserGroup.end(); it++) {	
 		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
-		//interfejs->DisplayLog(napis);
+		cout << napis << "\n";
 	}
-	//interfejs->DisplayLog("");
+	cout <<"\n";
 }
 void User::viewAdminUserGroup() 
 {
-	//interfejs->DisplayLog("Lista Administratorow:");
+	cout <<"\nLista Administratorow: \n";
 	vector<User*>::iterator it; string napis;
 	for (it = User::adminGroup.begin(); it != User::adminGroup.end(); it++) {
 		napis = "| Nazwa uzytkownika: " + (*it)->getUsername() + " | Haslo: " + (*it)->getPassword() + " | SID: " + (*it)->getSID();
-		//interfejs->DisplayLog(napis);
+		cout << napis << "\n";
 	}
-	//interfejs->DisplayLog("");
+	cout <<"\n";
 }
 bool User::findInAdminUserGroup(string username) {
 	vector<User*>::iterator it;
@@ -343,9 +343,8 @@ void User::addToUserList(User* user)
 {
 	User::userList.push_back(user);
 }
-void User::addUserToStandardUserGroup(vector<string> param)
+void User::addUserToStandardUserGroup(string username)
 {
-	string username = param[0];
 	User* user = new User();
 	user = User::getUserbyName(username);
 	if (getCurrentLoggedUser()[0] == 'g') {
@@ -378,9 +377,8 @@ void User::addUserToStandardUserGroup(vector<string> param)
 	else user->setSID("s-" + user->getSID());
 	User::standardUserGroup.push_back(user);
 }
-void User::addUserToAdminGroup(vector<string> param)
+void User::addUserToAdminGroup(string username)
 {
-	string username = param[0];
 	User* user = new User();
 	user = User::getUserbyName(username);
 	vector<User*>::iterator itG, itS;
@@ -420,9 +418,10 @@ void User::UserStart() {
 	User* guest = new User();
 	guest->createGuest();
 	User::userList.push_back(guest);
+	cout << "POMYSLNIE WYSTARTOWANO MODU£\n";
 }
 void User::printCurrentLoggedUser() {
-	//interfejs->DisplayLog("Obecnie zalogowany uzytkownik: ");
-	//interfejs->DisplayLog(User::getCurrentLoggedUser());
+	cout <<"\nObecnie zalogowany uzytkownik: ";
+	cout << User::getCurrentLoggedUser();
 }
 

@@ -1,10 +1,7 @@
 #pragma once
-#ifndef ACL_H
-#define ACL_H
-#include "..\User\User.hpp"
 #include <map>
-#include "..\shell\Interfejs.h"
-
+#include <iostream>
+#include <vector>
 using namespace std;
 
 enum Permissions {
@@ -38,15 +35,13 @@ public:
 	string getOwner();
 				//Others
 	static void viewAclList();					//I 							// Wyswietlenie wszystkich ACL powiazanych z plikami
-	static void viewFileAcl(vector<string> param);	//I								// Wyswietlenie ACL konkretnego pliku
+	static void viewFileAcl(string username);	//I								// Wyswietlenie ACL konkretnego pliku
 				//
 	void viewCurrentFileAcl();													// Wyswietlanie ACL bierzacego pliku
 	void setDefaultPermissions();												// Ustanowienie podstawowych wpisow ACE
-	static void setAdditionalPermissions(vector<string> param);		//I				// Dodanie dodatkowych wpisów ACE 
+	static void setAdditionalPermissions(string filename);		//I				// Dodanie dodatkowych wpisów ACE 
 	void defineMask();															// Inicjalizacja maski
 	static void permissionsToCharArray(Permissions permissions, int* out);		// Translacja "Flagi" na odpowiednie wartosci w char array
 	int readPermissions(string filename);										// zwraca uprawnienia do konkretnego pliku
 	static int getUserPermissions();											// Zwraca maks. poczatkowe uprawnienia obecnego uzytkownika														
 };
-
-#endif

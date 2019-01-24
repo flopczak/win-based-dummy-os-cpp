@@ -6,13 +6,13 @@
 
 using namespace std;
 
-list<Process>Process_List::PrcList = {};
+map<int, Process*>Process_List::PCBList = {};
 
 Process_List::Process_List()
 {
 }
 
-Process Process_List::CP_1(vector<string>v)
+void Process_List::createProcess(string name, string instr, int pr)
 {
 	Process a(v[0]);
 	Process_List::PrcList.push_front(a);
@@ -83,7 +83,7 @@ void Process_List::setPriority(vector<string>v)
 		{
 			it->setPriority(stoi(v[1]));
 		}
-	}
+
 }
 
 void Process_List::terminateProcess(vector<string>v)

@@ -2,23 +2,25 @@
 #ifndef PCBList_H
 #define PCBList_H
 #include "Process.hpp"
+#include "../memory/Memory.hpp"
+#include "../assembler/Assembler.hpp"
 #include "../processor/Procesor.hpp"
+#include "../file/Disk.hpp"
 #include <vector>
-#include <list>
+#include <map>
 using namespace std;
 
-class Process_List
+class Process_List 
 {
+private:
+	Memory *mem;
+	Assembler *assembler;
+	Disk *disk;
 public:
 	Process_List();
-	static list<Process>PrcList;
-	list<Process>::iterator it;
-	list<Process> getReady();
-	Process CP_1(vector<string>v);
-	Process CP_2(vector<string>v);
-	void createProcess(vector<string>v);
-	void setStatus(vector<string>v);
-	void setPriority(vector<string>v);
+	static map<int, Process*>PCBList;
+
+	void createProcess(string name, string instr, int pr);
 	void terminateProcess(vector<string>v);
 	void removeProcess(Process a);
 	void findAndDisplayProcess(vector<string>v);

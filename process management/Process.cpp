@@ -1,62 +1,51 @@
 #include "Process.hpp"
-#include "Process_List.hpp"
 #include <string>
 #include <iostream>
 
 using namespace std;
 
-Process::Process()
-{
-	this->PID = 0;
-	this->process_name = "";
-	this->process_status = GOTOWY;
-	this->process_priority = 0;
-	this->AX = 0;
-	this->BX = 0;
-	this->CX = 0;
-	this->errorCode = 0;
-	this->PobWielTabStronic();
-}
-
-Process::Process(string na)
+Process::Process(string na, int priority, int cc,  Memory * m, int inst_size)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
 	this->process_status = GOTOWY;
-	this->process_priority = 0;
+	this->program_instructions = inst_size;
+	this->command_counter = cc;
+	this->process_priority = priority;
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
 	this->errorCode = 0;
 	this->PobWielTabStronic();
-}
-
-Process::Process(string na, int pr)
-{
-	this->PID = rand() % 9999 + 1000;
-	this->process_name = na;
-	this->process_status = GOTOWY;
-	this->process_priority = pr;
-	this->AX = 0;
-	this->BX = 0;
-	this->CX = 0;
-	this->errorCode = 0;
-	this->PobWielTabStronic();
+	this->mmr = m;
 }
 
 Process::~Process()
 {
 }
 
+//settery
 void Process::setPriority(int n)
 {
 	this->process_priority = n;
 }
 
-void Process::setProcessStatus(status a)
+void Process::setStatus(status a)
 {
 	this->process_status = a;
 }
+
+//gettery
+int Process::getPID()
+{
+	return this->PID;
+}
+
+string Process::getName()
+{
+	return this->process_name;
+}
+
 
 void Process::display()
 {
@@ -75,16 +64,6 @@ void Process::displayHelper()
 	cout << "PID: " << this->PID << endl;
 	cout << "Status procesu: " << this->process_status << endl;
 	cout << "Priorytet: " << this->process_priority << endl;
-}
-
-int Process::getPID()
-{
-	return this->PID;
-}
-
-string Process::getName()
-{
-	return this->process_name;
 }
 
 bool operator==(const Process& b, const Process& a)

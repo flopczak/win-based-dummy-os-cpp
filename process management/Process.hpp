@@ -3,6 +3,7 @@
 #define PCB_H
 #include <list>
 #include <string>
+#include "../memory/Memory.hpp"
 using namespace std;
 
 enum status {AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
@@ -15,7 +16,7 @@ struct STRON
 
 class Process											//PCB
 {
-public:
+private:
 	STRON* pageTable;									//Przemkowe RAM'y
 	//JACOB zmieniam parametry na publiczne
 	//STRON* pageTable;	//Przemkowe RAM'y
@@ -31,17 +32,22 @@ public:
 	int CX;
 	int process_priority;								//priorytet
 	bool PP;											//flaga obecno�ci procesora
-
-	Process();											//konstruktor domyslny
-	Process(string n);									//konstruktor z nazwa procesu
-	Process(string n, int p);							//konstruktor z nazwa i priorytetem procesu
+	Memory *mmr;
+public:
+	Process(string na, int priority, int cc, Memory * m, int inst_size);
 	~Process();											//dekonstruktor
-	void setProcessStatus(status a);					//ustawianie statusu procesu
+
+	//settery
+	void setStatus(status a);							//ustawianie statusu procesu
 	void setPriority(int n);							//ustawianie priorytetu
-	void display();										//wyswietlanie szczegoowe jednego procesu
-	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
+
+	//gettery
 	int getPID();
 	string getName();
+
+	void display();										//wyswietlanie szczegoowe jednego procesu
+	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
+	
 	friend bool operator==(const Process &b, const Process &a);
 
 

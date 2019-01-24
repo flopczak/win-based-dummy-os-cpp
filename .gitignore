@@ -44,3 +44,4 @@ Debug/
 .idea/
 cmake-build-debug/
 CMakeLists.txt
+*.sln.DotSettings.user

@@ -18,6 +18,7 @@ Process_List::Process_List()
 void Process_List::createProcess(string name, string instr, int pr)
 {
 	int pid = rand() & 9999 * 1000;
+	//dodac instr do pamieci w miejscu pid
 	Process p = Process(pid, name, pr, 0, this->mem, instr.size());
 	PCBList.insert(pair<int, Process*>(pid, &p));
 	//dodanie tego procesu do listy gotowych procesow w procesorze

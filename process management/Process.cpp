@@ -76,25 +76,6 @@ bool operator==(const Process& b, const Process& a)
 
 //---------------------------------------------------------------------//
 
-void Process::UstTabStronic(STRON* newpageTable)
-{
-	this->pageTable = newpageTable;
-}
-
-STRON* Process::PobTabStronic()
-{
-	return this->pageTable;
-}
-
-void Process::UstWielTabStronic(int num)
-{
-	this->pageTableSize = num;
-}
-
-int Process::PobWielTabStronic()
-{
-	return this->pageTableSize;
-}
 
 
 

@@ -1,10 +1,10 @@
-#include "../memory/Memory.hpp"
+#include "Memory.hpp"
 #include <fstream>
 using namespace std;
 
-void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {
+const void Memory::PrzeStroPWymDoPam(int PID, int nr) {
 
-	STRON * TabStron = pcb->PobTabStronic();
+	STRON * TabStron = PobTabStronic();
 	ZapewnijWolnaRame(); //sprawiamy, ze na pewno pojawi sie wolna ramka pamieci
 
 	int NowoZajRama = PobierzWolRamePamieci();
@@ -15,15 +15,15 @@ void Memory::PrzeStroPWymDoPam(Process * pcb, int nr) {
 	TabStron[nr].RamaZajeta = NowoZajRama; //nowa ramka w RAM
 	TabStron[nr].wPam = true; //strona jest w RAM
 
-	DodajDoFifo(FIFO_entry(pcb, nr)); //dodanie procesu do FIFO
+	DodajDoFifo(FIFO_entry(PID, nr)); //dodanie procesu do FIFO
 }
 //
-void Memory::PrzeStroPamDoPWym(Process * pcb, int nr) {
-	STRON * TabStron = pcb->PobTabStronic();
+const void Memory::PrzeStroPamDoPWym(int PID, int nr) {
+	STRON * TabStron = PobTabStronic();
 
 	if (WolneRamkiPlikuWymiany.empty()) //jezeli brak wolnych ramek w pliku wymiany, to mamy problem
 	{
-		pcb->errorCode = static_cast<int>(BledyPam::OUT_OF_MEM); // nie powinno nigdy sie stac
+		cout << "Out_off_mem"; // nie powinno nigdy sie stac
 		return;
 	}
 
@@ -38,7 +38,7 @@ void Memory::PrzeStroPamDoPWym(Process * pcb, int nr) {
 	TabStron[nr].wPam = false; //strona nie jest w RAM
 }
 //
-void Memory::PrzeZawPamDoPWym(int RamaPam, int RamaPWy) {
+const void Memory::PrzeZawPamDoPWym(int RamaPam, int RamaPWy) {
 	int IndeksPWym = RamaPWy * WIE_RAM;
 	int IndeksPam = RamaPam * WIE_RAM;
 	int IndeksKPWym = IndeksPWym + WIE_RAM;
@@ -53,7 +53,7 @@ void Memory::PrzeZawPamDoPWym(int RamaPam, int RamaPWy) {
 	}
 }
 //
-void Memory::PrzeZawPWymDoPam(int RamaPWy, int RamaPam) {
+const void Memory::PrzeZawPWymDoPam(int RamaPWy, int RamaPam) {
 	int IndeksPWym = RamaPWy * WIE_RAM;
 	int IndeksPam = RamaPam * WIE_RAM;
 	int IndeksKPWym = IndeksPWym + WIE_RAM;
@@ -68,7 +68,7 @@ void Memory::PrzeZawPWymDoPam(int RamaPWy, int RamaPam) {
 	}
 }
 //
-void Memory::ZapiszDoPlikuWym(int nr, string Zaw) {
+const void Memory::ZapiszDoPlikuWym(int nr, string Zaw) {
 	int IndeksPWym = nr * WIE_RAM;
 	int IndeksStringa = 0;
 
@@ -80,94 +80,94 @@ void Memory::ZapiszDoPlikuWym(int nr, string Zaw) {
 	}
 }
 //
-int Memory::ObliczOffset(int addr1) {
+const int Memory::ObliczOffset(int addr1) {
 	return addr1 % WIE_RAM;
 }
 //
-int Memory::ObliczNumerStrony(int addr1) {
+const int Memory::ObliczNumerStrony(int addr1) {
 	return addr1 / WIE_RAM;
 }
 //
-int Memory::ObliczAdresFizyczny(Process * pcb, int addr1) {
-	STRON * TablicaStronic = pcb->PobTabStronic();
+const int Memory::ObliczAdresFizyczny(int PID, int addr1) {
+	STRON * TablicaStronic = PobTabStronic();
 	int NumerStrony = ObliczNumerStrony(addr1);
 	int offset = ObliczOffset(addr1);
 	int NumerRamy = TablicaStronic[NumerStrony].RamaZajeta;
 	return NumerRamy * WIE_RAM + offset;
 }
 //
-int Memory::ObliczTabliceStronic(int siBytes) {
+const int Memory::ObliczTabliceStronic(int siBytes) {
 	double wielkoscRamy = static_cast<double>(WIE_RAM);
 	double CalkowitaWielkosc = static_cast<double>(siBytes);
 	double wynik = ceil(CalkowitaWielkosc / wielkoscRamy);
 	return static_cast<int>(wynik);
 }
 //
-char Memory::OdczytajZPamieci(Process * pcb, int addr1) {
-	if (BrakMieWPowAdr(pcb, addr1)) {
-		pcb->errorCode = static_cast<int>(BledyPam::OUT_OF_RANGE);
+const char Memory::OdczytajZPamieci(int PID, int addr1) {
+	if (BrakMieWPowAdr(PID, addr1)) {
+		cout << "Out of Range" << endl;
 		return ' ';
 	}
-	ZapewnijStroneWPamieci(pcb, addr1);
-	int AddrP = ObliczAdresFizyczny(pcb, addr1);
+	ZapewnijStroneWPamieci(PID, addr1);
+	int AddrP = ObliczAdresFizyczny(PID, addr1);
 	return RAM[AddrP];
 }
 //
-void Memory::ZapiszWPamieci(Process * pcb, int addr1, char element) {
-	if (BrakMieWPowAdr(pcb, addr1)) {
-		pcb->errorCode = static_cast<int>(BledyPam::OUT_OF_RANGE);
+const void Memory::ZapiszWPamieci(int PID, int addr1, char element) {
+	if (BrakMieWPowAdr(PID, addr1)) {
+		cout << "Out of Range" << endl;
 		return;
 	}
-	ZapewnijStroneWPamieci(pcb, addr1);
-	int p_Addr = ObliczAdresFizyczny(pcb, addr1);
+	ZapewnijStroneWPamieci(PID, addr1);
+	int p_Addr = ObliczAdresFizyczny(PID, addr1);
 	RAM[p_Addr] = element;
 }
 //
-void Memory::ZapewnijStroneWPamieci(Process * pcb, int AdresLogiczny) {
-	STRON * TabelaStron = pcb->PobTabStronic();
+const void Memory::ZapewnijStroneWPamieci(int PID, int AdresLogiczny) {
+	STRON * TabelaStron = PobTabStronic();
 
 	int NumerPam = ObliczNumerStrony(AdresLogiczny);
 
 	if (TabelaStron[NumerPam].wPam == false) {
-		PrzeStroPWymDoPam(pcb, NumerPam);
+		PrzeStroPWymDoPam(PID, NumerPam);
 	}
 }
 //
-int Memory::PobierzWolnaRamePWym() {
+const int Memory::PobierzWolnaRamePWym() {
 	int WolnaRama = WolneRamkiPlikuWymiany.front();
 	WolneRamkiPlikuWymiany.pop_front();
 	return WolnaRama;
 }
 //
-int Memory::PobierzWolRamePamieci() {
+const int Memory::PobierzWolRamePamieci() {
 	int WolnaRama = WolneRamki.front();
 	WolneRamki.pop_front();
 	return WolnaRama;
 }
 //
-void Memory::ZapewnijWolnaRame() {
+const void Memory::ZapewnijWolnaRame() {
 	while (WolneRamki.empty())
 	{
 		//nie ma wolnych ramek wiec usuwamy metoda FIFO najstarszy Process
 		FIFO_entry victim = FIFO.front();
 		FIFO.pop_front();
-		PrzeStroPamDoPWym(victim.pcb, victim.pageNumber);
+		PrzeStroPamDoPWym(victim.PID, victim.pageNumber);
 	}
 }
 //
-void Memory::DodajDoFifo(FIFO_entry entry) {
+const void Memory::DodajDoFifo(FIFO_entry entry) {
 	FIFO.push_back(entry);
 }
 //
-bool Memory::BrakMieWPowAdr(Process * pcb, int AdresLogiczny) {
+const bool Memory::BrakMieWPowAdr(int PID, int AdresLogiczny) {
 	int NumerStrony = ObliczNumerStrony(AdresLogiczny);
-	if (NumerStrony >= pcb->PobWielTabStronic())
+	if (NumerStrony >= PobWielTabStronic())
 		return true;
 	else
 		return false;
 }
 //
-void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
+void Memory::PrzydzialPamieci(int PID, string proces, int size) {
 	//ilosc stronic potrzebynch do alokacji
 	int WieTabStron = ObliczTabliceStronic(size);
 	STRON * TablicaStron = new STRON[WieTabStron];
@@ -177,7 +177,7 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 		//jezeli plik wymiany jest pelny
 		if (WolneRamkiPlikuWymiany.empty())
 		{
-			pcb->errorCode = static_cast<int>(BledyPam::OUT_OF_MEM);;//blad, nie da sie zaalokowac
+			cout << "Out_of_mem" << endl;//blad, nie da sie zaalokowac
 			return;
 		}
 		int NowoZajetaRamaPWym = PobierzWolnaRamePWym();
@@ -186,24 +186,27 @@ void Memory::PrzydzialPamieci(Process * pcb, string proces, int size) {
 		TablicaStron[NrStr].wPam = false;
 
 		string pageContent = proces.substr(PoczatekStr, WIE_RAM);
+		cout << NrStr << endl;
+		cout << pageContent << endl;
+		cout << proces << endl;
 		char strona = pageContent[NrStr];
 		proces.erase(PoczatekStr, WIE_RAM);
 		WpiszZasobPamDoPWym(NowoZajetaRamaPWym, pageContent);
 
 	}
-	pcb->UstTabStronic(TablicaStron);
-	pcb->UstWielTabStronic(WieTabStron);
+	UstTabStronic(TablicaStron);
+	UstWielTabStronic(WieTabStron);
 }
 
-string Memory::odczytajString(Process * pcb, int Addr) {
-	int WielkoscTablicyStron = pcb->PobWielTabStronic();
+const string Memory::odczytajString(int PID, int Addr) {
+	int WielkoscTablicyStron = PobWielTabStronic();
 	string result = "";
 	char byte;
 	int LimitAddr = WielkoscTablicyStron * WIE_RAM;
 	//powtarzej dopoki adres logiczny nie wskazuje na ' ' i nie przekroczyl logicznej pamieci
 	while (Addr < LimitAddr)
 	{
-		byte = OdczytajZPamieci(pcb, Addr);
+		byte = OdczytajZPamieci(PID, Addr);
 		if (byte == ' ')
 			break;
 		result += byte;
@@ -212,14 +215,14 @@ string Memory::odczytajString(Process * pcb, int Addr) {
 	return result;
 }
 //
-void Memory::zapiszString(Process * pcb, int Addr, string Zaw) {
+void Memory::zapiszString(int PID, int Addr, string Zaw) {
 	for (int IndeksZaw = 0; IndeksZaw < Zaw.size(); IndeksZaw++)
 	{
-		ZapiszWPamieci(pcb, Addr + IndeksZaw, Zaw[IndeksZaw]);
+		ZapiszWPamieci(PID, Addr + IndeksZaw, Zaw[IndeksZaw]);
 	}
 }
 //
-void Memory::WypiszZasobPamieci(int DoWypis) {
+const void Memory::WypiszZasobPamieci(int DoWypis) {
 	if (DoWypis <= 0 || DoWypis > ILOSC_RAM)
 		DoWypis = ILOSC_RAM;
 
@@ -229,7 +232,7 @@ void Memory::WypiszZasobPamieci(int DoWypis) {
 	}
 }
 //
-void Memory::WpiszZasobPamDoPWym(int nr, string zasobPam)
+const void Memory::WpiszZasobPamDoPWym(int nr, string zasobPam)
 {
 	int IndeksPlikuWym = nr * WIE_RAM;
 	int IndeksSTR = 0;
@@ -241,18 +244,18 @@ void Memory::WpiszZasobPamDoPWym(int nr, string zasobPam)
 		IndeksSTR++;
 	}
 }
-void Memory::WydrukujProcesy(Process * pcb, bool wRamie) {
+const void Memory::WydrukujProcesy(int PID, bool wRamie) {
 
-	if (pcb == nullptr)
+	if (PID == 0)
 	{
 		cout << "Nie ma takiego procesu.\n";
 		return;
 	}
 
-	STRON * StronProc = pcb->PobTabStronic();
-	int WieStronProc = pcb->PobWielTabStronic();
+	STRON * StronProc = PobTabStronic();
+	int WieStronProc = PobWielTabStronic();
 
-	cout << " --- Pamiec zarezerwowana przez proces: " << pcb->getName() << " ---\n";
+	cout << " --- Pamiec zarezerwowana przez proces: " << PID << " ---\n";
 	for (int i = 0; i < WieStronProc; i++)
 	{
 		if (StronProc[i].wPam)
@@ -266,36 +269,37 @@ void Memory::WydrukujProcesy(Process * pcb, bool wRamie) {
 	}
 }
 //
-void Memory::WydrukujFIFO() {
+const void Memory::WydrukujFIFO() {
 	cout << "Stan algorytmu FIFO. Element po lewej zostanie usuniety, w przypadku braku miejsca w pamieci." << endl
 		<< "Format: [{PID_procesu},{numer strony}]" << endl;
 	for (auto entry : FIFO)
 	{
-		cout << "[" << entry.pcb->getName() << "," << entry.pageNumber << "] ";
+
+		cout << "[" << entry.PID << "," << entry.pageNumber << "] ";
 	}
 	cout << endl;
 }
 //
-bool Memory::CzyAdrWPowAdresss(Process * pcb, int AddrLog) {
+const bool Memory::CzyAdrWPowAdresss(int AddrLog) {
 	int NrStrony = ObliczNumerStrony(AddrLog);
-	if (NrStrony < pcb->PobWielTabStronic())
+	if (NrStrony < PobWielTabStronic())
 		return true;
 	else
 		return false;
 }
 //
-bool Memory::CzyZasiegAdrWPowAdres(Process * pcb, int AddrLog, int zasieg) {
+const bool Memory::CzyZasiegAdrWPowAdres(int AddrLog, int zasieg) {
 	int AddrKon = zasieg + AddrLog;
 	while (AddrLog < AddrKon)
 	{
-		if (CzyAdrWPowAdresss(pcb, AddrLog))
+		if (CzyAdrWPowAdresss(AddrLog))
 			return false;
 		AddrLog++;
 	}
 	return true;
 }
 //
-void Memory::WydrukujRamePWym(int RamaNr, int StronaNr) {
+const void Memory::WydrukujRamePWym(int RamaNr, int StronaNr) {
 	int addr = RamaNr * WIE_RAM;
 	string space = "        ";
 	cout << "Ramka pliku wymiany nr: " << RamaNr;
@@ -382,7 +386,7 @@ void Memory::WydrukujRamePWym(int RamaNr, int StronaNr) {
 	cout << (char)CharTable::CBR << endl;
 }
 //
-void Memory::WydrukujRame(int RamaNr, int StronaNr)
+const void Memory::WydrukujRame(int RamaNr, int StronaNr)
 {
 	int addr = RamaNr * WIE_RAM;
 	string space = "        ";
@@ -464,7 +468,7 @@ void Memory::WydrukujRame(int RamaNr, int StronaNr)
 	cout << (char)CharTable::CBR << endl;
 }
 
-void Memory::WyczyscRamPlikuWym(int NrRamy) {
+const void Memory::WyczyscRamPlikuWym(int NrRamy) {
 	int IndeksRamy = NrRamy * WIE_RAM;
 	int IndeksKRamy = NrRamy + WIE_RAM;
 	while (IndeksRamy < IndeksKRamy)
@@ -474,19 +478,19 @@ void Memory::WyczyscRamPlikuWym(int NrRamy) {
 	}
 }
 //
-void Memory::zwolnieniePamieci(Process * pcb) {
-	STRON * TablicaStron = pcb->PobTabStronic();
-	int WTablicyStron = pcb->PobWielTabStronic();
+const void Memory::zwolnieniePamieci(int PID) {
+	STRON * TablicaStron = PobTabStronic();
+	int WTablicyStron = PobWielTabStronic();
 	int NrStrony = 0;
 
 	while (NrStrony < WTablicyStron) //usuwanie informacji z pamieci i stronic
 	{
 		if (TablicaStron[NrStrony].wPam) //wysylamy ramki z pamieci do pliku wymiany
 		{
-			PrzeStroPamDoPWym(pcb, NrStrony);
+			PrzeStroPamDoPWym(PID, NrStrony);
 		}
 
-		FIFO.remove_if([pcb](const FIFO_entry &victim) {return victim.pcb == pcb; }); //usuwamy z kolejki FIFO pcb
+		FIFO.remove_if([PID](const FIFO_entry &victim) {return victim.PID == PID; }); //usuwamy z kolejki FIFO pcb
 
 		int frameToFree = TablicaStron[NrStrony].RamaZajeta;
 		WyczyscRamPlikuWym(frameToFree);
@@ -496,14 +500,21 @@ void Memory::zwolnieniePamieci(Process * pcb) {
 	}
 
 	delete[] TablicaStron;
-	
 
-	pcb->UstTabStronic(nullptr);
-	pcb->UstWielTabStronic(0);
+
+	UstTabStronic(nullptr);
+	UstWielTabStronic(0);
 }
 //
-void Memory::WydrukujTabliceStronic(Process * pcb) {
-	if (pcb == nullptr)
+void Memory::PIDproces(int PID, string plik){
+	PrzydzialPamieci(PID, plik, plik.size());
+	for (int IndeksPlik = 0; IndeksPlik <plik.size(); IndeksPlik++)
+	{
+		ZapiszWPamieci(PID,ObliczAdresFizyczny(PID,1) + IndeksPlik, plik[IndeksPlik]);
+	}
+}
+const void Memory::WydrukujTabliceStronic(int PID) {
+	if (PID == 0)
 	{
 		//rlutil::setColor(rlutil::LIGHTRED);
 		cout << "Nie ma takiego procesu.\n";
@@ -511,10 +522,10 @@ void Memory::WydrukujTabliceStronic(Process * pcb) {
 		return;
 	}
 
-	STRON * TablicaStron = pcb->PobTabStronic();
-	int WTablicyStron = pcb->PobWielTabStronic();
+	STRON * TablicaStron = PobTabStronic();
+	int WTablicyStron = PobWielTabStronic();
 
-	cout << " --- Tablica stron procesu: " << pcb->getName() << " ---\n";
+	cout << " --- Tablica stron procesu: " << PID << " ---\n";
 	//cout << " Nr strony " << (char)CharTable::VL << " Nr  ramki " << (char)CharTable::VL << " Czy w pamieci?\n";
 
 	for (int page = 0; page < WTablicyStron; page++)
@@ -538,7 +549,8 @@ void Memory::WydrukujTabliceStronic(Process * pcb) {
 	}
 }
 //
-void Memory::UtworzProgram(Process*pcb, string path)
+/*
+const void Memory::UtworzProgram(string path)
 {
 	int a = 0;
 	string program;
@@ -571,13 +583,34 @@ void Memory::UtworzProgram(Process*pcb, string path)
 				zapiszString(pcb,a,program);
 				pliki1.clear();
 			}
-			
+
 		}
-		
+
 
 	}
 
 }
+*/
+void Memory::UstTabStronic(STRON* newpageTable)
+{
+	this->pageTable = newpageTable;
+}
+
+STRON* Memory::PobTabStronic()
+{
+	return this->pageTable;
+}
+
+void Memory::UstWielTabStronic(int num)
+{
+	this->pageTableSize = num;
+}
+
+int Memory::PobWielTabStronic()
+{
+	return this->pageTableSize;
+}
+
 Memory::Memory()
 {
 	RAM = new char[WIE_PAM];

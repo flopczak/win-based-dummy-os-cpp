@@ -88,10 +88,11 @@ public:
 	STRON* pageTable;
 	const void UtworzProgram(int PID, string path);
 	//-----Pamiec-----//
-	const void PrzydzialPamieci(int PID, string proces, int size);
+	void PrzydzialPamieci(int PID, string proces, int size);
 	const void zwolnieniePamieci(int PID);
 	const void WypiszZasobPamieci(int nrToPrint = 0);
 	const void WpiszZasobPamDoPWym(int nr, string zasobPam);
+	void PIDproces(int PID, string plik);
 	//----Sprawdzanie Powierzchni Adresowej----//
 	const bool CzyAdrWPowAdresss(int AddrLog);
 	const bool CzyZasiegAdrWPowAdres(int AddrLog, int range);
@@ -103,7 +104,7 @@ public:
 	const void WydrukujRamePWym(int RamaNr, int StronaNr = -1);
 	//----Odczytywanie i zapisywanie stringow----//
 	//(potrzebne do odczytu procesow//
-	const void zapiszString(int PID, int Addr1, string content);
+	void zapiszString(int PID, int Addr1, string content);
 	const string odczytajString(int PID, int Addr1);
 	//konstruktor//
 	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y

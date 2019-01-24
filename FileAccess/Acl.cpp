@@ -57,7 +57,9 @@ string Acl::getOwner() {
 		string currentLoggedUser = User::getUserBySID(User::getCurrentLoggedUser());
 		if (AclList.find(file_name) != AclList.end()) {
 			string fileOwner = AclList[file_name]->getOwner();
-			if (fileOwner == currentLoggedUser) {
+			User* user = new User();
+			user = User::getUserbyName(User::getUserBySID(User::getCurrentLoggedUser()));
+			if (fileOwner == currentLoggedUser || User::findInAdminUserGroup(user->getUsername()) == true) {
 				if (fileOwner == "Guest") {
 					cout << "Gosc nie moze zmieniac wpisow!";
 					return;
@@ -143,7 +145,6 @@ string Acl::getOwner() {
 			temp_container = AclList[filename]->Ace_container;
 			fileOwner = AclList[filename]->getOwner();
 			if (temp_container.find(currentLoggedUser) != temp_container.end()) {
-				cout << "Znalazlem osobno \n";
 				for (int i = 0; i <= 4; i++) {
 					permissions[i] = temp_container[currentLoggedUser].values[i];
 					suma += permissions[i];
@@ -152,7 +153,6 @@ string Acl::getOwner() {
 			else {
 				bool found = User::findInAdminUserGroup(currentLoggedUser);
 				if (found) {
-					cout << "Znalazlem w liscie Adminow";
 					for (int i = 0; i <= 4; i++) {
 						permissions[i] = temp_container["Administratorzy"].values[i];
 						suma += permissions[i];
@@ -160,7 +160,6 @@ string Acl::getOwner() {
 				}
 				 found = User::findInStandardUserGroup(currentLoggedUser);
 				if (found) {
-					cout << "Znalazlem w liscie standardowej";
 					for (int i = 0; i <= 4; i++) {
 						permissions[i] = temp_container["Uzytkownicy"].values[i];
 						suma += permissions[i];

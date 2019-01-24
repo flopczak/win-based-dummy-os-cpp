@@ -6,21 +6,11 @@
 #include "../memory/Memory.hpp"
 using namespace std;
 
-enum status {AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY};
-
-struct STRON
-{
-	int RamaZajeta;
-	bool wPam;
-};
+enum status { AKTYWNY, GOTOWY, OCZEKUJACY, ZAKONCZONY };
 
 class Process											//PCB
 {
 private:
-	STRON* pageTable;									//Przemkowe RAM'y
-	//JACOB zmieniam parametry na publiczne
-	//STRON* pageTable;	//Przemkowe RAM'y
-	int pageTableSize;
 
 	string process_name;								//nazwa procesu
 	int PID;											//indywidualny identyifkator
@@ -34,7 +24,7 @@ private:
 	bool PP;											//flaga obecno�ci procesora
 	Memory *mmr;
 public:
-	Process(string na, int priority, int cc, Memory * m, int inst_size);
+	Process(int pid, string na, int priority, int cc, Memory * m, int inst_size);
 	~Process();											//dekonstruktor
 
 	//settery
@@ -49,12 +39,5 @@ public:
 	void displayHelper();								//funkcja pomocnicza dla funckcji displayAll()
 	
 	friend bool operator==(const Process &b, const Process &a);
-
-
-	void UstTabStronic(STRON* newpageTable);			//Przemkowe RAM'y
-	int errorCode;
-	STRON* PobTabStronic();
-	void UstWielTabStronic(int num);
-	int PobWielTabStronic();
 };
 #endif

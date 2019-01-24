@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Process::Process(string na, int priority, int cc,  Memory * m, int inst_size)
+Process::Process(int pid, string na, int priority, int cc,  Memory * m, int inst_size)
 {
 	this->PID = rand() % 9999 + 1000;
 	this->process_name = na;
@@ -15,8 +15,6 @@ Process::Process(string na, int priority, int cc,  Memory * m, int inst_size)
 	this->AX = 0;
 	this->BX = 0;
 	this->CX = 0;
-	this->errorCode = 0;
-	this->PobWielTabStronic();
 	this->mmr = m;
 }
 

@@ -10,32 +10,17 @@ map<int, Process*>Process_List::PCBList = {};
 
 Process_List::Process_List()
 {
+	this->mem = new Memory();
+	this->disk = new Disk();
+	this->assembler = new Assembler(this, this->mem, this->disk);
 }
 
 void Process_List::createProcess(string name, string instr, int pr)
 {
-	Process a(v[0]);
-	Process_List::PrcList.push_front(a);
-	return a;
-}
-
-Process Process_List::CP_2(vector<string>v)
-{
-	Process a(v[0], stoi(v[1]));
-	Process_List::PrcList.push_back(a);
-	return a;
-}
-
-void Process_List::createProcess(vector<string>v)
-{
-	if (v.size() == 1)
-	{
-		CP_1(v);
-	}
-	else
-	{
-		CP_2(v);
-	}
+	int pid = rand() & 9999 * 1000;
+	Process p = Process(pid, name, pr, 0, this->mem, instr.size());
+	PCBList.insert(pair<int, Process*>(pid, &p));
+	//dodanie tego procesu do listy gotowych procesow w procesorze
 }
 
 list<Process> Process_List::getReady()
